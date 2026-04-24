@@ -28,6 +28,8 @@ sourceSets.main.resources {
 }
 
 repositories {
+    mavenLocal()
+    mavenCentral()
     // Add here additional repositories if required by some of the dependencies below.
     exclusiveContent {
         forRepository {
@@ -40,6 +42,8 @@ repositories {
             includeGroup "maven.modrinth"
         }
     }
+    maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
+    maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
 }
 
 base {
@@ -151,7 +155,18 @@ dependencies {
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    implementation "maven.modrinth:create-aeronautics:1.1.3+mc1.21.1"
+    implementation("maven.modrinth:cc-tweaked:1.117.1")
+    implementation("maven.modrinth:sable:1.1.3+mc1.21.1")
+
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+
+    implementation(files("libs/simulated-1.1.3.jar"))
+    implementation(files("libs/offroad-1.1.3.jar"))
+    implementation(files("libs/aeronautics-1.1.3.jar"))
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
