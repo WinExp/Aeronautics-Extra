@@ -1,6 +1,6 @@
-package com.github.winexp.simulated_cct_ext.mixin;
+package com.github.winexp.aeronauticsextra.mixin;
 
-import com.github.winexp.simulated_cct_ext.impl.CCTPeripherals;
+import com.github.winexp.aeronauticsextra.impl.CCTPeripherals;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.simulated_team.simulated.compat.computercraft.ComputerCraftPeripherals;
 import dev.simulated_team.simulated.service.compat.SimPeripheralService;

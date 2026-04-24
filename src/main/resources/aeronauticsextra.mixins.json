@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.github.winexp.simulated_cct_ext.mixin",
+  "package": "com.github.winexp.aeronauticsextra.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ComputerCraftPeripheralsMixin",

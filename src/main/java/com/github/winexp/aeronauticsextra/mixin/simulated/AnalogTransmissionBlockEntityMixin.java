@@ -1,6 +1,6 @@
-package com.github.winexp.simulated_cct_ext.mixin.simulated;
+package com.github.winexp.aeronauticsextra.mixin.simulated;
 
-import com.github.winexp.simulated_cct_ext.mixin_interface.simulated.AnalogTransmissionBlockEntityExtension;
+import com.github.winexp.aeronauticsextra.mixin_interface.simulated.AnalogTransmissionBlockEntityExtension;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -58,12 +58,12 @@ public abstract class AnalogTransmissionBlockEntityMixin extends KineticBlockEnt
     }
 
     @Override
-    public float sce$getOverrideSignal() {
+    public float aero_extra$getOverrideSignal() {
         return this.sce$overrideSignal;
     }
 
     @Override
-    public void sce$setOverrideSignal(float power) {
+    public void aero_extra$setOverrideSignal(float power) {
         if (this.sce$overrideSignal != power) {
             this.sce$overrideSignal = power;
             this.sce$needsUpdate = true;
