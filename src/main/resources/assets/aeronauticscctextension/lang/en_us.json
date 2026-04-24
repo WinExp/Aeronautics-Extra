@@ -1,0 +1,13 @@
+{
+  "itemGroup.aeronauticscctextension": "Example Mod Tab",
+  "block.aeronauticscctextension.example_block": "Example Block",
+  "item.aeronauticscctextension.example_item": "Example Item",
+
+  "aeronauticscctextension.configuration.title": "Aeronautics CCT Extension Configs",
+  "aeronauticscctextension.configuration.section.aeronauticscctextension.common.toml": "Aeronautics CCT Extension Configs",
+  "aeronauticscctextension.configuration.section.aeronauticscctextension.common.toml.title": "Aeronautics CCT Extension Configs",
+  "aeronauticscctextension.configuration.items": "Item List",
+  "aeronauticscctextension.configuration.logDirtBlock": "Log Dirt Block",
+  "aeronauticscctextension.configuration.magicNumberIntroduction": "Magic Number Text",
+  "aeronauticscctextension.configuration.magicNumber": "Magic Number"
+}
