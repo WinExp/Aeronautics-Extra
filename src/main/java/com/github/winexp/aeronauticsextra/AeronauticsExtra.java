@@ -14,7 +14,7 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 @Mod(AeronauticsExtra.MODID)
 public class AeronauticsExtra {
-    public static final String MODID = "aeronauticscctextension";
+    public static final String MODID = "aeronauticsextra";
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public AeronauticsExtra(IEventBus modEventBus, ModContainer modContainer) {

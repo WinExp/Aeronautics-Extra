@@ -40,6 +40,10 @@ public abstract class AnalogTransmissionBlockEntityMixin extends KineticBlockEnt
     @Expression("? != this.signal")
     @ModifyExpressionValue(method = "tick", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean shouldUpdate(boolean original) {
+        // Override the power when redstone signal changed
+        if (original) {
+            this.sce$needsUpdate = false;
+        }
         return this.sce$needsUpdate || original;
     }
 
@@ -53,7 +57,7 @@ public abstract class AnalogTransmissionBlockEntityMixin extends KineticBlockEnt
         }
         else {
             this.oversaturated = false;
-            return this.sce$overrideSignal > 1 ? 1 : this.sce$overrideSignal;
+            return this.sce$overrideSignal;
         }
     }
 
