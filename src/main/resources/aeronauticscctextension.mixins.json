@@ -2,7 +2,15 @@
   "required": true,
   "package": "com.github.winexp.simulated_cct_ext.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "ComputerCraftPeripheralsMixin",
+    "aeronautics.HotAirBurnerBlockEntityMixin",
+    "aeronautics.SteamVentBlockEntityMixin",
+    "simulated.AnalogTransmissionBlockEntityMixin"
+  ],
+  "mixinextras": {
+    "minVersion": "0.5.3"
+  },
   "injectors": {
     "defaultRequire": 1
   },
