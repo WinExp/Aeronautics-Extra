@@ -1,6 +1,6 @@
-package com.github.winexp.simulated_cct_ext.mixin.aeronautics;
+package com.github.winexp.aeronauticsextra.mixin.aeronautics;
 
-import com.github.winexp.simulated_cct_ext.mixin_interface.aeronautics.HotAirBurnerBlockEntityExtension;
+import com.github.winexp.aeronauticsextra.mixin_interface.aeronautics.HotAirBurnerBlockEntityExtension;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import dev.eriksonn.aeronautics.content.blocks.hot_air.steam_vent.SteamVentBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,12 +12,12 @@ public class SteamVentBlockEntityMixin implements HotAirBurnerBlockEntityExtensi
     protected ScrollValueBehaviour steamAmountBehaviour;
 
     @Override
-    public int sce$getHotAirAmount() {
+    public int aero_extra$getHotAirAmount() {
         return this.steamAmountBehaviour.getValue();
     }
 
     @Override
-    public void sce$setHotAirAmount(int amount) {
+    public void aero_extra$setHotAirAmount(int amount) {
         this.steamAmountBehaviour.setValue(amount);
     }
 }

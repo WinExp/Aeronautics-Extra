@@ -1,4 +1,4 @@
-package com.github.winexp.simulated_cct_ext;
+package com.github.winexp.aeronauticsextra;
 
 import org.slf4j.Logger;
 
@@ -12,12 +12,12 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
-@Mod(AeronauticsCCTExtension.MODID)
-public class AeronauticsCCTExtension {
-    public static final String MODID = "aeronauticscctextension";
+@Mod(AeronauticsExtra.MODID)
+public class AeronauticsExtra {
+    public static final String MODID = "aeronauticsextra";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public AeronauticsCCTExtension(IEventBus modEventBus, ModContainer modContainer) {
+    public AeronauticsExtra(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
 
         NeoForge.EVENT_BUS.register(this);

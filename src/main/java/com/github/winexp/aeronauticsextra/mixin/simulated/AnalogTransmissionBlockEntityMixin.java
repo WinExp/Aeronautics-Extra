@@ -1,6 +1,6 @@
-package com.github.winexp.simulated_cct_ext.mixin.simulated;
+package com.github.winexp.aeronauticsextra.mixin.simulated;
 
-import com.github.winexp.simulated_cct_ext.mixin_interface.simulated.AnalogTransmissionBlockEntityExtension;
+import com.github.winexp.aeronauticsextra.mixin_interface.simulated.AnalogTransmissionBlockEntityExtension;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -20,10 +20,10 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(AnalogTransmissionBlockEntity.class)
 public abstract class AnalogTransmissionBlockEntityMixin extends KineticBlockEntity implements AnalogTransmissionBlockEntityExtension {
     @Unique
-    private float sce$overrideSignal = -1;
+    private float aero_extra$overrideSignal = -1;
 
     @Unique
-    private boolean sce$needsUpdate = true;
+    private boolean aero_extra$needsUpdate = true;
 
     @Shadow
     private boolean oversaturated;
@@ -40,33 +40,38 @@ public abstract class AnalogTransmissionBlockEntityMixin extends KineticBlockEnt
     @Expression("? != this.signal")
     @ModifyExpressionValue(method = "tick", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean shouldUpdate(boolean original) {
-        return this.sce$needsUpdate || original;
+        // Override the power when redstone signal changed
+        if (original) {
+            this.aero_extra$needsUpdate = false;
+        }
+        return this.aero_extra$needsUpdate || original;
     }
 
     @WrapMethod(method = "propagateRotationTo")
     private float modifyPower(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs, Operation<Float> original) {
         AnalogTransmissionBlockEntity instance = (AnalogTransmissionBlockEntity) (Object) this;
-        if (this.sce$overrideSignal < 0 || (target != this.extraWheel && target != instance)) return original.call(target, stateFrom, stateTo, diff, connectedViaAxes, connectedViaCogs);
-        else if (this.sce$overrideSignal > 1) {
+        if (this.aero_extra$overrideSignal < 0 || (target != this.extraWheel && target != instance)) return original.call(target, stateFrom, stateTo, diff, connectedViaAxes, connectedViaCogs);
+        else if (this.aero_extra$overrideSignal > 1) {
             this.oversaturated = true;
             return 0;
         }
         else {
             this.oversaturated = false;
-            return this.sce$overrideSignal > 1 ? 1 : this.sce$overrideSignal;
+            return this.aero_extra$overrideSignal;
         }
     }
 
     @Override
-    public float sce$getOverrideSignal() {
-        return this.sce$overrideSignal;
+    public float aero_extra$getOverrideSignal() {
+        return this.aero_extra$overrideSignal;
     }
 
     @Override
-    public void sce$setOverrideSignal(float power) {
-        if (this.sce$overrideSignal != power) {
-            this.sce$overrideSignal = power;
-            this.sce$needsUpdate = true;
+    public void aero_extra$setOverrideSignal(float power) {
+        if (power < 0) power = -1;
+        if (this.aero_extra$overrideSignal != power) {
+            this.aero_extra$overrideSignal = power;
+            this.aero_extra$needsUpdate = true;
         }
     }
 }

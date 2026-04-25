@@ -1,11 +1,12 @@
 {
   "required": true,
-  "package": "com.github.winexp.simulated_cct_ext.mixin",
+  "package": "com.github.winexp.aeronauticsextra.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ComputerCraftPeripheralsMixin",
     "aeronautics.HotAirBurnerBlockEntityMixin",
     "aeronautics.SteamVentBlockEntityMixin",
+    "create_propulsion.ThrusterBlockEntityMixin",
     "simulated.AnalogTransmissionBlockEntityMixin"
   ],
   "mixinextras": {
