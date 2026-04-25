@@ -65,7 +65,7 @@ config="${mod_id}.mixins.json"
     # Optional field describing why the dependency is required or why it is incompatible
     # reason="..."
     # The version range of the dependency
-    versionRange="[1,)" #mandatory
+    versionRange="[21.1,)" #mandatory
     # An ordering relationship for the dependency.
     # BEFORE - This mod is loaded BEFORE the dependency
     # AFTER - This mod is loaded AFTER the dependency
@@ -81,13 +81,6 @@ config="${mod_id}.mixins.json"
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
-
-[[dependencies."${mod_id}"]]
-    modId = "computercraft"
-    type = "optional"
-    versionRange = "[${cc_tweaked_version},)"
-    ordering = "NONE"
-    side = "BOTH"
 
 [[dependencies."${mod_id}"]]
     modId = "simulated"
@@ -107,6 +100,20 @@ config="${mod_id}.mixins.json"
     modId = "offroad"
     type = "required"
     versionRange = "[${offroad_version},)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+    modId = "computercraft"
+    type = "optional"
+    versionRange = "[${cc_tweaked_version},)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies."${mod_id}"]]
+    modId = "createpropulsionsimulated"
+    type = "optional"
+    versionRange = "[1.0.2,)"
     ordering = "NONE"
     side = "BOTH"
 
