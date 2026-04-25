@@ -14,6 +14,7 @@ tasks.named('wrapper', Wrapper).configure {
     // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
     distributionType = Wrapper.DistributionType.BIN
 }
+tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
 
 version = mod_version
 group = mod_group_id
@@ -38,6 +39,7 @@ modrinth {
         required.project "create-aeronautics"
         optional.project "cc-tweaked"
     }
+    syncBodyFrom = rootProject.file("README.md").text
 }
 
 repositories {
