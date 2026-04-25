@@ -84,7 +84,7 @@ config="${mod_id}.mixins.json"
 
 [[dependencies."${mod_id}"]]
     modId = "computercraft"
-    type = "required"
+    type = "optional"
     versionRange = "[${cc_tweaked_version},)"
     ordering = "NONE"
     side = "BOTH"

@@ -35,11 +35,8 @@ modrinth {
     uploadFile = jar // With Loom, this MUST be set to `remapJar` instead of `jar`!
     gameVersions = [minecraft_version] // Must be an array, even with only one version
     dependencies { // A special DSL for creating dependencies
-        // scope.type
-        // The scope can be `required`, `optional`, `incompatible`, or `embedded`
-        // The type can either be `project` or `version`
-        required.project "create-aeronautics" // Creates a new required dependency on Fabric API
-        required.project "cc-tweaked"
+        required.project "create-aeronautics"
+        optional.project "cc-tweaked"
     }
 }
 
@@ -214,6 +211,10 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_name               : mod_name,
             mod_license            : mod_license,
             mod_version            : mod_version,
+            simulated_version      : simulated_version,
+            aeronautics_version    : aeronautics_version,
+            offroad_version        : offroad_version,
+            cc_tweaked_version     : cc_tweaked_version,
     ]
     inputs.properties replaceProperties
     expand replaceProperties
