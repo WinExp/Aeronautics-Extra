@@ -26,11 +26,8 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: Set up build scan
-        uses: bmuschko/setup-gradle-public-build-scan@v1
-
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --scan
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
