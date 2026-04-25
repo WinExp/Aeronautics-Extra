@@ -20,10 +20,10 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(AnalogTransmissionBlockEntity.class)
 public abstract class AnalogTransmissionBlockEntityMixin extends KineticBlockEntity implements AnalogTransmissionBlockEntityExtension {
     @Unique
-    private float sce$overrideSignal = -1;
+    private float aero_extra$overrideSignal = -1;
 
     @Unique
-    private boolean sce$needsUpdate = true;
+    private boolean aero_extra$needsUpdate = true;
 
     @Shadow
     private boolean oversaturated;
@@ -42,35 +42,36 @@ public abstract class AnalogTransmissionBlockEntityMixin extends KineticBlockEnt
     private boolean shouldUpdate(boolean original) {
         // Override the power when redstone signal changed
         if (original) {
-            this.sce$needsUpdate = false;
+            this.aero_extra$needsUpdate = false;
         }
-        return this.sce$needsUpdate || original;
+        return this.aero_extra$needsUpdate || original;
     }
 
     @WrapMethod(method = "propagateRotationTo")
     private float modifyPower(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs, Operation<Float> original) {
         AnalogTransmissionBlockEntity instance = (AnalogTransmissionBlockEntity) (Object) this;
-        if (this.sce$overrideSignal < 0 || (target != this.extraWheel && target != instance)) return original.call(target, stateFrom, stateTo, diff, connectedViaAxes, connectedViaCogs);
-        else if (this.sce$overrideSignal > 1) {
+        if (this.aero_extra$overrideSignal < 0 || (target != this.extraWheel && target != instance)) return original.call(target, stateFrom, stateTo, diff, connectedViaAxes, connectedViaCogs);
+        else if (this.aero_extra$overrideSignal > 1) {
             this.oversaturated = true;
             return 0;
         }
         else {
             this.oversaturated = false;
-            return this.sce$overrideSignal;
+            return this.aero_extra$overrideSignal;
         }
     }
 
     @Override
     public float aero_extra$getOverrideSignal() {
-        return this.sce$overrideSignal;
+        return this.aero_extra$overrideSignal;
     }
 
     @Override
     public void aero_extra$setOverrideSignal(float power) {
-        if (this.sce$overrideSignal != power) {
-            this.sce$overrideSignal = power;
-            this.sce$needsUpdate = true;
+        if (power < 0) power = -1;
+        if (this.aero_extra$overrideSignal != power) {
+            this.aero_extra$overrideSignal = power;
+            this.aero_extra$needsUpdate = true;
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.impl.peripherals.simulated;
+package com.github.winexp.aeronauticsextra.compact.computercraft.peripherals.simulated;
 
 import com.github.winexp.aeronauticsextra.mixin_interface.simulated.AnalogTransmissionBlockEntityExtension;
 import dan200.computercraft.api.lua.*;
@@ -17,8 +17,7 @@ public class AnalogTransmissionPeripheral extends SimPeripheral<AnalogTransmissi
 
     @LuaFunction
     public final void setOverridePower(final double power) {
-        float value = power < 0 ? -1 : (float) power;
-        ((AnalogTransmissionBlockEntityExtension) this.blockEntity).aero_extra$setOverrideSignal(value);
+        ((AnalogTransmissionBlockEntityExtension) this.blockEntity).aero_extra$setOverrideSignal((float) power);
     }
 
     @Override

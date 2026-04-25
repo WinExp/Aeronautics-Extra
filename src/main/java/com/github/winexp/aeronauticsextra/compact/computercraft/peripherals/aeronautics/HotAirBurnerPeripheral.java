@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.impl.peripherals.aeronautics;
+package com.github.winexp.aeronauticsextra.compact.computercraft.peripherals.aeronautics;
 
 import com.github.winexp.aeronauticsextra.mixin_interface.aeronautics.HotAirBurnerBlockEntityExtension;
 import dan200.computercraft.api.lua.LuaFunction;

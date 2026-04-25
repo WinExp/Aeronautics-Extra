@@ -6,6 +6,7 @@
     "ComputerCraftPeripheralsMixin",
     "aeronautics.HotAirBurnerBlockEntityMixin",
     "aeronautics.SteamVentBlockEntityMixin",
+    "create_propulsion.ThrusterBlockEntityMixin",
     "simulated.AnalogTransmissionBlockEntityMixin"
   ],
   "mixinextras": {
