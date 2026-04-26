@@ -11,13 +11,13 @@ public class AnalogTransmissionPeripheral extends SimPeripheral<AnalogTransmissi
     }
 
     @LuaFunction
-    public final float getOverridePower() {
-        return ((AnalogTransmissionBlockEntityExtension) this.blockEntity).aero_extra$getOverrideSignal();
+    public final float getOverrideGearRatio() {
+        return ((AnalogTransmissionBlockEntityExtension) this.blockEntity).aero_extra$getOverrideGearRatio();
     }
 
     @LuaFunction
-    public final void setOverridePower(final double power) {
-        ((AnalogTransmissionBlockEntityExtension) this.blockEntity).aero_extra$setOverrideSignal((float) power);
+    public final void setOverrideGearRatio(final double ratio) {
+        ((AnalogTransmissionBlockEntityExtension) this.blockEntity).aero_extra$setOverrideGearRatio((float) ratio);
     }
 
     @Override

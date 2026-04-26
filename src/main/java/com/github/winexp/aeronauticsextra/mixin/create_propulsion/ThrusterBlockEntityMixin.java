@@ -14,28 +14,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ThrusterBlockEntity.class)
 public class ThrusterBlockEntityMixin implements ThrusterBlockEntityExtension {
     @Unique
-    private double aero_extra$overrideThrust = -1;
+    private double aero_extra$overrideThrottle = -1;
 
     @WrapMethod(method = "getThrottle")
     private double modifyThrottle(Operation<Double> original) {
-        if (this.aero_extra$overrideThrust < 0) return original.call();
-        else return this.aero_extra$overrideThrust;
+        if (this.aero_extra$overrideThrottle < 0) return original.call();
+        else return this.aero_extra$overrideThrottle;
     }
 
     @Inject(method = "setRedstonePower", at = @At(value = "INVOKE", target = "Ldev/createpropulsionsimulated/content/thruster/ThrusterBlockEntity;sync()V"))
     private void overrideWhenRedstoneUpdated(int redstonePower, CallbackInfo ci) {
-        this.aero_extra$overrideThrust = -1;
+        this.aero_extra$overrideThrottle = -1;
     }
 
     @Override
-    public double aero_extra$getOverrideThrust() {
-        return this.aero_extra$overrideThrust;
+    public double aero_extra$getOverrideThrottle() {
+        return this.aero_extra$overrideThrottle;
     }
 
     @Override
-    public void aero_extra$setOverrideThrust(double power) {
-        power = Mth.clamp(power, -1, 1);
-        if (power < 0) power = -1;
-        this.aero_extra$overrideThrust = power;
+    public void aero_extra$setOverrideThrottle(double throttle) {
+        throttle = Mth.clamp(throttle, -1, 1);
+        if (throttle < 0) throttle = -1;
+        this.aero_extra$overrideThrottle = throttle;
     }
 }

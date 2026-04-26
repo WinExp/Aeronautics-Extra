@@ -9,10 +9,10 @@
 
 ## 特性
 ### CC:Tweaked 兼容
-### 机械动力：航空学
+#### 机械动力：航空学
 - Analog Transmission: 无级调速支持
 - Hot Air Burner: 可调最大热空气提供量。
 - Steam Vent: 可调最大蒸汽提供量。
 
-### Create Propulsion: Simulated
+#### Create Propulsion: Simulated
 - Thruster: 可调功率输出。

@@ -14,13 +14,13 @@ public class ThrusterPeripheral<T extends ThrusterBlockEntity> extends SimPeriph
     }
 
     @LuaFunction
-    public double getOverrideThrust() {
-        return ((ThrusterBlockEntityExtension) this.blockEntity).aero_extra$getOverrideThrust();
+    public double getOverrideThrottle() {
+        return ((ThrusterBlockEntityExtension) this.blockEntity).aero_extra$getOverrideThrottle();
     }
 
     @LuaFunction
-    public void setOverrideThrust(final double value) {
-        ((ThrusterBlockEntityExtension) this.blockEntity).aero_extra$setOverrideThrust(value);
+    public void setOverrideThrottle(final double throttle) {
+        ((ThrusterBlockEntityExtension) this.blockEntity).aero_extra$setOverrideThrottle(throttle);
     }
 
     @Override

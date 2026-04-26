@@ -7,6 +7,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.infrastructure.config.AllConfigs;
 import dev.simulated_team.simulated.content.blocks.analog_transmission.AnalogTransmissionBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -20,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(AnalogTransmissionBlockEntity.class)
 public abstract class AnalogTransmissionBlockEntityMixin extends KineticBlockEntity implements AnalogTransmissionBlockEntityExtension {
     @Unique
-    private float aero_extra$overrideSignal = -1;
+    private float aero_extra$overrideGearRatio = -1;
 
     @Unique
     private boolean aero_extra$needsUpdate = true;
@@ -40,37 +41,49 @@ public abstract class AnalogTransmissionBlockEntityMixin extends KineticBlockEnt
     @Expression("? != this.signal")
     @ModifyExpressionValue(method = "tick", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean shouldUpdate(boolean original) {
-        // Override the power when redstone signal changed
+        // Override the ratio when redstone signal changed
         if (original) {
-            this.aero_extra$needsUpdate = false;
+            this.aero_extra$overrideGearRatio = -1;
         }
-        return this.aero_extra$needsUpdate || original;
+        boolean result = this.aero_extra$needsUpdate || original;
+        this.aero_extra$needsUpdate = false;
+        return result;
     }
 
     @WrapMethod(method = "propagateRotationTo")
-    private float modifyPower(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs, Operation<Float> original) {
+    private float modifyGearRatio(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs, Operation<Float> original) {
         AnalogTransmissionBlockEntity instance = (AnalogTransmissionBlockEntity) (Object) this;
-        if (this.aero_extra$overrideSignal < 0 || (target != this.extraWheel && target != instance)) return original.call(target, stateFrom, stateTo, diff, connectedViaAxes, connectedViaCogs);
-        else if (this.aero_extra$overrideSignal > 1) {
+        if (this.aero_extra$overrideGearRatio < 0 || (target != this.extraWheel && target != instance)) return original.call(target, stateFrom, stateTo, diff, connectedViaAxes, connectedViaCogs);
+        else if (this.aero_extra$overrideGearRatio > 1) {
             this.oversaturated = true;
             return 0;
         }
-        else {
-            this.oversaturated = false;
-            return this.aero_extra$overrideSignal;
+        if (target == this.extraWheel) {
+            if (this.oversaturated) return 0;
+            return this.aero_extra$overrideGearRatio == 0 ? 1 : this.aero_extra$overrideGearRatio;
+        } else if (target == instance) {
+            float ratio = this.aero_extra$overrideGearRatio == 0 ? 1 : (1 / this.aero_extra$overrideGearRatio);
+            if (Math.abs(this.extraWheel.getTheoreticalSpeed() * ratio) > AllConfigs.server().kinetics.maxRotationSpeed.get()) {
+                this.oversaturated = true;
+                return 0;
+            } else {
+                this.oversaturated = false;
+                return ratio;
+            }
         }
+        return 0;
     }
 
     @Override
-    public float aero_extra$getOverrideSignal() {
-        return this.aero_extra$overrideSignal;
+    public float aero_extra$getOverrideGearRatio() {
+        return this.aero_extra$overrideGearRatio;
     }
 
     @Override
-    public void aero_extra$setOverrideSignal(float power) {
-        if (power < 0) power = -1;
-        if (this.aero_extra$overrideSignal != power) {
-            this.aero_extra$overrideSignal = power;
+    public void aero_extra$setOverrideGearRatio(float ratio) {
+        if (ratio < 0) ratio = -1;
+        if (this.aero_extra$overrideGearRatio != ratio) {
+            this.aero_extra$overrideGearRatio = ratio;
             this.aero_extra$needsUpdate = true;
         }
     }
