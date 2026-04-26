@@ -7,7 +7,9 @@
     "aeronautics.HotAirBurnerBlockEntityMixin",
     "aeronautics.SteamVentBlockEntityMixin",
     "create_propulsion.ThrusterBlockEntityMixin",
-    "simulated.AnalogTransmissionBlockEntityMixin"
+    "simulated.AnalogTransmissionBlockEntityMixin",
+    "simulated.GimbalSensorBlockEntityMixin",
+    "simulated.GimbalSensorPeripheralMixin"
   ],
   "mixinextras": {
     "minVersion": "0.5.3"
