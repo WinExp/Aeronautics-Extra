@@ -8,7 +8,7 @@ This mod is designed to add practical features to Create Aeronautics.
 For more information, please visit the [Wiki](https://github.com/WinExp/Aeronautics-Extra/wiki).
 
 ## Features
-### CC:Tweaked Compact
+### CC:Tweaked Compat
 #### Create Aeronautics
 - Analog Transmission: Stepless speed regulation support.
 - Hot Air Burner: Adjustable hot air amount support.

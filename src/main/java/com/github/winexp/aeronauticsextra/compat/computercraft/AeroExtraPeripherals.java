@@ -1,10 +1,10 @@
-package com.github.winexp.aeronauticsextra.compact.computercraft;
+package com.github.winexp.aeronauticsextra.compat.computercraft;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.github.winexp.aeronauticsextra.compact.computercraft.peripherals.aeronautics.SteamVentPeripheral;
-import com.github.winexp.aeronauticsextra.compact.computercraft.peripherals.create_propulsion.ThrusterPeripheral;
-import com.github.winexp.aeronauticsextra.compact.computercraft.peripherals.simulated.AnalogTransmissionPeripheral;
-import com.github.winexp.aeronauticsextra.compact.computercraft.peripherals.aeronautics.HotAirBurnerPeripheral;
+import com.github.winexp.aeronauticsextra.compat.computercraft.peripherals.aeronautics.SteamVentPeripheral;
+import com.github.winexp.aeronauticsextra.compat.computercraft.peripherals.create_propulsion.ThrusterPeripheral;
+import com.github.winexp.aeronauticsextra.compat.computercraft.peripherals.simulated.AnalogTransmissionPeripheral;
+import com.github.winexp.aeronauticsextra.compat.computercraft.peripherals.aeronautics.HotAirBurnerPeripheral;
 import dev.createpropulsionsimulated.registry.CPSBlockEntities;
 import dev.eriksonn.aeronautics.index.AeroBlockEntityTypes;
 import dev.simulated_team.simulated.index.SimBlockEntityTypes;

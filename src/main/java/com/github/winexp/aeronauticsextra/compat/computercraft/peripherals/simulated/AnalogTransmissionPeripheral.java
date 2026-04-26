@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.compact.computercraft.peripherals.simulated;
+package com.github.winexp.aeronauticsextra.compat.computercraft.peripherals.simulated;
 
 import com.github.winexp.aeronauticsextra.mixin_interface.simulated.AnalogTransmissionBlockEntityExtension;
 import dan200.computercraft.api.lua.*;

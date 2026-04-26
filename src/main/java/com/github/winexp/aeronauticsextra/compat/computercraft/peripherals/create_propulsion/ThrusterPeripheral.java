@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.compact.computercraft.peripherals.create_propulsion;
+package com.github.winexp.aeronauticsextra.compat.computercraft.peripherals.create_propulsion;
 
 import com.github.winexp.aeronauticsextra.mixin_interface.create_propulsion.ThrusterBlockEntityExtension;
 import dan200.computercraft.api.lua.LuaFunction;
