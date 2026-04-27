@@ -60,9 +60,13 @@ public abstract class AnalogTransmissionBlockEntityMixin extends KineticBlockEnt
         }
         if (target == this.extraWheel) {
             if (this.oversaturated) return 0;
-            return this.aero_extra$overrideGearRatio == 0 ? 1 : this.aero_extra$overrideGearRatio;
+            return this.aero_extra$overrideGearRatio;
         } else if (target == instance) {
-            float ratio = this.aero_extra$overrideGearRatio == 0 ? 1 : (1 / this.aero_extra$overrideGearRatio);
+            if (this.aero_extra$overrideGearRatio == 0) {
+                this.oversaturated = true;
+                return 0;
+            }
+            float ratio = 1 / this.aero_extra$overrideGearRatio;
             if (Math.abs(this.extraWheel.getTheoreticalSpeed() * ratio) > AllConfigs.server().kinetics.maxRotationSpeed.get()) {
                 this.oversaturated = true;
                 return 0;
