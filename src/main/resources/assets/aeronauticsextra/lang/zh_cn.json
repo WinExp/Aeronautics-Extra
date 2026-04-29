@@ -1,3 +1,6 @@
 {
-  "aeronauticsextra.gimbal_sensor.y_angle": "Y 角度：%s"
+  "aeronauticsextra.gimbal_sensor.y_angle": "偏航角：%s",
+  "block.aeronauticsextra.gps_satellite": "GPS 卫星",
+  "container.aeronauticsextra.gps_satellite":  "GPS 卫星",
+  "itemGroup.aeronauticsextra": "Aeronautics Extra"
 }

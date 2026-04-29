@@ -8,11 +8,11 @@
 更多信息请查看 [Wiki](https://github.com/WinExp/Aeronautics-Extra/wiki)。
 
 ## 特性
-### CC:Tweaked 兼容
+### CC: Tweaked 兼容
 #### 机械动力：航空学
-- Analog Transmission: 无级调速支持。
-- Hot Air Burner: 可调最大热空气提供量。
-- Steam Vent: 可调最大蒸汽提供量。
+- 模拟传动器: 无级调速支持。
+- 热空气燃烧室: 可调最大热空气提供量。
+- 蒸汽喷口: 可调最大蒸汽提供量。
 
 #### Create Propulsion: Simulated
-- Thruster: 可调功率输出。
+- 推进器: 可调功率输出。
