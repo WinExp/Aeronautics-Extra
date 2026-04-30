@@ -1,11 +1,10 @@
 package com.github.winexp.aeronauticsextra.mixin.simulated;
 
-import com.github.winexp.aeronauticsextra.AeronauticsExtra;
+import com.github.winexp.aeronauticsextra.AeroExtraLang;
 import com.github.winexp.aeronauticsextra.mixin_interface.simulated.GimbalSensorBlockEntityExtension;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.ryanhcode.sable.sublevel.SubLevel;
 import dev.simulated_team.simulated.content.blocks.gimbal_sensor.GimbalSensorBlockEntity;
-import net.createmod.catnip.lang.Lang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import org.joml.Quaterniond;
@@ -36,8 +35,7 @@ public class GimbalSensorBlockEntityMixin implements GimbalSensorBlockEntityExte
     private void addGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking, CallbackInfoReturnable<Boolean> cir) {
         Component y = Component.literal("%.2f".formatted(Math.toDegrees(this.aero_extra$YAngle)))
                 .withStyle(ChatFormatting.GREEN);
-        Lang.builder(AeronauticsExtra.MOD_ID)
-                .translate("gimbal_sensor.y_angle", y)
+        AeroExtraLang.translate("gimbal_sensor.y_angle", y)
                 .style(ChatFormatting.GRAY)
                 .forGoggles(tooltip, 2);
     }

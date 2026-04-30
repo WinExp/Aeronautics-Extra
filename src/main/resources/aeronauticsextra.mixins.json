@@ -6,7 +6,6 @@
     "ComputerCraftPeripheralsMixin",
     "aeronautics.HotAirBurnerBlockEntityMixin",
     "aeronautics.SteamVentBlockEntityMixin",
-    "create_propulsion.ThrusterBlockEntityMixin",
     "simulated.AnalogTransmissionBlockEntityMixin",
     "simulated.GimbalSensorBlockEntityMixin",
     "simulated.GimbalSensorPeripheralMixin"

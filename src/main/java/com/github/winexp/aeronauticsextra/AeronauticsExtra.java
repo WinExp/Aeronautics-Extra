@@ -1,11 +1,17 @@
 package com.github.winexp.aeronauticsextra;
 
-import com.github.winexp.aeronauticsextra.blocks.AeroExtraBlockEntityTypes;
-import com.github.winexp.aeronauticsextra.blocks.AeroExtraBlocks;
-import com.github.winexp.aeronauticsextra.logistics.AeroExtraMenuTypes;
-import com.github.winexp.aeronauticsextra.registry.AeroExtraCreativeTabs;
-import com.tterrag.registrate.Registrate;
+import com.github.winexp.aeronauticsextra.data.AeroExtraDataGen;
+import com.github.winexp.aeronauticsextra.neoforge.AeroExtraModBusEventHandler;
+import com.github.winexp.aeronauticsextra.neoforge.AeroExtraNeoForgeEventHandler;
+import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.KineticStats;
+import com.simibubi.create.foundation.item.TooltipModifier;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.createmod.catnip.lang.FontHelper;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -17,17 +23,32 @@ import net.neoforged.neoforge.common.NeoForge;
 
 @Mod(AeronauticsExtra.MOD_ID)
 public class AeronauticsExtra {
+    private static final NonNullSupplier<CreateRegistrate> REGISTRATE = NonNullSupplier.lazy(() -> CreateRegistrate.create(AeronauticsExtra.MOD_ID)
+            .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
+            .setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
+                    .andThen(TooltipModifier.mapNull(KineticStats.create(item)))));
     public static final String MOD_ID = "aeronauticsextra";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final NonNullSupplier<Registrate> REGISTRATE = NonNullSupplier.of(() -> Registrate.create(AeronauticsExtra.MOD_ID));
+
+    public static CreateRegistrate getRegistrate() {
+        return REGISTRATE.get();
+    }
 
     public AeronauticsExtra(IEventBus modEventBus, ModContainer modContainer) {
-        NeoForge.EVENT_BUS.register(AeroExtraNeoForgeEventHandler.class);
-        modEventBus.register(AeroExtraModEventHandler.class);
+        getRegistrate().registerEventListeners(modEventBus);
+        getRegistrate().setCreativeTab(AeroExtraCreativeTabs.AERO_EXTRA);
 
         AeroExtraBlocks.register();
         AeroExtraBlockEntityTypes.register();
-        AeroExtraCreativeTabs.register();
+        AeroExtraCreativeTabs.register(modEventBus);
         AeroExtraMenuTypes.register();
+
+        NeoForge.EVENT_BUS.register(AeroExtraNeoForgeEventHandler.class);
+        modEventBus.register(AeroExtraDataGen.class);
+        modEventBus.register(AeroExtraModBusEventHandler.class);
+    }
+
+    public static ResourceLocation asResource(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 }

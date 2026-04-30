@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "aeronauticsextra:block/gps_satellite/block"
+    }
+  }
+}
