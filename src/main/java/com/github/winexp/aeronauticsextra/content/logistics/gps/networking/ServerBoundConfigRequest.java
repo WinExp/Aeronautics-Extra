@@ -14,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
 
-public record ServerBoundConfigRequest(BlockPos blockPos, Vec3 position, Vec3 targetPosition) implements CustomPacketPayload {
+public record ServerBoundConfigRequest(BlockPos blockPos, Vec3 position) implements CustomPacketPayload {
     public static final Type<ServerBoundConfigRequest> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(AeronauticsExtra.MOD_ID, "gps_satellite_config"));
 
     public static final StreamCodec<ByteBuf, ServerBoundConfigRequest> STREAM_CODEC = StreamCodec.composite(
@@ -22,8 +22,6 @@ public record ServerBoundConfigRequest(BlockPos blockPos, Vec3 position, Vec3 ta
             ServerBoundConfigRequest::blockPos,
             ByteBufCodecs.fromCodec(Vec3.CODEC),
             ServerBoundConfigRequest::position,
-            ByteBufCodecs.fromCodec(Vec3.CODEC),
-            ServerBoundConfigRequest::targetPosition,
             ServerBoundConfigRequest::new
     );
 
@@ -41,7 +39,6 @@ public record ServerBoundConfigRequest(BlockPos blockPos, Vec3 position, Vec3 ta
             if (!level.isLoaded(blockPos)) return;
             if (level.getBlockEntity(blockPos) instanceof GPSSatelliteBlockEntity satellite && satellite.canPlayerUse(player)) {
                 satellite.setPosition(request.position);
-                satellite.setTargetPosition(request.targetPosition);
             }
         }
     }
