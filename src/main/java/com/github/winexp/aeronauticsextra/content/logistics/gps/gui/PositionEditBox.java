@@ -10,12 +10,12 @@ import java.text.DecimalFormat;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class LocationEditBox extends EditBox {
+public class PositionEditBox extends EditBox {
     private static final DecimalFormat FORMAT = new DecimalFormat("#.##");
 
     private boolean validInput;
 
-    public LocationEditBox(Font font, int x, int y, int width, int height, @Nullable EditBox editBox, Component message) {
+    public PositionEditBox(Font font, int x, int y, int width, int height, @Nullable EditBox editBox, Component message) {
         super(font, x, y, width, height, editBox, message);
         super.setFilter(this::validateInput);
         super.setResponder(this::checkInputNumber);

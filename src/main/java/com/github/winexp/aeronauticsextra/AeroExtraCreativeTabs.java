@@ -16,6 +16,7 @@ public class AeroExtraCreativeTabs {
             .icon(() -> new ItemStack(AeroExtraBlocks.GPS_SATELLITE))
             .displayItems((params, output) -> {
                 output.accept(AeroExtraBlocks.GPS_SATELLITE, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
+                output.accept(AeroExtraItems.BRASS_GPS_CORE, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
             })
             .build());
 

@@ -16,7 +16,7 @@ public class GPSCommand implements Command<CommandSourceStack> {
             StringBuilder builder = new StringBuilder("GPS locate responses:\n");
             for (SatelliteResponse response : responses) {
                 builder.append("    Satellite position: ");
-                builder.append(response.satelliteLocation().toString());
+                builder.append(response.satellitePosition().toString());
                 builder.append("\n    Distance: ");
                 builder.append(response.distance());
                 builder.append("\n\n");

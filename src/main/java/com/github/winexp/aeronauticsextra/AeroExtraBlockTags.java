@@ -19,10 +19,10 @@ public class AeroExtraBlockTags {
     }
 
     public static void addGenerator() {
-        AeronauticsExtra.getRegistrate().addDataGenerator(ProviderType.BLOCK_TAGS, AeroExtraBlockTags::generateBlockTags);
+        AeronauticsExtra.getRegistrate().addDataGenerator(ProviderType.BLOCK_TAGS, AeroExtraBlockTags::generateTags);
     }
 
-    private static void generateBlockTags(RegistrateTagsProvider<Block> providerIn) {
+    private static void generateTags(RegistrateTagsProvider<Block> providerIn) {
         TagGen.CreateTagsProvider<Block> provider = new TagGen.CreateTagsProvider<>(providerIn, Block::builtInRegistryHolder);
     }
 }

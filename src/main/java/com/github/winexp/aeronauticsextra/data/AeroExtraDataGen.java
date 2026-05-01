@@ -1,6 +1,7 @@
 package com.github.winexp.aeronauticsextra.data;
 
 import com.github.winexp.aeronauticsextra.AeroExtraBlockTags;
+import com.github.winexp.aeronauticsextra.AeroExtraItemTags;
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -25,6 +26,7 @@ public class AeroExtraDataGen {
 
     private static void addExtraRegistrateData() {
         AeroExtraBlockTags.addGenerator();
+        AeroExtraItemTags.addGenerator();
 
         AeronauticsExtra.getRegistrate().addDataGenerator(ProviderType.LANG, provider -> {
             BiConsumer<String, String> langConsumer = provider::add;

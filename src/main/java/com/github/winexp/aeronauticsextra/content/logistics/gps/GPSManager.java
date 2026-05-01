@@ -46,7 +46,7 @@ public class GPSManager {
                 ArrayList<SatelliteResponse> responses = new ArrayList<>();
                 for (GPSSatelliteBlockEntity satellite : levelSatellites) {
                     double distance = Math.sqrt(Sable.HELPER.distanceSquaredWithSubLevels(level, satellite.getBlockPos().getBottomCenter(), request.getPosition()));
-                    responses.add(new SatelliteResponse(satellite.getLocation(), distance));
+                    responses.add(new SatelliteResponse(satellite.getPosition(), distance));
                 }
                 request.getCallback().accept(responses);
                 iterator.remove();

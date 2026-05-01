@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -17,6 +18,21 @@ public class GPSSatelliteBlock extends BaseEntityBlock implements IBE<GPSSatelli
 
     public GPSSatelliteBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected float getShadeBrightness(BlockState blockState, BlockGetter level, BlockPos blockPos) {
+        return 1.0F;
+    }
+
+    @Override
+    protected boolean propagatesSkylightDown(BlockState blockState, BlockGetter level, BlockPos blockPos) {
+        return true;
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        IBE.onRemove(state, level, pos, newState);
     }
 
     @Override

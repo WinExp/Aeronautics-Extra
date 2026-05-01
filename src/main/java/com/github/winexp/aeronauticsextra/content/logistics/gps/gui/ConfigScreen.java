@@ -11,9 +11,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class ConfigScreen extends AbstractSimiContainerScreen<ConfigMenu> {
     private final ConfigMenu menu;
-    private LocationEditBox xEditBox;
-    private LocationEditBox yEditBox;
-    private LocationEditBox zEditBox;
+    private PositionEditBox xEditBox;
+    private PositionEditBox yEditBox;
+    private PositionEditBox zEditBox;
 
     public ConfigScreen(ConfigMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
@@ -39,8 +39,8 @@ public class ConfigScreen extends AbstractSimiContainerScreen<ConfigMenu> {
         super.onClose();
     }
 
-    private LocationEditBox createLocationEditBox(int x, int y, int width, int height, EditBox parent, double initValue) {
-        LocationEditBox editBox = new LocationEditBox(this.minecraft.font, x, y, width, height, parent, Component.empty());
+    private PositionEditBox createLocationEditBox(int x, int y, int width, int height, EditBox parent, double initValue) {
+        PositionEditBox editBox = new PositionEditBox(this.minecraft.font, x, y, width, height, parent, Component.empty());
         if (editBox.getValue().isEmpty()) editBox.setDoubleValue(initValue);
         return editBox;
     }
@@ -49,11 +49,11 @@ public class ConfigScreen extends AbstractSimiContainerScreen<ConfigMenu> {
     protected void init() {
         super.init();
         this.xEditBox = this.addRenderableWidget(this.createLocationEditBox((this.width - 140) / 2, (this.height - 20) / 2, 40, 20,
-                this.xEditBox, this.menu.contentHolder.getLocation().x));
+                this.xEditBox, this.menu.contentHolder.getPosition().x));
         this.yEditBox = this.addRenderableWidget(this.createLocationEditBox((this.width - 40) / 2, (this.height - 20) / 2, 40, 20,
-                this.yEditBox, this.menu.contentHolder.getLocation().y));
+                this.yEditBox, this.menu.contentHolder.getPosition().y));
         this.zEditBox = this.addRenderableWidget(this.createLocationEditBox((this.width + 60) / 2, (this.height - 20) / 2, 40, 20,
-                this.zEditBox, this.menu.contentHolder.getLocation().z));
+                this.zEditBox, this.menu.contentHolder.getPosition().z));
     }
 
     @Override

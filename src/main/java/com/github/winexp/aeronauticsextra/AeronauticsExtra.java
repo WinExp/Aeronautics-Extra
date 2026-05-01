@@ -38,6 +38,7 @@ public class AeronauticsExtra {
         getRegistrate().registerEventListeners(modEventBus);
         getRegistrate().setCreativeTab(AeroExtraCreativeTabs.AERO_EXTRA);
 
+        AeroExtraItems.register();
         AeroExtraBlocks.register();
         AeroExtraBlockEntityTypes.register();
         AeroExtraCreativeTabs.register(modEventBus);
