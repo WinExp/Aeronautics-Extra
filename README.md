@@ -13,6 +13,3 @@ For more information, please visit the [Wiki](https://github.com/WinExp/Aeronaut
 - Analog Transmission: Stepless speed regulation support.
 - Hot Air Burner: Adjustable hot air amount support.
 - Steam Vent: Adjustable steam amount support.
-
-#### Create Propulsion: Simulated
-- Thruster: Adjustable power support.

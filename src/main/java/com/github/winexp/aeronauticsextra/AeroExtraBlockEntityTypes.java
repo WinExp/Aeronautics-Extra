@@ -10,8 +10,8 @@ public class AeroExtraBlockEntityTypes {
 
     public static final BlockEntityEntry<GPSSatelliteBlockEntity> GPS_SATELLITE = REGISTRATE
             .blockEntity("gps_satellite", GPSSatelliteBlockEntity::new)
-            .validBlocks(AeroExtraBlocks.GPS_SATELLITE)
             .renderer(() -> GPSSatelliteRenderer::new)
+            .validBlocks(AeroExtraBlocks.GPS_SATELLITE)
             .register();
 
     public static void register() {}

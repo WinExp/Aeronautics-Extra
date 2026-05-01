@@ -9,7 +9,8 @@ public class AeroExtraItems {
 
     public static final ItemEntry<Item> BRASS_GPS_CORE = REGISTRATE
             .item("brass_gps_core", Item::new)
-            .properties(p -> p.stacksTo(1))
+            .properties(p -> p.stacksTo(1)
+                    .component(AeroExtraDataComponents.GPS_ERROR, 0.05))
             .lang("Brass GPS Core")
             .register();
 

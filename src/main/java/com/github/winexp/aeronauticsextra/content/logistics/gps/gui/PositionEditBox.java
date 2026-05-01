@@ -52,7 +52,18 @@ public class PositionEditBox extends EditBox {
     }
 
     public double getDoubleValue() {
-        if (this.validInput) return Double.parseDouble(this.getValue());
+        return this.getDoubleValue(false);
+    }
+
+    public double getDoubleValue(boolean positionComplement) {
+        if (this.validInput) {
+            double val = Double.parseDouble(this.getValue());
+            if (positionComplement && !this.getValue().contains(".")) {
+                return val + 0.5;
+            } else {
+                return val;
+            }
+        }
         else return Double.NaN;
     }
 

@@ -1,5 +1,6 @@
 package com.github.winexp.aeronauticsextra.content.logistics.gps;
 
+import com.github.winexp.aeronauticsextra.AeroExtraDataComponents;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteBlockEntity;
 import dev.ryanhcode.sable.Sable;
 import net.minecraft.world.level.Level;
@@ -41,11 +42,12 @@ public class GPSManager {
             if (level == request.getLevel()) {
                 ArrayList<GPSSatelliteBlockEntity> levelSatellites = new ArrayList<>();
                 for (GPSSatelliteBlockEntity satellite : gpsSatellites) {
-                    if (satellite.getLevel() == level) levelSatellites.add(satellite);
+                    if (satellite.getLevel() == level && satellite.getCore().has(AeroExtraDataComponents.GPS_ERROR)) levelSatellites.add(satellite);
                 }
                 ArrayList<SatelliteResponse> responses = new ArrayList<>();
                 for (GPSSatelliteBlockEntity satellite : levelSatellites) {
-                    double distance = Math.sqrt(Sable.HELPER.distanceSquaredWithSubLevels(level, satellite.getBlockPos().getBottomCenter(), request.getPosition()));
+                    double distance = Math.sqrt(Sable.HELPER.distanceSquaredWithSubLevels(level, satellite.getBlockPos().getCenter(), request.getPosition()));
+                    distance += (level.random.nextDouble() * 2 - 1) * satellite.getCore().get(AeroExtraDataComponents.GPS_ERROR);
                     responses.add(new SatelliteResponse(satellite.getPosition(), distance));
                 }
                 request.getCallback().accept(responses);

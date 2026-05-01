@@ -17,7 +17,7 @@ public class AeroExtraBlocks {
     public static final BlockEntry<GPSSatelliteBlock> GPS_SATELLITE = REGISTRATE
             .block("gps_satellite", GPSSatelliteBlock::new)
             .blockstate((c, p) -> p.simpleBlock(c.get(), p.models()
-                    .getExistingFile(p.modLoc("block/gps_satellite/border"))))
+                    .getExistingFile(p.modLoc("block/gps_satellite/block"))))
             .initialProperties(SharedProperties::stone)
             .properties(properties -> properties.isRedstoneConductor(AeroExtraBlocks::never)
                     .isSuffocating(AeroExtraBlocks::never)

@@ -26,6 +26,9 @@ public class AeroExtraNeoForgeEventHandler {
     @SubscribeEvent
     public static void onCommandRegister(RegisterCommandsEvent event) {
         var dispatcher = event.getDispatcher();
-        dispatcher.register(Commands.literal("gps").executes(new GPSCommand()));
+        var gpsNode = Commands.literal("gps");
+        gpsNode.then(Commands.literal("get_satellite_info").executes(GPSCommand::getSatelliteInfo));
+        gpsNode.then(Commands.literal("locate").executes(GPSCommand::locate));
+        dispatcher.register(gpsNode);
     }
 }

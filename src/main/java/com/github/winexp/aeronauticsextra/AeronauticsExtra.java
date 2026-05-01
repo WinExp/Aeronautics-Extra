@@ -39,6 +39,7 @@ public class AeronauticsExtra {
         getRegistrate().setCreativeTab(AeroExtraCreativeTabs.AERO_EXTRA);
 
         AeroExtraItems.register();
+        AeroExtraDataComponents.register(modEventBus);
         AeroExtraBlocks.register();
         AeroExtraBlockEntityTypes.register();
         AeroExtraCreativeTabs.register(modEventBus);
