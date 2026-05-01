@@ -48,18 +48,11 @@ public class GPSSatelliteRenderer extends SmartBlockEntityRenderer<GPSSatelliteB
         float angle = be.coreRotation.getValue(partialTicks);
         float transparency = Math.max(0, scale - 0.1f) / 0.9f;
         if (scale > 0) {
-            float translate = (1 - (scale * 0.6f)) / 2;
+            float translate = (1 - (scale * 0.8f)) / 2;
             SuperByteBuffer core = CachedBuffers.partial(AeroExtraPartialModels.BRASS_GPS_CORE, blockState);
-            core.translate(translate, translate + scale, translate)
+            core.translate(translate, translate, translate)
                     .color(255, 255, 255, (int) (transparency * 255))
-                    .scale(scale * 0.6f)
-                    .rotateCentered(-AngleHelper.rad(angle), Direction.Axis.Y)
-                    .light(light).renderInto(ms, vb);
-            translate = (1 - (scale * 0.7f)) / 2;
-            SuperByteBuffer coreOverlay = CachedBuffers.partial(AeroExtraPartialModels.BRASS_GPS_CORE_OVERLAY, blockState);
-            coreOverlay.translate(translate, translate + scale, translate)
-                    .color(255, 255, 255, (int) (transparency * 255))
-                    .scale(scale * 0.7f)
+                    .scale(scale * 0.8f)
                     .rotateCentered(-AngleHelper.rad(angle), Direction.Axis.Y)
                     .light(light).renderInto(ms, vb);
         }
