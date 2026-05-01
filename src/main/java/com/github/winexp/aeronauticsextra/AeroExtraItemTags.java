@@ -24,6 +24,7 @@ public class AeroExtraItemTags {
 
     private static void generateTags(RegistrateTagsProvider<Item> providerIn) {
         TagGen.CreateTagsProvider<Item> provider = new TagGen.CreateTagsProvider<>(providerIn, Item::builtInRegistryHolder);
+        provider.tag(GPS_CORE).add(AeroExtraItems.ANDESITE_GPS_CORE.get());
         provider.tag(GPS_CORE).add(AeroExtraItems.BRASS_GPS_CORE.get());
     }
 }
