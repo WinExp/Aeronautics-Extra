@@ -1,6 +1,6 @@
 package com.github.winexp.aeronauticsextra.content.blocks.gps;
 
-import com.github.winexp.aeronauticsextra.AeroExtraItemTags;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraItemTags;
 import com.simibubi.create.foundation.item.SmartInventory;
 
 public class GPSSatelliteInventory extends SmartInventory {

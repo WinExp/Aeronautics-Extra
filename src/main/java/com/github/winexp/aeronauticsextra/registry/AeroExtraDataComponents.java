@@ -1,5 +1,6 @@
-package com.github.winexp.aeronauticsextra;
+package com.github.winexp.aeronauticsextra.registry;
 
+import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;

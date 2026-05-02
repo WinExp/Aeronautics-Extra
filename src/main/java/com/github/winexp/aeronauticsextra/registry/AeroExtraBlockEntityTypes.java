@@ -1,5 +1,6 @@
-package com.github.winexp.aeronauticsextra;
+package com.github.winexp.aeronauticsextra.registry;
 
+import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSReceiverBlockEntity;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteBlockEntity;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteRenderer;

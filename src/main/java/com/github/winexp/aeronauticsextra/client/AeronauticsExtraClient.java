@@ -1,5 +1,6 @@
-package com.github.winexp.aeronauticsextra;
+package com.github.winexp.aeronauticsextra.client;
 
+import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;

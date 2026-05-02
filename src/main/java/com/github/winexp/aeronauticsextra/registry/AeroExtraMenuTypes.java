@@ -1,5 +1,6 @@
-package com.github.winexp.aeronauticsextra;
+package com.github.winexp.aeronauticsextra.registry;
 
+import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigMenu;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigScreen;
 import com.simibubi.create.foundation.data.CreateRegistrate;

@@ -1,5 +1,6 @@
-package com.github.winexp.aeronauticsextra;
+package com.github.winexp.aeronauticsextra.client;
 
+import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 
 public class AeroExtraPartialModels {

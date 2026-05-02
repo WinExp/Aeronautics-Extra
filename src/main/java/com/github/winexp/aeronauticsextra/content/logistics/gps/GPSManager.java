@@ -1,6 +1,6 @@
 package com.github.winexp.aeronauticsextra.content.logistics.gps;
 
-import com.github.winexp.aeronauticsextra.AeroExtraDataComponents;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraDataComponents;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteBlockEntity;
 import dev.ryanhcode.sable.Sable;
 import net.minecraft.world.level.Level;

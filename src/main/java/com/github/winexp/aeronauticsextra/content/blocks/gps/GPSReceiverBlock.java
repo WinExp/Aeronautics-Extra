@@ -1,6 +1,6 @@
 package com.github.winexp.aeronauticsextra.content.blocks.gps;
 
-import com.github.winexp.aeronauticsextra.AeroExtraBlockEntityTypes;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.world.level.block.BaseEntityBlock;

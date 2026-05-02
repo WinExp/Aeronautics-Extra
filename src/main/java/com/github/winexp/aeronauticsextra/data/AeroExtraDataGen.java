@@ -1,7 +1,7 @@
 package com.github.winexp.aeronauticsextra.data;
 
-import com.github.winexp.aeronauticsextra.AeroExtraBlockTags;
-import com.github.winexp.aeronauticsextra.AeroExtraItemTags;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockTags;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraItemTags;
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

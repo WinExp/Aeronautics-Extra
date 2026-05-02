@@ -1,6 +1,6 @@
 package com.github.winexp.aeronauticsextra.content.blocks.gps;
 
-import com.github.winexp.aeronauticsextra.AeroExtraPartialModels;
+import com.github.winexp.aeronauticsextra.client.AeroExtraPartialModels;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

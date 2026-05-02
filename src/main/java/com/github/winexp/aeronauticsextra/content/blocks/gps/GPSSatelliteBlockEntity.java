@@ -1,6 +1,6 @@
 package com.github.winexp.aeronauticsextra.content.blocks.gps;
 
-import com.github.winexp.aeronauticsextra.AeroExtraMenuTypes;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraMenuTypes;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigMenu;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;

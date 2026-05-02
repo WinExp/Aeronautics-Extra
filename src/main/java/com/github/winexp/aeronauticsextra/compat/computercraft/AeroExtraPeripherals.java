@@ -1,6 +1,6 @@
 package com.github.winexp.aeronauticsextra.compat.computercraft;
 
-import com.github.winexp.aeronauticsextra.AeroExtraBlockEntityTypes;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.github.winexp.aeronauticsextra.compat.computercraft.peripherals.aero_extra.GPSReceiverPeripheral;
 import com.github.winexp.aeronauticsextra.compat.computercraft.peripherals.aeronautics.SteamVentPeripheral;

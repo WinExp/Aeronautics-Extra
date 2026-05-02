@@ -1,6 +1,6 @@
 package com.github.winexp.aeronauticsextra.mixin.simulated;
 
-import com.github.winexp.aeronauticsextra.AeroExtraLang;
+import com.github.winexp.aeronauticsextra.data.AeroExtraLang;
 import com.github.winexp.aeronauticsextra.mixin_interface.simulated.GimbalSensorBlockEntityExtension;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.ryanhcode.sable.sublevel.SubLevel;

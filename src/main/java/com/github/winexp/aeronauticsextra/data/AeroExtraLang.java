@@ -1,5 +1,6 @@
-package com.github.winexp.aeronauticsextra;
+package com.github.winexp.aeronauticsextra.data;
 
+import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import net.createmod.catnip.lang.LangBuilder;
 
 public class AeroExtraLang {

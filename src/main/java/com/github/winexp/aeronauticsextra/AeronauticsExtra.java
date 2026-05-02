@@ -3,6 +3,7 @@ package com.github.winexp.aeronauticsextra;
 import com.github.winexp.aeronauticsextra.data.AeroExtraDataGen;
 import com.github.winexp.aeronauticsextra.neoforge.AeroExtraModBusEventHandler;
 import com.github.winexp.aeronauticsextra.neoforge.AeroExtraNeoForgeEventHandler;
+import com.github.winexp.aeronauticsextra.registry.*;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;

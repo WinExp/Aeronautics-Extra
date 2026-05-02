@@ -1,5 +1,6 @@
-package com.github.winexp.aeronauticsextra;
+package com.github.winexp.aeronauticsextra.registry;
 
+import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSReceiverBlock;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteBlock;
 import com.simibubi.create.AllTags;
