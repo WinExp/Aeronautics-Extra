@@ -2,6 +2,7 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
+	"render_type": "minecraft:cutout_mipped",
 	"ambientocclusion": false,
 	"texture_size": [64, 64],
 	"textures": {

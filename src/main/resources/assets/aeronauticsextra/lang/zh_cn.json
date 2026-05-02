@@ -1,6 +1,7 @@
 {
   "aeronauticsextra.gimbal_sensor.y_angle": "偏航角：%s",
   "block.aeronauticsextra.gps_satellite": "GPS 卫星",
+  "block.aeronauticsextra.gps_receiver": "GPS 接收机",
   "container.aeronauticsextra.gps_satellite":  "GPS 卫星",
   "item.aeronauticsextra.andesite_gps_core": "安山 GPS 核心",
   "item.aeronauticsextra.brass_gps_core": "黄铜 GPS 核心",

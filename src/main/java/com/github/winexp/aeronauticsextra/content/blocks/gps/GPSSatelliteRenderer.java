@@ -35,15 +35,10 @@ public class GPSSatelliteRenderer extends SmartBlockEntityRenderer<GPSSatelliteB
     @Override
     protected void renderSafe(GPSSatelliteBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         super.renderSafe(be, partialTicks, ms, buffer, light, overlay);
-        if (!(be instanceof GPSSatelliteBlockEntity)) return;
 
         BlockState blockState = be.getBlockState();
-        VertexConsumer vb = buffer.getBuffer(RenderType.cutoutMipped());
 
-        SuperByteBuffer border = CachedBuffers.block(blockState);
-        border.light(light).renderInto(ms, vb);
-
-        vb = buffer.getBuffer(TRANSLUCENT_NO_CULL);
+        VertexConsumer vb = buffer.getBuffer(TRANSLUCENT_NO_CULL);
         float scale = be.coreScaler.getValue(partialTicks);
         float angle = be.coreRotation.getValue(partialTicks);
         float transparency = Math.max(0, scale - 0.1f) / 0.9f;

@@ -7,6 +7,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class GPSManager {
     private static final LinkedList<GPSRequest> gpsRequests = new LinkedList<>();
@@ -21,9 +22,13 @@ public class GPSManager {
     }
 
     public static void request(GPSRequest request) {
-        if (request.isAlive()) {
+        if (request.isAlive() && !request.getLevel().isClientSide) {
             gpsRequests.add(request);
         }
+    }
+
+    public static List<GPSRequest> getRequests() {
+        return List.copyOf(gpsRequests);
     }
 
     public static void tick() {
@@ -46,7 +51,7 @@ public class GPSManager {
                 }
                 ArrayList<SatelliteResponse> responses = new ArrayList<>();
                 for (GPSSatelliteBlockEntity satellite : levelSatellites) {
-                    double distance = Math.sqrt(Sable.HELPER.distanceSquaredWithSubLevels(level, satellite.getBlockPos().getCenter(), request.getPosition()));
+                    double distance = Math.sqrt(Sable.HELPER.distanceSquaredWithSubLevels(level, satellite.getBlockPos().getCenter(), request.getReceiverPos()));
                     distance += (level.random.nextDouble() * 2 - 1) * satellite.getCore().get(AeroExtraDataComponents.GPS_ERROR);
                     responses.add(new SatelliteResponse(satellite.getPosition(), distance));
                 }

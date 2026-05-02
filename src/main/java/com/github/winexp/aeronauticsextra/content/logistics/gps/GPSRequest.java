@@ -7,18 +7,18 @@ import java.util.List;
 
 public class GPSRequest {
     private final Level level;
-    private final Vec3 position;
+    private final Vec3 receiverPos;
     private final GPSCallback callback;
     private int aliveTime = 40;
 
-    public GPSRequest(Level level, Vec3 position, GPSCallback callback) {
+    public GPSRequest(Level level, Vec3 receiverPos, GPSCallback callback) {
         this.level = level;
-        this.position = position;
+        this.receiverPos = receiverPos;
         this.callback = callback;
     }
 
-    public GPSRequest(Level level, Vec3 position, GPSCallback callback, int aliveTime) {
-        this(level, position, callback);
+    public GPSRequest(Level level, Vec3 receiverPos, GPSCallback callback, int aliveTime) {
+        this(level, receiverPos, callback);
         this.aliveTime = aliveTime;
     }
 
@@ -26,8 +26,8 @@ public class GPSRequest {
         return this.level;
     }
 
-    public Vec3 getPosition() {
-        return this.position;
+    public Vec3 getReceiverPos() {
+        return this.receiverPos;
     }
 
     public GPSCallback getCallback() {

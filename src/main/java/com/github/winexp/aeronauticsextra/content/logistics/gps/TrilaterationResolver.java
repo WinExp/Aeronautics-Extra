@@ -7,7 +7,7 @@ import org.joml.Vector3d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrilaterationSolver {
+public class TrilaterationResolver {
     public static LocateResult locate(List<SatelliteResponse> responses) {
         if (responses.size() == 4) {
             List<Vec3> satellitePositions = new ArrayList<>();

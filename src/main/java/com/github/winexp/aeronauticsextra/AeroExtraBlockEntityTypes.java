@@ -1,5 +1,6 @@
 package com.github.winexp.aeronauticsextra;
 
+import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSReceiverBlockEntity;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteBlockEntity;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteRenderer;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -12,6 +13,10 @@ public class AeroExtraBlockEntityTypes {
             .blockEntity("gps_satellite", GPSSatelliteBlockEntity::new)
             .renderer(() -> GPSSatelliteRenderer::new)
             .validBlocks(AeroExtraBlocks.GPS_SATELLITE)
+            .register();
+    public static final BlockEntityEntry<GPSReceiverBlockEntity> GPS_RECEIVER = REGISTRATE
+            .blockEntity("gps_receiver", GPSReceiverBlockEntity::new)
+            .validBlocks(AeroExtraBlocks.GPS_RECEIVER)
             .register();
 
     public static void register() {}

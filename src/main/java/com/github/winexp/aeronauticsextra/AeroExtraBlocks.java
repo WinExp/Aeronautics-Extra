@@ -1,5 +1,6 @@
 package com.github.winexp.aeronauticsextra;
 
+import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSReceiverBlock;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteBlock;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -19,7 +20,8 @@ public class AeroExtraBlocks {
             .blockstate((c, p) -> p.simpleBlock(c.get(), p.models()
                     .getExistingFile(p.modLoc("block/gps_satellite/block"))))
             .initialProperties(SharedProperties::stone)
-            .properties(properties -> properties.isRedstoneConductor(AeroExtraBlocks::never)
+            .properties(p -> p
+                    .isRedstoneConductor(AeroExtraBlocks::never)
                     .isSuffocating(AeroExtraBlocks::never)
                     .noOcclusion())
             .transform(TagGen.pickaxeOnly())
@@ -27,6 +29,19 @@ public class AeroExtraBlocks {
             .tag(AeroExtraBlockTags.SUPER_HEAVY)
             .item().transform(ModelGen.customItemModel("gps_satellite", "item"))
             .lang("GPS Satellite")
+            .register();
+    public static final BlockEntry<GPSReceiverBlock> GPS_RECEIVER = REGISTRATE
+            .block("gps_receiver", GPSReceiverBlock::new)
+            .blockstate((c, p) -> p.simpleBlock(c.get(), p.models()
+                    .getExistingFile(p.modLoc("block/gps_receiver/block"))))
+            .initialProperties(SharedProperties::stone)
+            .properties(p -> p
+                    .isRedstoneConductor(AeroExtraBlocks::never)
+                    .noOcclusion())
+            .transform(TagGen.pickaxeOnly())
+            .tag(AeroExtraBlockTags.HEAVY)
+            .item().transform(ModelGen.customItemModel("gps_receiver", "item"))
+            .lang("GPS Receiver")
             .register();
 
     private static boolean never(BlockState var1, BlockGetter var2, BlockPos var3) {
