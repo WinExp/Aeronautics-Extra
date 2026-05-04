@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.content.logistics.gps.gui;
+package com.github.winexp.aeronauticsextra.client.gui;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.EditBox;

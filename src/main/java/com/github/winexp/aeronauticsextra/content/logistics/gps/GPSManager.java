@@ -1,80 +1,101 @@
 package com.github.winexp.aeronauticsextra.content.logistics.gps;
 
-import com.github.winexp.aeronauticsextra.registry.AeroExtraDataComponents;
-import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteBlockEntity;
+import com.simibubi.create.foundation.utility.RaycastHelper;
 import dev.ryanhcode.sable.Sable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.mutable.MutableFloat;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class GPSManager {
-    private static final LinkedList<GPSRequest> gpsRequests = new LinkedList<>();
-    private static final LinkedList<GPSSatelliteBlockEntity> gpsSatellites = new LinkedList<>();
+    public static final double BROADCAST_PROPAGATION_SPEED = 128.0 / 20;
 
-    public static void registerSatellite(GPSSatelliteBlockEntity satellite) {
-        gpsSatellites.add(satellite);
-    }
+    private static final LinkedList<GPSBroadcast> broadcasts = new LinkedList<>();
+    private static final LinkedList<GPSBroadcastReceiver> receivers = new LinkedList<>();
 
-    public static void unregisterSatellite(GPSSatelliteBlockEntity satellite) {
-        gpsSatellites.remove(satellite);
-    }
-
-    public static void request(GPSRequest request) {
-        if (request.isAlive() && !request.getLevel().isClientSide) {
-            gpsRequests.add(request);
+    public static void broadcast(GPSBroadcast broadcast) {
+        if (broadcast.isAlive() && !broadcast.getLevel().isClientSide) {
+            broadcasts.add(broadcast);
         }
     }
 
-    public static List<GPSRequest> getRequests() {
-        return List.copyOf(gpsRequests);
+    public static void registerReceiver(GPSBroadcastReceiver receiver) {
+        if (receiver.isAlive() && !receiver.getLevel().isClientSide) {
+            receivers.add(receiver);
+        }
+    }
+
+    public static float getSignalStrength(Level level, Vec3 fromPos, Vec3 toPos, int maxRange) {
+        if (Sable.HELPER.distanceSquaredWithSubLevels(level, fromPos, toPos) >= maxRange * maxRange) return 0;
+        MutableFloat strength = new MutableFloat(1);
+        BlockPos fromBlockPos = new BlockPos(Mth.floor(fromPos.x), Mth.floor(fromPos.y), Mth.floor(fromPos.z));
+        BlockPos targetBlockPos = new BlockPos(Mth.floor(toPos.x), Mth.floor(toPos.y), Mth.floor(toPos.z));
+        RaycastHelper.PredicateTraceResult result = new RaycastHelper.PredicateTraceResult();
+        while (result.missed()) {
+            result = RaycastHelper.rayTraceUntil(fromPos, toPos, blockPos -> {
+                if (blockPos.equals(fromBlockPos)) return false;
+                BlockState state = level.getBlockState(blockPos);
+                float opacity = state.getLightBlock(level, blockPos) / 15f;
+                if (!state.isAir()) opacity = 0.02f;
+                else if (opacity <= 0) opacity = 0.01f;
+                strength.setValue(strength.getValue() * (1 - opacity));
+                return blockPos.equals(targetBlockPos);
+            });
+        }
+        return strength.getValue();
     }
 
     public static void tick() {
-        var iterator = gpsRequests.iterator();
-        while (iterator.hasNext()) {
-            GPSRequest request = iterator.next();
-            request.tick();
-            if (!request.isAlive()) iterator.remove();
+        var broadcastIterator = broadcasts.iterator();
+        while (broadcastIterator.hasNext()) {
+            GPSBroadcast broadcast = broadcastIterator.next();
+            broadcast.tick();
+            if (!broadcast.isAlive()) {
+                broadcastIterator.remove();
+            }
         }
-    }
 
-    private static boolean isSatelliteAvailable(GPSSatelliteBlockEntity satellite, Level targetLevel) {
-        return satellite.getLevel() == targetLevel && satellite.canLocate();
-    }
-
-    private static SatelliteResponse locate(GPSSatelliteBlockEntity satellite, GPSRequest request) {
-        Level level = request.getLevel();
-        double distance = Math.sqrt(Sable.HELPER.distanceSquaredWithSubLevels(level, satellite.getBlockPos().getCenter(), request.getReceiverPos()));
-        Double error = satellite.getCore().get(AeroExtraDataComponents.GPS_ERROR);
-        if (error != null) {
-            distance += (level.random.nextDouble() * 2 - 1) * error;
+        var receiverIterator = receivers.iterator();
+        while (receiverIterator.hasNext()) {
+            GPSBroadcastReceiver receiver = receiverIterator.next();
+            receiver.tick();
+            if (!receiver.isAlive()) {
+                receiver.getSamplingCompleteCallback().onComplete();
+                receiverIterator.remove();
+            }
         }
-        Integer cooldown = satellite.getCore().get(AeroExtraDataComponents.GPS_COOLDOWN);
-        if (cooldown != null) {
-            satellite.setCooldown(cooldown);
-        }
-        return new SatelliteResponse(satellite.getPosition(), distance);
     }
 
     public static void levelTick(Level level) {
-        var iterator = gpsRequests.iterator();
+        var iterator = broadcasts.iterator();
         while (iterator.hasNext()) {
-            GPSRequest request = iterator.next();
-            if (level == request.getLevel()) {
-                ArrayList<GPSSatelliteBlockEntity> availableSatellites = new ArrayList<>();
-                for (GPSSatelliteBlockEntity satellite : gpsSatellites) {
-                    if (isSatelliteAvailable(satellite, level)) availableSatellites.add(satellite);
+            GPSBroadcast broadcast = iterator.next();
+            if (level != broadcast.getLevel()) continue;
+
+            AABB oldBoundingBox = broadcast.getBoundingBox();
+            broadcast.propagate(BROADCAST_PROPAGATION_SPEED);
+            AABB boundingBox = broadcast.getBoundingBox();
+            for (GPSBroadcastReceiver receiver : receivers) {
+                if (receiver.getLevel() != level) continue;
+                Vec3 receiverPos = receiver.getReceiverPos();
+                float baseError = receiver.getBaseError();
+                GPSBroadcastReceiver.ReceiveCallback receiveCallback = receiver.getReceiveCallback();
+                if (boundingBox.contains(receiverPos) && !oldBoundingBox.contains(receiverPos)) {
+                    double distance = Math.sqrt(Sable.HELPER.distanceSquaredWithSubLevels(level, broadcast.getCenterPos(), receiverPos));
+                    float signalStrength = getSignalStrength(level, broadcast.getCenterPos(), receiverPos, broadcast.getMaxRange());
+                    if (signalStrength < 0.01f) continue;
+                    float maxError = baseError / signalStrength;
+                    distance += level.random.nextFloat() * maxError;
+                    receiveCallback.onReceive(new SampleData(broadcast.getVirtualPos(), distance, signalStrength));
                 }
-                if (availableSatellites.isEmpty() || (availableSatellites.size() < 4 && request.getAliveTime() > 1)) continue;
-                ArrayList<SatelliteResponse> responses = new ArrayList<>();
-                for (GPSSatelliteBlockEntity satellite : availableSatellites) {
-                    responses.add(locate(satellite, request));
-                }
-                request.getCallback().accept(responses);
-                iterator.remove();
             }
+
+            if (broadcast.getBoundingBox().getSize() >= broadcast.getMaxRange() * 2) iterator.remove();
         }
     }
 }

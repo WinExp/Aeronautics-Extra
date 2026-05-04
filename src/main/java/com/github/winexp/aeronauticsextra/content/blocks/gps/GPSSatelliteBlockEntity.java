@@ -1,8 +1,9 @@
 package com.github.winexp.aeronauticsextra.content.blocks.gps;
 
-import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
-import com.github.winexp.aeronauticsextra.registry.AeroExtraItemTags;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSBroadcast;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraDataComponents;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigMenu;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -24,8 +25,7 @@ import java.util.List;
 
 public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuProvider, Clearable {
     public final GPSSatelliteInventory inventory = new GPSSatelliteInventory(this);
-    private Vec3 position = Vec3.ZERO;
-    private int cooldown = 0;
+    private Vec3 virtualPos = Vec3.ZERO;
 
     private float coreScale = 0;
     public final LerpedFloat coreScaler = LerpedFloat.linear();
@@ -39,7 +39,6 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     @Override
     public void tick() {
         super.tick();
-        if (this.cooldown > 0) this.cooldown--;
         if (this.level.isClientSide) {
             if (!this.getCore().isEmpty()) {
                 this.coreScale = Math.min(1, this.coreScale + .15f);
@@ -54,6 +53,17 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
         }
     }
 
+    public void updateLazyTickRate() {
+        Integer broadcastInterval = this.getCore().get(AeroExtraDataComponents.GPS_BROADCAST_INTERVAL);
+        this.setLazyTickRate(broadcastInterval == null ? 0 : broadcastInterval - 1);
+    }
+
+    @Override
+    public void lazyTick() {
+        super.lazyTick();
+        GPSManager.broadcast(new GPSBroadcast(this.level, this.virtualPos, this.getBlockPos().getCenter(), 128));
+    }
+
     @Override
     public void destroy() {
         ItemHelper.dropContents(this.level, this.getBlockPos(), this.inventory);
@@ -64,20 +74,12 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
     }
 
-    public boolean canLocate() {
-        return this.cooldown <= 0 && this.getCore().is(AeroExtraItemTags.GPS_CORE);
+    public Vec3 getVirtualPos() {
+        return this.virtualPos;
     }
 
-    public void setCooldown(int cooldown) {
-        this.cooldown = cooldown;
-    }
-
-    public Vec3 getPosition() {
-        return this.position;
-    }
-
-    public void setPosition(Vec3 position) {
-        this.position = position;
+    public void setVirtualPos(Vec3 virtualPos) {
+        this.virtualPos = virtualPos;
         this.notifyUpdate();
     }
 
@@ -86,39 +88,19 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     }
 
     @Override
-    public void initialize() {
-        super.onLoad();
-        GPSManager.registerSatellite(this);
-    }
-
-    @Override
-    public void invalidate() {
-        super.invalidate();
-        GPSManager.unregisterSatellite(this);
-    }
-
-    @Override
     protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(tag, registries, clientPacket);
-        this.position = new Vec3(tag.getDouble("position_x"), tag.getDouble("position_y"), tag.getDouble("position_z"));
+        this.virtualPos = new Vec3(tag.getDouble("position_x"), tag.getDouble("position_y"), tag.getDouble("position_z"));
         this.inventory.setItem(0, ItemStack.parseOptional(registries, tag.getCompound("core")));
-
-        if (!clientPacket) {
-            this.cooldown = tag.getInt("cooldown");
-        }
     }
 
     @Override
     protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.write(tag, registries, clientPacket);
-        tag.putDouble("position_x", this.position.x);
-        tag.putDouble("position_y", this.position.y);
-        tag.putDouble("position_z", this.position.z);
+        tag.putDouble("position_x", this.virtualPos.x);
+        tag.putDouble("position_y", this.virtualPos.y);
+        tag.putDouble("position_z", this.virtualPos.z);
         tag.put("core", this.getCore().saveOptional(registries));
-
-        if (!clientPacket) {
-            tag.putInt("cooldown", this.cooldown);
-        }
     }
 
     @Override

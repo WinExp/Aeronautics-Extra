@@ -2,7 +2,7 @@ package com.github.winexp.aeronauticsextra.neoforge;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.github.winexp.aeronauticsextra.client.renderer.GPSSatelliteRenderer;
-import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigScreen;
+import com.github.winexp.aeronauticsextra.client.gui.GPSSatelliteConfigScreen;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.networking.ServerBoundConfigRequest;
 import com.github.winexp.aeronauticsextra.data.AeroExtraBlockStateProvider;
 import com.github.winexp.aeronauticsextra.data.AeroExtraBlockTagsProvider;
@@ -55,6 +55,6 @@ public class AeroExtraModBusEventHandler {
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(AeroExtraMenuTypes.GPS_SATELLITE_CONFIG.get(), ConfigScreen::new);
+        event.register(AeroExtraMenuTypes.GPS_SATELLITE_CONFIG.get(), GPSSatelliteConfigScreen::new);
     }
 }

@@ -18,13 +18,13 @@ public class AeroExtraItems {
     public static final DeferredItem<Item> ANDESITE_GPS_CORE = REGISTER
             .register("andesite_gps_core", () -> new Item(new Item.Properties()
                     .stacksTo(1)
-                    .component(AeroExtraDataComponents.GPS_ERROR, 0.15)
-                    .component(AeroExtraDataComponents.GPS_COOLDOWN, 10)));
+                    .component(AeroExtraDataComponents.GPS_BROADCAST_STRENGTH, 0.8f)
+                    .component(AeroExtraDataComponents.GPS_BROADCAST_INTERVAL, 7)));
     public static final DeferredItem<Item> BRASS_GPS_CORE = REGISTER
             .register("brass_gps_core", () -> new Item(new Item.Properties()
                     .stacksTo(1)
-                    .component(AeroExtraDataComponents.GPS_ERROR, 0.05)
-                    .component(AeroExtraDataComponents.GPS_COOLDOWN, 5)));
+                    .component(AeroExtraDataComponents.GPS_BROADCAST_STRENGTH, 1.6f)
+                    .component(AeroExtraDataComponents.GPS_BROADCAST_INTERVAL, 3)));
 
     public static void register(IEventBus bus) {
         REGISTER.register(bus);

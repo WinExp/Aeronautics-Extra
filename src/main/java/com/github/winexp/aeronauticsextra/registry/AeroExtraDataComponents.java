@@ -13,11 +13,11 @@ import java.util.function.UnaryOperator;
 public class AeroExtraDataComponents {
     private static final DeferredRegister.DataComponents REGISTER = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, AeronauticsExtra.MOD_ID);
 
-    public static final DataComponentType<Double> GPS_ERROR = register("gps_error", builder -> builder
-            .persistent(Codec.doubleRange(0, Double.MAX_VALUE))
-            .networkSynchronized(ByteBufCodecs.DOUBLE));
-    public static final DataComponentType<Integer> GPS_COOLDOWN = register("gps_cooldown", builder -> builder
-            .persistent(Codec.intRange(0, Integer.MAX_VALUE))
+    public static final DataComponentType<Float> GPS_BROADCAST_STRENGTH = register("gps_broadcast_strength", builder -> builder
+            .persistent(Codec.floatRange(0, Float.MAX_VALUE))
+            .networkSynchronized(ByteBufCodecs.FLOAT));
+    public static final DataComponentType<Integer> GPS_BROADCAST_INTERVAL = register("gps_broadcast_interval", builder -> builder
+            .persistent(Codec.intRange(1, Integer.MAX_VALUE))
             .networkSynchronized(ByteBufCodecs.INT));
 
     private static <T> DataComponentType<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {

@@ -4,38 +4,40 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix3d;
 import org.joml.Vector3d;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TrilaterationResolver {
-    public static LocateResult locate(List<SatelliteResponse> responses) {
-        if (responses.size() == 4) {
-            List<Vec3> satellitePositions = new ArrayList<>();
-            List<Double> satelliteDistances = new ArrayList<>();
-            for (SatelliteResponse response : responses) {
-                satellitePositions.add(response.satellitePosition());
-                satelliteDistances.add(response.distance());
-            }
-            Vec3 pos = trilateration4Points(satellitePositions, satelliteDistances);
+    public static LocateResult locate(List<SampleData> sampleDataList) {
+        if (sampleDataList.size() == 4) {
+            Vec3 pos = trilateration4Points(
+                    sampleDataList.stream().map(SampleData::satellitePosition).toList(),
+                    sampleDataList.stream().map(SampleData::distance).toList()
+            );
             if (pos == null) return LocateResult.of(LocateResult.FailureReason.SINGULAR, null);
             return LocateResult.ofSuccess(pos);
-        } else if (responses.size() > 4) {
-            List<Vec3> satellitePositions = new ArrayList<>();
-            List<Double> satelliteDistances = new ArrayList<>();
-            for (SatelliteResponse response : responses) {
-                satellitePositions.add(response.satellitePosition());
-                satelliteDistances.add(response.distance());
-            }
-            Vec3 pos = simpleLeastSquares(satellitePositions, satelliteDistances);
+        } else if (sampleDataList.size() > 4) {
+            Vec3 pos = simpleLeastSquares(
+                    sampleDataList.stream().map(SampleData::satellitePosition).toList(),
+                    sampleDataList.stream().map(SampleData::distance).toList(),
+                    sampleDataList.stream().map(SampleData::signalStrength).toList()
+            );
             if (pos == null) return LocateResult.of(LocateResult.FailureReason.SINGULAR, null);
             return LocateResult.ofSuccess(pos);
         }
         return LocateResult.of(LocateResult.FailureReason.SATELLITE_NOT_ENOUGH, null);
     }
 
-    public static Vec3 simpleLeastSquares(List<Vec3> positions, List<Double> distances) {
+    public static Vec3 simpleLeastSquares(List<Vec3> positions, List<Double> distances, List<Float> signalStrengths) {
         int n = positions.size();
         if (n < 4) return null;
+
+        // 根据信号强度计算权重（误差反比 => 权重 ∝ 信号强度的平方）
+        double[] w = new double[n];
+        for (int i = 0; i < n; i++) {
+            double s = signalStrengths.get(i);
+            // 防止零或负值导致除零/异常，可加保护
+            w[i] = (s > 1e-6) ? s * s : 1e-12;
+        }
 
         Vector3d p = new Vector3d();
         for (Vec3 pos : positions) p.add(pos.x, pos.y, pos.z);
@@ -60,13 +62,18 @@ public class TrilaterationResolver {
                 double jy = dy / pred;
                 double jz = dz / pred;
 
+                double wi = w[i];
                 // 累加 J^T J
-                JtJ.m00 += jx*jx; JtJ.m01 += jx*jy; JtJ.m02 += jx*jz;
-                JtJ.m11 += jy*jy; JtJ.m12 += jy*jz; JtJ.m22 += jz*jz;
+                JtJ.m00 += wi * jx * jx;
+                JtJ.m01 += wi * jx * jy;
+                JtJ.m02 += wi * jx * jz;
+                JtJ.m11 += wi * jy * jy;
+                JtJ.m12 += wi * jy * jz;
+                JtJ.m22 += wi * jz * jz;
                 // 累加 J^T r
-                Jtr.x += jx * res;
-                Jtr.y += jy * res;
-                Jtr.z += jz * res;
+                Jtr.x += wi * jx * res;
+                Jtr.y += wi * jy * res;
+                Jtr.z += wi * jz * res;
             }
             // 对称填充
             JtJ.m10 = JtJ.m01; JtJ.m20 = JtJ.m02; JtJ.m21 = JtJ.m12;
@@ -106,7 +113,7 @@ public class TrilaterationResolver {
             A.setRow(i - 1, xi - x0, yi - y0, zi - z0);
 
             // 计算并设置 b 的第 (i-1) 个元素
-            double rhs = (d0*d0 - di*di + (xi * xi + yi * yi + zi*zi) - (x0 * x0 + y0 * y0 + z0 * z0)) / 2.0;
+            double rhs = (d0 * d0 - di * di + (xi * xi + yi * yi + zi * zi) - (x0 * x0 + y0 * y0 + z0 * z0)) / 2.0;
             b.setComponent(i-1, rhs);
         }
 

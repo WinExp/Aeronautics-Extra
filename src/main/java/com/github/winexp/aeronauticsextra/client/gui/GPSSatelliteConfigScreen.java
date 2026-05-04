@@ -1,5 +1,6 @@
-package com.github.winexp.aeronauticsextra.content.logistics.gps.gui;
+package com.github.winexp.aeronauticsextra.client.gui;
 
+import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigMenu;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.networking.ServerBoundConfigRequest;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import net.createmod.catnip.platform.CatnipServices;
@@ -9,13 +10,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.phys.Vec3;
 
-public class ConfigScreen extends AbstractSimiContainerScreen<ConfigMenu> {
+public class GPSSatelliteConfigScreen extends AbstractSimiContainerScreen<ConfigMenu> {
     private final ConfigMenu menu;
     private PositionEditBox xEditBox;
     private PositionEditBox yEditBox;
     private PositionEditBox zEditBox;
 
-    public ConfigScreen(ConfigMenu menu, Inventory inventory, Component title) {
+    public GPSSatelliteConfigScreen(ConfigMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         this.menu = menu;
     }
@@ -39,7 +40,7 @@ public class ConfigScreen extends AbstractSimiContainerScreen<ConfigMenu> {
         super.onClose();
     }
 
-    private PositionEditBox createLocationEditBox(int x, int y, int width, int height, EditBox parent, double initValue) {
+    private PositionEditBox createPositionEditBox(int x, int y, int width, int height, EditBox parent, double initValue) {
         PositionEditBox editBox = new PositionEditBox(this.minecraft.font, x, y, width, height, parent, Component.empty());
         if (editBox.getValue().isEmpty()) editBox.setDoubleValue(initValue);
         return editBox;
@@ -48,12 +49,12 @@ public class ConfigScreen extends AbstractSimiContainerScreen<ConfigMenu> {
     @Override
     protected void init() {
         super.init();
-        this.xEditBox = this.addRenderableWidget(this.createLocationEditBox((this.width - 140) / 2, (this.height - 20) / 2, 40, 20,
-                this.xEditBox, this.menu.contentHolder.getPosition().x));
-        this.yEditBox = this.addRenderableWidget(this.createLocationEditBox((this.width - 40) / 2, (this.height - 20) / 2, 40, 20,
-                this.yEditBox, this.menu.contentHolder.getPosition().y));
-        this.zEditBox = this.addRenderableWidget(this.createLocationEditBox((this.width + 60) / 2, (this.height - 20) / 2, 40, 20,
-                this.zEditBox, this.menu.contentHolder.getPosition().z));
+        this.xEditBox = this.addRenderableWidget(this.createPositionEditBox((this.width - 140) / 2, (this.height - 20) / 2, 40, 20,
+                this.xEditBox, this.menu.contentHolder.getVirtualPos().x));
+        this.yEditBox = this.addRenderableWidget(this.createPositionEditBox((this.width - 40) / 2, (this.height - 20) / 2, 40, 20,
+                this.yEditBox, this.menu.contentHolder.getVirtualPos().y));
+        this.zEditBox = this.addRenderableWidget(this.createPositionEditBox((this.width + 60) / 2, (this.height - 20) / 2, 40, 20,
+                this.zEditBox, this.menu.contentHolder.getVirtualPos().z));
     }
 
     @Override
