@@ -16,14 +16,14 @@ public class AeroExtraCreativeTabs {
             .title(Component.translatable("itemGroup." + AeronauticsExtra.MOD_ID))
             .icon(() -> new ItemStack(AeroExtraBlocks.GPS_SATELLITE))
             .displayItems((params, output) -> {
-                output.accept(AeroExtraBlocks.GPS_SATELLITE, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
-                output.accept(AeroExtraBlocks.GPS_RECEIVER, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
-                output.accept(AeroExtraItems.ANDESITE_GPS_CORE, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
-                output.accept(AeroExtraItems.BRASS_GPS_CORE, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
+                output.accept(AeroExtraBlocks.GPS_SATELLITE);
+                output.accept(AeroExtraBlocks.GPS_RECEIVER);
+                output.accept(AeroExtraItems.ANDESITE_GPS_CORE);
+                output.accept(AeroExtraItems.BRASS_GPS_CORE);
             })
             .build());
 
-    public static void register(IEventBus modEventBus) {
-        REGISTER.register(modEventBus);
+    public static void register(IEventBus bus) {
+        REGISTER.register(bus);
     }
 }

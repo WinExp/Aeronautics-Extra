@@ -1,8 +1,8 @@
 {
   "aeronauticsextra.gimbal_sensor.y_angle": "Y Angle: %s",
-  "block.aeronauticsextra.gps_receiver": "GPS Receiver",
   "block.aeronauticsextra.gps_satellite": "GPS Satellite",
-  "container.aeronauticsextra.gps_satellite": "GPS Satellite",
+  "block.aeronauticsextra.gps_receiver": "GPS Receiver",
+  "container.aeronauticsextra.gps_satellite":  "GPS Satellite",
   "item.aeronauticsextra.andesite_gps_core": "Andesite GPS Core",
   "item.aeronauticsextra.brass_gps_core": "Brass GPS Core",
   "itemGroup.aeronauticsextra": "Aeronautics Extra"

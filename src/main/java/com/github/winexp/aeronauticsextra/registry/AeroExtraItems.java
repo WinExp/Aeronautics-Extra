@@ -1,25 +1,32 @@
 package com.github.winexp.aeronauticsextra.registry;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.util.entry.ItemEntry;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class AeroExtraItems {
-    private static final CreateRegistrate REGISTRATE = AeronauticsExtra.getRegistrate();
+    private static final DeferredRegister.Items REGISTER = DeferredRegister.createItems(AeronauticsExtra.MOD_ID);
 
-    public static final ItemEntry<Item> ANDESITE_GPS_CORE = REGISTRATE
-            .item("andesite_gps_core", Item::new)
-            .properties(p -> p.stacksTo(1)
-                    .component(AeroExtraDataComponents.GPS_ERROR, 0.15))
-            .lang("Andesite GPS Core")
-            .register();
-    public static final ItemEntry<Item> BRASS_GPS_CORE = REGISTRATE
-            .item("brass_gps_core", Item::new)
-            .properties(p -> p.stacksTo(1)
-                    .component(AeroExtraDataComponents.GPS_ERROR, 0.05))
-            .lang("Brass GPS Core")
-            .register();
+    public static final DeferredItem<BlockItem> GPS_SATELLITE = REGISTER
+            .register("gps_satellite", () -> new BlockItem(AeroExtraBlocks.GPS_SATELLITE.get(), new Item.Properties()));
+    public static final DeferredItem<BlockItem> GPS_RECEIVER = REGISTER
+            .register("gps_receiver", () -> new BlockItem(AeroExtraBlocks.GPS_RECEIVER.get(), new Item.Properties()));
 
-    public static void register() {}
+    public static final DeferredItem<Item> ANDESITE_GPS_CORE = REGISTER
+            .register("andesite_gps_core", () -> new Item(new Item.Properties()
+                    .stacksTo(1)
+                    .component(AeroExtraDataComponents.GPS_ERROR, 0.15)
+                    .component(AeroExtraDataComponents.GPS_COOLDOWN, 10)));
+    public static final DeferredItem<Item> BRASS_GPS_CORE = REGISTER
+            .register("brass_gps_core", () -> new Item(new Item.Properties()
+                    .stacksTo(1)
+                    .component(AeroExtraDataComponents.GPS_ERROR, 0.05)
+                    .component(AeroExtraDataComponents.GPS_COOLDOWN, 5)));
+
+    public static void register(IEventBus bus) {
+        REGISTER.register(bus);
+    }
 }

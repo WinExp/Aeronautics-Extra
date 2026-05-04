@@ -9,16 +9,16 @@ public class GPSRequest {
     private final Level level;
     private final Vec3 receiverPos;
     private final GPSCallback callback;
-    private int aliveTime = 40;
+    private int aliveTime;
 
     public GPSRequest(Level level, Vec3 receiverPos, GPSCallback callback) {
-        this.level = level;
-        this.receiverPos = receiverPos;
-        this.callback = callback;
+        this(level, receiverPos, callback, 40);
     }
 
     public GPSRequest(Level level, Vec3 receiverPos, GPSCallback callback, int aliveTime) {
-        this(level, receiverPos, callback);
+        this.level = level;
+        this.receiverPos = receiverPos;
+        this.callback = callback;
         this.aliveTime = aliveTime;
     }
 
@@ -36,6 +36,10 @@ public class GPSRequest {
 
     public void tick() {
         this.aliveTime--;
+    }
+
+    public int getAliveTime() {
+        return this.aliveTime;
     }
 
     public boolean isAlive() {

@@ -40,20 +40,37 @@ public class GPSManager {
         }
     }
 
-    public static void tickLevel(Level level) {
+    private static boolean isSatelliteAvailable(GPSSatelliteBlockEntity satellite, Level targetLevel) {
+        return satellite.getLevel() == targetLevel && satellite.canLocate();
+    }
+
+    private static SatelliteResponse locate(GPSSatelliteBlockEntity satellite, GPSRequest request) {
+        Level level = request.getLevel();
+        double distance = Math.sqrt(Sable.HELPER.distanceSquaredWithSubLevels(level, satellite.getBlockPos().getCenter(), request.getReceiverPos()));
+        Double error = satellite.getCore().get(AeroExtraDataComponents.GPS_ERROR);
+        if (error != null) {
+            distance += (level.random.nextDouble() * 2 - 1) * error;
+        }
+        Integer cooldown = satellite.getCore().get(AeroExtraDataComponents.GPS_COOLDOWN);
+        if (cooldown != null) {
+            satellite.setCooldown(cooldown);
+        }
+        return new SatelliteResponse(satellite.getPosition(), distance);
+    }
+
+    public static void levelTick(Level level) {
         var iterator = gpsRequests.iterator();
         while (iterator.hasNext()) {
             GPSRequest request = iterator.next();
             if (level == request.getLevel()) {
-                ArrayList<GPSSatelliteBlockEntity> levelSatellites = new ArrayList<>();
+                ArrayList<GPSSatelliteBlockEntity> availableSatellites = new ArrayList<>();
                 for (GPSSatelliteBlockEntity satellite : gpsSatellites) {
-                    if (satellite.getLevel() == level && satellite.getCore().has(AeroExtraDataComponents.GPS_ERROR)) levelSatellites.add(satellite);
+                    if (isSatelliteAvailable(satellite, level)) availableSatellites.add(satellite);
                 }
+                if (availableSatellites.isEmpty() || (availableSatellites.size() < 4 && request.getAliveTime() > 1)) continue;
                 ArrayList<SatelliteResponse> responses = new ArrayList<>();
-                for (GPSSatelliteBlockEntity satellite : levelSatellites) {
-                    double distance = Math.sqrt(Sable.HELPER.distanceSquaredWithSubLevels(level, satellite.getBlockPos().getCenter(), request.getReceiverPos()));
-                    distance += (level.random.nextDouble() * 2 - 1) * satellite.getCore().get(AeroExtraDataComponents.GPS_ERROR);
-                    responses.add(new SatelliteResponse(satellite.getPosition(), distance));
+                for (GPSSatelliteBlockEntity satellite : availableSatellites) {
+                    responses.add(locate(satellite, request));
                 }
                 request.getCallback().accept(responses);
                 iterator.remove();

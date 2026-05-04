@@ -1,6 +1,7 @@
 package com.github.winexp.aeronauticsextra.content.blocks.gps;
 
-import com.github.winexp.aeronauticsextra.registry.AeroExtraMenuTypes;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraItemTags;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigMenu;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
@@ -16,7 +17,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -25,19 +25,21 @@ import java.util.List;
 public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuProvider, Clearable {
     public final GPSSatelliteInventory inventory = new GPSSatelliteInventory(this);
     private Vec3 position = Vec3.ZERO;
+    private int cooldown = 0;
 
     private float coreScale = 0;
     public final LerpedFloat coreScaler = LerpedFloat.linear();
     private float coreAngle = 0;
     public final LerpedFloat coreRotation = LerpedFloat.angular();
 
-    public GPSSatelliteBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
-        super(type, pos, blockState);
+    public GPSSatelliteBlockEntity(BlockPos pos, BlockState blockState) {
+        super(AeroExtraBlockEntityTypes.GPS_SATELLITE.get(), pos, blockState);
     }
 
     @Override
     public void tick() {
         super.tick();
+        if (this.cooldown > 0) this.cooldown--;
         if (this.level.isClientSide) {
             if (!this.getCore().isEmpty()) {
                 this.coreScale = Math.min(1, this.coreScale + .15f);
@@ -60,6 +62,14 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+    }
+
+    public boolean canLocate() {
+        return this.cooldown <= 0 && this.getCore().is(AeroExtraItemTags.GPS_CORE);
+    }
+
+    public void setCooldown(int cooldown) {
+        this.cooldown = cooldown;
     }
 
     public Vec3 getPosition() {
@@ -92,6 +102,10 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
         super.read(tag, registries, clientPacket);
         this.position = new Vec3(tag.getDouble("position_x"), tag.getDouble("position_y"), tag.getDouble("position_z"));
         this.inventory.setItem(0, ItemStack.parseOptional(registries, tag.getCompound("core")));
+
+        if (!clientPacket) {
+            this.cooldown = tag.getInt("cooldown");
+        }
     }
 
     @Override
@@ -101,6 +115,10 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
         tag.putDouble("position_y", this.position.y);
         tag.putDouble("position_z", this.position.z);
         tag.put("core", this.getCore().saveOptional(registries));
+
+        if (!clientPacket) {
+            tag.putInt("cooldown", this.cooldown);
+        }
     }
 
     @Override
@@ -110,7 +128,7 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
 
     @Override
     public ConfigMenu createMenu(int containerId, Inventory inventory, Player player) {
-        return new ConfigMenu(AeroExtraMenuTypes.GPS_SATELLITE_CONFIG.get(), containerId, inventory, this);
+        return new ConfigMenu(containerId, inventory, this);
     }
 
     @Override

@@ -16,6 +16,9 @@ public class AeroExtraDataComponents {
     public static final DataComponentType<Double> GPS_ERROR = register("gps_error", builder -> builder
             .persistent(Codec.doubleRange(0, Double.MAX_VALUE))
             .networkSynchronized(ByteBufCodecs.DOUBLE));
+    public static final DataComponentType<Integer> GPS_COOLDOWN = register("gps_cooldown", builder -> builder
+            .persistent(Codec.intRange(0, Integer.MAX_VALUE))
+            .networkSynchronized(ByteBufCodecs.INT));
 
     private static <T> DataComponentType<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
         DataComponentType<T> type = builder.apply(DataComponentType.builder()).build();
@@ -23,7 +26,7 @@ public class AeroExtraDataComponents {
         return type;
     }
 
-    public static void register(IEventBus modEventBus) {
-        REGISTER.register(modEventBus);
+    public static void register(IEventBus bus) {
+        REGISTER.register(bus);
     }
 }

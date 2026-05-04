@@ -2,6 +2,7 @@ package com.github.winexp.aeronauticsextra.content.logistics.gps.gui;
 
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlocks;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteBlockEntity;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraMenuTypes;
 import com.simibubi.create.foundation.gui.menu.MenuBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -12,12 +13,12 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class ConfigMenu extends MenuBase<GPSSatelliteBlockEntity> {
-    public ConfigMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
-        super(type, id, inv, extraData);
+    public ConfigMenu(int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
+        super(AeroExtraMenuTypes.GPS_SATELLITE_CONFIG.get(), id, inv, extraData);
     }
 
-    public ConfigMenu(MenuType<?> type, int id, Inventory inv, GPSSatelliteBlockEntity contentHolder) {
-        super(type, id, inv, contentHolder);
+    public ConfigMenu(int id, Inventory inv, GPSSatelliteBlockEntity contentHolder) {
+        super(AeroExtraMenuTypes.GPS_SATELLITE_CONFIG.get(), id, inv, contentHolder);
     }
 
     @Override

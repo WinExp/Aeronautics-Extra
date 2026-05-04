@@ -19,7 +19,7 @@ public class AeroExtraNeoForgeEventHandler {
             if (level.dimension().compareTo(Level.OVERWORLD) == 0) {
                 GPSManager.tick();
             }
-            GPSManager.tickLevel(level);
+            GPSManager.levelTick(level);
         }
     }
 

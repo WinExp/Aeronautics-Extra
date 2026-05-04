@@ -1,9 +1,6 @@
 package com.github.winexp.aeronauticsextra.registry;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.simibubi.create.foundation.data.TagGen;
-import com.tterrag.registrate.providers.ProviderType;
-import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -18,13 +15,5 @@ public class AeroExtraBlockTags {
     }
     private static TagKey<Block> create(String namespace, String path) {
         return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(namespace, path));
-    }
-
-    public static void addGenerator() {
-        AeronauticsExtra.getRegistrate().addDataGenerator(ProviderType.BLOCK_TAGS, AeroExtraBlockTags::generateTags);
-    }
-
-    private static void generateTags(RegistrateTagsProvider<Block> providerIn) {
-        TagGen.CreateTagsProvider<Block> provider = new TagGen.CreateTagsProvider<>(providerIn, Block::builtInRegistryHolder);
     }
 }
