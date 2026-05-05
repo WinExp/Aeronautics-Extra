@@ -4,6 +4,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class GPSBroadcastReceiver {
+    public static final int MAX_SAMPLING_TIME = 200;
+
     private final Level level;
     private final Vec3 receiverPos;
     private final float baseError;
@@ -17,7 +19,8 @@ public class GPSBroadcastReceiver {
         this.baseError = baseError;
         this.receiveCallback = receiveCallback;
         this.samplingCompleteCallback = samplingCompleteCallback;
-        this.samplingTime = samplingTime;
+        if (samplingTime < 0) throw new IllegalArgumentException("Sampling time must be non-negative");
+        this.samplingTime = Math.min(samplingTime, MAX_SAMPLING_TIME);
     }
 
     public Level getLevel() {

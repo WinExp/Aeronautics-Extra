@@ -24,8 +24,7 @@ public class AeroExtraBlocks {
     public static final DeferredBlock<GPSReceiverBlock> GPS_RECEIVER = REGISTER
             .register("gps_receiver", () -> new GPSReceiverBlock(BlockBehaviour.Properties
                     .ofFullCopy(SharedProperties.stone())
-                    .isRedstoneConductor(AeroExtraBlocks::never)
-                    .noOcclusion()));
+                    .isRedstoneConductor(AeroExtraBlocks::never)));
 
     private static boolean never(BlockState var1, BlockGetter var2, BlockPos var3) {
         return false;

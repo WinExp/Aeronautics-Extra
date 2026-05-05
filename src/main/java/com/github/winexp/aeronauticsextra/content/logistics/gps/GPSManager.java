@@ -1,16 +1,16 @@
 package com.github.winexp.aeronauticsextra.content.logistics.gps;
 
-import com.simibubi.create.foundation.utility.RaycastHelper;
+import com.github.winexp.aeronauticsextra.utility.RaycastUtil;
 import dev.ryanhcode.sable.Sable;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.apache.commons.lang3.mutable.MutableFloat;
 
 import java.util.LinkedList;
+import java.util.Map;
 
 public class GPSManager {
     public static final double BROADCAST_PROPAGATION_SPEED = 128.0 / 20;
@@ -30,24 +30,23 @@ public class GPSManager {
         }
     }
 
-    public static float getSignalStrength(Level level, Vec3 fromPos, Vec3 toPos, int maxRange) {
-        if (Sable.HELPER.distanceSquaredWithSubLevels(level, fromPos, toPos) >= maxRange * maxRange) return 0;
-        MutableFloat strength = new MutableFloat(1);
-        BlockPos fromBlockPos = new BlockPos(Mth.floor(fromPos.x), Mth.floor(fromPos.y), Mth.floor(fromPos.z));
-        BlockPos targetBlockPos = new BlockPos(Mth.floor(toPos.x), Mth.floor(toPos.y), Mth.floor(toPos.z));
-        RaycastHelper.PredicateTraceResult result = new RaycastHelper.PredicateTraceResult();
-        while (result.missed()) {
-            result = RaycastHelper.rayTraceUntil(fromPos, toPos, blockPos -> {
-                if (blockPos.equals(fromBlockPos)) return false;
-                BlockState state = level.getBlockState(blockPos);
-                float opacity = state.getLightBlock(level, blockPos) / 15f;
-                if (!state.isAir()) opacity = 0.02f;
-                else if (opacity <= 0) opacity = 0.01f;
-                strength.setValue(strength.getValue() * (1 - opacity));
-                return blockPos.equals(targetBlockPos);
-            });
+    public static float getSignalStrength(Level level, Vec3 fromPos, Vec3 toPos, float baseStrength, int maxRange) {
+        Vec3 distance = fromPos.subtract(toPos);
+        if (Math.abs(distance.x) >= maxRange && Math.abs(distance.y) >= maxRange && Math.abs(distance.z) >= maxRange) return 0;
+        BlockPos fromBlockPos = BlockPos.containing(fromPos);
+        BlockPos targetBlockPos = BlockPos.containing(toPos);
+        var blockMap = RaycastUtil.blockRaycast(level, fromPos, toPos, (pos, state) -> !pos.equals(fromBlockPos) && !pos.equals(targetBlockPos));
+        double weightedFactor = 1;
+        for (Map.Entry<Block, Double> entry : blockMap.entrySet()) {
+            Block block = entry.getKey();
+            BlockState state = block.defaultBlockState();
+            double length = entry.getValue();
+            double opacity = state.getLightBlock(level, BlockPos.ZERO) / 15.0;
+            if (block.defaultBlockState().isAir()) opacity = 0.01;
+            else if (opacity <= 0) opacity = 0.02;
+            weightedFactor += opacity * length;
         }
-        return strength.getValue();
+        return (float) (baseStrength / weightedFactor);
     }
 
     public static void tick() {
@@ -82,12 +81,13 @@ public class GPSManager {
             AABB boundingBox = broadcast.getBoundingBox();
             for (GPSBroadcastReceiver receiver : receivers) {
                 if (receiver.getLevel() != level) continue;
-                Vec3 receiverPos = receiver.getReceiverPos();
+                Vec3 receiverPos = Sable.HELPER.projectOutOfSubLevel(level, receiver.getReceiverPos());
                 float baseError = receiver.getBaseError();
                 GPSBroadcastReceiver.ReceiveCallback receiveCallback = receiver.getReceiveCallback();
                 if (boundingBox.contains(receiverPos) && !oldBoundingBox.contains(receiverPos)) {
-                    double distance = Math.sqrt(Sable.HELPER.distanceSquaredWithSubLevels(level, broadcast.getCenterPos(), receiverPos));
-                    float signalStrength = getSignalStrength(level, broadcast.getCenterPos(), receiverPos, broadcast.getMaxRange());
+                    Vec3 broadcastPos = Sable.HELPER.projectOutOfSubLevel(level, broadcast.getCenterPos());
+                    double distance = broadcastPos.distanceTo(receiverPos);
+                    float signalStrength = getSignalStrength(level, broadcastPos, receiverPos, broadcast.getSignalStrength(), broadcast.getMaxRange());
                     if (signalStrength < 0.01f) continue;
                     float maxError = baseError / signalStrength;
                     distance += level.random.nextFloat() * maxError;

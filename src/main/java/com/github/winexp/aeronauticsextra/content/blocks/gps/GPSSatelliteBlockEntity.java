@@ -61,7 +61,9 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     @Override
     public void lazyTick() {
         super.lazyTick();
-        GPSManager.broadcast(new GPSBroadcast(this.level, this.virtualPos, this.getBlockPos().getCenter(), 128));
+        Float signalStrength = this.getCore().get(AeroExtraDataComponents.GPS_BROADCAST_STRENGTH);
+        if (signalStrength == null) signalStrength = 1.0f;
+        GPSManager.broadcast(new GPSBroadcast(this.level, this.virtualPos, this.getBlockPos().getCenter(), signalStrength, 256));
     }
 
     @Override
