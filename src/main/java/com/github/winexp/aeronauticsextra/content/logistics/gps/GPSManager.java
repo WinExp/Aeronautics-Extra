@@ -45,7 +45,7 @@ public class GPSManager {
             GPSBroadcastReceiver receiver = receiverIterator.next();
             receiver.tick();
             if (!receiver.isAlive()) {
-                receiver.getSamplingCompleteCallback().onComplete();
+                receiver.getSamplingDoneCallback().onComplete();
                 receiverIterator.remove();
             }
         }

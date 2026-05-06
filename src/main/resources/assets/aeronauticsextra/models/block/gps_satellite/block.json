@@ -3,7 +3,6 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"render_type": "minecraft:cutout_mipped",
-	"ambientocclusion": false,
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "aeronauticsextra:block/gps_satellite/border",

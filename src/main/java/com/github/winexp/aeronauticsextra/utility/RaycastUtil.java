@@ -15,6 +15,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +48,12 @@ public class RaycastUtil {
     private static Map<Block, Double> blockRaycastNoSublevel(Level level, Vec3 start, Vec3 end) {
         ClipContext context = new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, CollisionContext.empty());
         HashMap<Block, Double> blockMap = new HashMap<>();
+        MutableBoolean isFirst = new MutableBoolean(true);
         BlockGetter.traverseBlocks(start, end, context, (ctx, blockPos) -> {
+            if (isFirst.booleanValue()) {
+                isFirst.setFalse();
+                return null;
+            }
             Vec3 from = ctx.getFrom(), to = ctx.getTo();
             BlockState state = level.getBlockState(blockPos);
             Block block = state.getBlock();
