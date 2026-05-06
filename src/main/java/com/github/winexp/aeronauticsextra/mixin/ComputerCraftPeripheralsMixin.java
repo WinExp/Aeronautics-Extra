@@ -1,5 +1,6 @@
 package com.github.winexp.aeronauticsextra.mixin;
 
+import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.github.winexp.aeronauticsextra.compat.computercraft.AeroExtraPeripherals;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.simulated_team.simulated.compat.computercraft.ComputerCraftPeripherals;
@@ -12,7 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ComputerCraftPeripherals.class)
 public class ComputerCraftPeripheralsMixin {
     @Inject(method = "init", at = @At("TAIL"))
-    private void init(CallbackInfo ci, @Local(name = "service") SimPeripheralService service) {
+    private void init(CallbackInfo ci, @Local(ordinal = 0) SimPeripheralService service) {
+        AeronauticsExtra.LOGGER.info("Registering Aeronautics Extra ComputerCraft peripherals...");
         AeroExtraPeripherals.init(service);
     }
 }
