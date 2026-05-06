@@ -5,5 +5,6 @@
   "container.aeronauticsextra.gps_satellite":  "GPS Satellite",
   "item.aeronauticsextra.andesite_gps_core": "Andesite GPS Core",
   "item.aeronauticsextra.brass_gps_core": "Brass GPS Core",
-  "itemGroup.aeronauticsextra": "Aeronautics Extra"
+  "itemGroup.aeronauticsextra": "Aeronautics Extra",
+  "aeronauticsextra.simulated_section.geomatics": "Geomatics"
 }

@@ -3,15 +3,13 @@ package com.github.winexp.aeronauticsextra;
 import com.github.winexp.aeronauticsextra.neoforge.AeroExtraModBusEventHandler;
 import com.github.winexp.aeronauticsextra.neoforge.AeroExtraNeoForgeEventHandler;
 import com.github.winexp.aeronauticsextra.registry.*;
-import net.minecraft.resources.ResourceLocation;
-import org.slf4j.Logger;
-
 import com.mojang.logging.LogUtils;
-
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
+import org.slf4j.Logger;
 
 @Mod(AeronauticsExtra.MOD_ID)
 public class AeronauticsExtra {
@@ -23,7 +21,7 @@ public class AeronauticsExtra {
         AeroExtraBlocks.register(modEventBus);
         AeroExtraBlockEntityTypes.register(modEventBus);
         AeroExtraItems.register(modEventBus);
-        AeroExtraCreativeTabs.register(modEventBus);
+        AeroExtraCreativeTabs.register();
         AeroExtraMenuTypes.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(AeroExtraNeoForgeEventHandler.class);
