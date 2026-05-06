@@ -1,6 +1,10 @@
 package com.github.winexp.aeronauticsextra.utility;
 
-import net.minecraft.core.BlockPos;
+import dev.ryanhcode.sable.Sable;
+import dev.ryanhcode.sable.companion.math.BoundingBox3d;
+import dev.ryanhcode.sable.mixinterface.clip_overwrite.LevelPoseProviderExtension;
+import dev.ryanhcode.sable.sublevel.SubLevel;
+import net.minecraft.core.Position;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -14,16 +18,38 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiPredicate;
 
 public class RaycastUtil {
-    public static Map<Block, Double> blockRaycast(Level level, Vec3 start, Vec3 end, BiPredicate<BlockPos, BlockState> tester) {
+    public static Map<Block, Double> blockRaycast(Level level, Vec3 start, Vec3 end) {
+        HashMap<Block, Double> blockMap = new HashMap<>();
+        var subLevels = Sable.HELPER.getAllIntersecting(level, new BoundingBox3d((Position) start, end));
+        for (SubLevel sublevel : subLevels) {
+            Vec3 startIn, endIn;
+            if (level instanceof LevelPoseProviderExtension extension) {
+                startIn = extension.sable$getPose(sublevel).transformPositionInverse(start);
+                endIn =  extension.sable$getPose(sublevel).transformPositionInverse(end);
+            } else {
+                startIn = sublevel.logicalPose().transformPositionInverse(start);
+                endIn = sublevel.logicalPose().transformPositionInverse(end);
+            }
+            Map<Block, Double> sublevelRaycastResult = blockRaycastNoSublevel(level, startIn, endIn);
+            for (Map.Entry<Block, Double> entry : sublevelRaycastResult.entrySet()) {
+                blockMap.merge(entry.getKey(), entry.getValue(), Double::sum);
+            }
+        }
+        Map<Block, Double> raycastResult = blockRaycastNoSublevel(level, start, end);
+        for (Map.Entry<Block, Double> entry : raycastResult.entrySet()) {
+            blockMap.merge(entry.getKey(), entry.getValue(), Double::sum);
+        }
+        return blockMap;
+    }
+
+    private static Map<Block, Double> blockRaycastNoSublevel(Level level, Vec3 start, Vec3 end) {
         ClipContext context = new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, CollisionContext.empty());
         HashMap<Block, Double> blockMap = new HashMap<>();
         BlockGetter.traverseBlocks(start, end, context, (ctx, blockPos) -> {
             Vec3 from = ctx.getFrom(), to = ctx.getTo();
             BlockState state = level.getBlockState(blockPos);
-            if (!tester.test(blockPos, state)) return null;
             Block block = state.getBlock();
             AABB fullAABB = new AABB(blockPos);
             double totalLength = getLengthInAABB(fullAABB, from, to);

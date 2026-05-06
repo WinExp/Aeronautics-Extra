@@ -25,7 +25,7 @@ public class AeroExtraNeoForgeEventHandler {
         Level level = event.getLevel();
         if (!level.isClientSide && level.tickRateManager().runsNormally()) {
             GPSManager.levelTick(level);
-            if (level.dimension().compareTo(Level.OVERWORLD) == 0) {
+            if (level.dimension().equals(Level.OVERWORLD)) {
                 GPSManager.tick();
             }
         }
@@ -34,7 +34,7 @@ public class AeroExtraNeoForgeEventHandler {
     @SubscribeEvent
     public static void onCommandRegister(RegisterCommandsEvent event) {
         var dispatcher = event.getDispatcher();
-        var gpsNode = Commands.literal("gps");
+        var gpsNode = Commands.literal("gps").requires(source -> source.hasPermission(2));
         gpsNode.then(Commands.literal("get_locate_info")
                 .then(Commands.argument("sampling_time", IntegerArgumentType.integer(1, 40))
                         .executes(GPSCommand::getSatelliteInfo)));
@@ -42,14 +42,14 @@ public class AeroExtraNeoForgeEventHandler {
                 .then(Commands.argument("sampling_time", IntegerArgumentType.integer(1, 40))
                         .executes(GPSCommand::locate)));
         dispatcher.register(gpsNode);
-        dispatcher.register(Commands.literal("raycast")
+        dispatcher.register(Commands.literal("raycast").requires(source -> source.hasPermission(2))
                 .then(Commands.argument("start_pos", Vec3Argument.vec3())
                         .then(Commands.argument("end_pos", Vec3Argument.vec3())
                                 .executes(context -> {
                                     CommandSourceStack source = context.getSource();
                                     WorldCoordinates startPos = context.getArgument("start_pos", WorldCoordinates.class);
                                     WorldCoordinates endPos = context.getArgument("end_pos", WorldCoordinates.class);
-                                    for (Map.Entry<Block, Double> entry : RaycastUtil.blockRaycast(source.getLevel(), startPos.getPosition(source), endPos.getPosition(source), (pos, state) -> true).entrySet()) {
+                                    for (Map.Entry<Block, Double> entry : RaycastUtil.blockRaycast(source.getLevel(), startPos.getPosition(source), endPos.getPosition(source)).entrySet()) {
                                         source.sendSuccess(() -> entry.getKey().getName().append(": ").append("%.2f".formatted(entry.getValue())), false);
                                     }
 

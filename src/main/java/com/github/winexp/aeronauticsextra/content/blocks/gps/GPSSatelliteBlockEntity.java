@@ -8,6 +8,7 @@ import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigMenu;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
+import dev.ryanhcode.sable.Sable;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -63,7 +64,7 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
         super.lazyTick();
         Float signalStrength = this.getCore().get(AeroExtraDataComponents.GPS_BROADCAST_STRENGTH);
         if (signalStrength == null) signalStrength = 1.0f;
-        GPSManager.broadcast(new GPSBroadcast(this.level, this.virtualPos, this.getBlockPos().getCenter(), signalStrength, 256));
+        GPSManager.broadcast(new GPSBroadcast(this.level, this.virtualPos, Sable.HELPER.projectOutOfSubLevel(this.level, this.getBlockPos().getCenter()), signalStrength, 256));
     }
 
     @Override

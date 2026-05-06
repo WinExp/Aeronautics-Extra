@@ -30,25 +30,6 @@ public class GPSManager {
         }
     }
 
-    public static float getSignalStrength(Level level, Vec3 fromPos, Vec3 toPos, float baseStrength, int maxRange) {
-        Vec3 distance = fromPos.subtract(toPos);
-        if (Math.abs(distance.x) >= maxRange && Math.abs(distance.y) >= maxRange && Math.abs(distance.z) >= maxRange) return 0;
-        BlockPos fromBlockPos = BlockPos.containing(fromPos);
-        BlockPos targetBlockPos = BlockPos.containing(toPos);
-        var blockMap = RaycastUtil.blockRaycast(level, fromPos, toPos, (pos, state) -> !pos.equals(fromBlockPos) && !pos.equals(targetBlockPos));
-        double weightedFactor = 1;
-        for (Map.Entry<Block, Double> entry : blockMap.entrySet()) {
-            Block block = entry.getKey();
-            BlockState state = block.defaultBlockState();
-            double length = entry.getValue();
-            double opacity = state.getLightBlock(level, BlockPos.ZERO) / 15.0;
-            if (block.defaultBlockState().isAir()) opacity = 0.01;
-            else if (opacity <= 0) opacity = 0.02;
-            weightedFactor += opacity * length;
-        }
-        return (float) (baseStrength / weightedFactor);
-    }
-
     public static void tick() {
         var broadcastIterator = broadcasts.iterator();
         while (broadcastIterator.hasNext()) {
@@ -68,6 +49,23 @@ public class GPSManager {
                 receiverIterator.remove();
             }
         }
+    }
+
+    public static float getSignalStrength(Level level, Vec3 fromPos, Vec3 toPos, float baseStrength, int maxRange) {
+        Vec3 distance = fromPos.subtract(toPos);
+        if (Math.abs(distance.x) >= maxRange && Math.abs(distance.y) >= maxRange && Math.abs(distance.z) >= maxRange) return 0;
+        var blockMap = RaycastUtil.blockRaycast(level, fromPos, toPos);
+        double weightedFactor = 1;
+        for (Map.Entry<Block, Double> entry : blockMap.entrySet()) {
+            Block block = entry.getKey();
+            BlockState state = block.defaultBlockState();
+            double length = entry.getValue();
+            double opacity = state.getLightBlock(level, BlockPos.ZERO) / 15.0;
+            if (block.defaultBlockState().isAir()) opacity = 0.01;
+            else if (opacity <= 0) opacity = 0.02;
+            weightedFactor += opacity * length;
+        }
+        return (float) (baseStrength / weightedFactor);
     }
 
     public static void levelTick(Level level) {
