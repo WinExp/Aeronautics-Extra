@@ -1,5 +1,6 @@
 package com.github.winexp.aeronauticsextra.client.gui;
 
+import net.createmod.catnip.platform.CatnipClientServices;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
@@ -7,13 +8,19 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class PositionEditBox extends EditBox {
-    private static final DecimalFormat FORMAT = new DecimalFormat("0.0#");
+    private static final NumberFormat FORMAT = DecimalFormat.getInstance(CatnipClientServices.CLIENT_HOOKS.getCurrentLocale());
 
     private boolean validInput;
+
+    static {
+        FORMAT.setMaximumFractionDigits(2);
+        FORMAT.setMinimumFractionDigits(1);
+    }
 
     public PositionEditBox(Font font, int x, int y, int width, int height, @Nullable EditBox editBox, Component message) {
         super(font, x, y, width, height, editBox, message);

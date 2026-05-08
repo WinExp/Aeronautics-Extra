@@ -5,6 +5,12 @@
   "container.aeronauticsextra.gps_satellite":  "GPS Satellite",
   "item.aeronauticsextra.andesite_antenna": "Andesite Antenna",
   "item.aeronauticsextra.brass_antenna": "Brass GPS Antenna",
-  "itemGroup.aeronauticsextra": "Aeronautics Extra",
-  "aeronauticsextra.simulated_section.geomatics": "Geomatics"
+  "aeronauticsextra.generic.duration": "Duration",
+  "aeronauticsextra.scroll_option.sampling_time": "Sampling Time",
+  "aeronauticsextra.simulated_section.geomatics": "Geomatics",
+  "aeronauticsextra.display_source.gimbal_sensor.y_angle": "Y Angle",
+  "aeronauticsextra.display_source.gps_receiver.data": "GPS Receiver Data",
+  "aeronauticsextra.display_source.gps_receiver.pos_x": "X Position",
+  "aeronauticsextra.display_source.gps_receiver.pos_y": "Y Position",
+  "aeronauticsextra.display_source.gps_receiver.pos_z": "Z Position"
 }

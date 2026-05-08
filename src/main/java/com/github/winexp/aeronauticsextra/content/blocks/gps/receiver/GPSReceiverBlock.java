@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.content.blocks.gps;
+package com.github.winexp.aeronauticsextra.content.blocks.gps.receiver;
 
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
 import com.mojang.serialization.MapCodec;

@@ -1,7 +1,7 @@
 package com.github.winexp.aeronauticsextra.data;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteBlock;
+import com.github.winexp.aeronauticsextra.content.blocks.gps.satellite.GPSSatelliteBlock;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;

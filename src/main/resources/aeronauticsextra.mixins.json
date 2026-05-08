@@ -8,6 +8,7 @@
     "aeronautics.SteamVentBlockEntityMixin",
     "simulated.AnalogTransmissionBlockEntityMixin",
     "simulated.GimbalSensorBlockEntityMixin",
+    "simulated.GimbalSensorDisplaySourceMixin",
     "simulated.GimbalSensorPeripheralMixin"
   ],
   "mixinextras": {

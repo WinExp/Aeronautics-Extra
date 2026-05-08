@@ -20,6 +20,8 @@ public class AeronauticsExtra {
         AeroExtraItems.register(modEventBus);
         AeroExtraCreativeTabs.register();
         AeroExtraMenuTypes.register(modEventBus);
+
+        AeroExtraDisplaySources.register(modEventBus);
     }
 
     public static ResourceLocation asResource(String path) {

@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.content.blocks.gps;
+package com.github.winexp.aeronauticsextra.content.blocks.gps.satellite;
 
 import com.github.winexp.aeronauticsextra.registry.AeroExtraItemTags;
 import com.simibubi.create.foundation.item.SmartInventory;

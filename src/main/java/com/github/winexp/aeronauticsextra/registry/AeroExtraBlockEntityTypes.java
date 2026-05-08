@@ -1,8 +1,8 @@
 package com.github.winexp.aeronauticsextra.registry;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSReceiverBlockEntity;
-import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteBlockEntity;
+import com.github.winexp.aeronauticsextra.content.blocks.gps.receiver.GPSReceiverBlockEntity;
+import com.github.winexp.aeronauticsextra.content.blocks.gps.satellite.GPSSatelliteBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;

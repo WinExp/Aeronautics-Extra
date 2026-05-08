@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.content.blocks.gps;
+package com.github.winexp.aeronauticsextra.content.blocks.gps.satellite;
 
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSBroadcast;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;
@@ -109,16 +109,21 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     @Override
     protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(tag, registries, clientPacket);
-        this.virtualPos = new Vec3(tag.getDouble("position_x"), tag.getDouble("position_y"), tag.getDouble("position_z"));
+        CompoundTag virtualPosTag = tag.getCompound("virtual_pos");
+        if (!virtualPosTag.isEmpty()) {
+            this.virtualPos = new Vec3(virtualPosTag.getDouble("x"), virtualPosTag.getDouble("y"), virtualPosTag.getDouble("z"));
+        }
         this.inventory.setItem(0, ItemStack.parseOptional(registries, tag.getCompound("antenna")));
     }
 
     @Override
     protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.write(tag, registries, clientPacket);
-        tag.putDouble("position_x", this.virtualPos.x);
-        tag.putDouble("position_y", this.virtualPos.y);
-        tag.putDouble("position_z", this.virtualPos.z);
+        CompoundTag virtualPosTag = new CompoundTag();
+        virtualPosTag.putDouble("x", this.virtualPos.x);
+        virtualPosTag.putDouble("y", this.virtualPos.y);
+        virtualPosTag.putDouble("z", this.virtualPos.z);
+        tag.put("virtual_pos", virtualPosTag);
         tag.put("antenna", this.getAntenna().saveOptional(registries));
     }
 

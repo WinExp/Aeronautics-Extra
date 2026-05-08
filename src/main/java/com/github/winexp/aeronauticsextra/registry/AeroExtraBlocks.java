@@ -1,8 +1,8 @@
 package com.github.winexp.aeronauticsextra.registry;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSReceiverBlock;
-import com.github.winexp.aeronauticsextra.content.blocks.gps.GPSSatelliteBlock;
+import com.github.winexp.aeronauticsextra.content.blocks.gps.receiver.GPSReceiverBlock;
+import com.github.winexp.aeronauticsextra.content.blocks.gps.satellite.GPSSatelliteBlock;
 import com.simibubi.create.foundation.data.SharedProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
