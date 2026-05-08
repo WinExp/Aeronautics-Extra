@@ -23,7 +23,7 @@ public class GimbalSensorBlockEntityMixin implements GimbalSensorBlockEntityExte
     private double aero_extra$YAngle;
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Ldev/simulated_team/simulated/content/blocks/gimbal_sensor/GimbalSensorBlockEntity;setPower(DLnet/minecraft/core/Direction;)V", ordinal = 0))
-    private void getYAngle(CallbackInfo ci, @Local(name = "subLevel") SubLevel subLevel) {
+    private void getYAngle(CallbackInfo ci, @Local(ordinal = 0) SubLevel subLevel) {
         Quaterniond q = subLevel.logicalPose().orientation();
 
         double siny_cosp = 2.0 * (q.w() * q.y() + q.z() * q.x());

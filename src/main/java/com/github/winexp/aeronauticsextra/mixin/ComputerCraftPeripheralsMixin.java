@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ComputerCraftPeripherals.class)
 public class ComputerCraftPeripheralsMixin {
     @Inject(method = "init", at = @At("TAIL"))
-    private void init(CallbackInfo ci, @Local(name = "service") SimPeripheralService service) {
+    private void init(CallbackInfo ci, @Local(ordinal = 0) SimPeripheralService service) {
         AeroExtraPeripherals.init(service);
     }
 }
