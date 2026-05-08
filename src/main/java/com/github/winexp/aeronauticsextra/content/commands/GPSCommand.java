@@ -1,6 +1,9 @@
 package com.github.winexp.aeronauticsextra.content.commands;
 
-import com.github.winexp.aeronauticsextra.content.logistics.gps.*;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSBroadcastReceiver;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSSampleData;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.TrilaterationResolver;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;

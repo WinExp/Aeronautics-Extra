@@ -3,6 +3,7 @@ package com.github.winexp.aeronauticsextra.content.logistics.gps;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class GPSBroadcast {
@@ -16,6 +17,10 @@ public class GPSBroadcast {
     private final int maxRange;
     private int aliveTime = 200;
     private AABB boundingBox;
+
+    public GPSBroadcast(Level level, Vec3 virtualPos, Vec3 centerPos, float signalStrength, int maxRange) {
+        this(level, virtualPos, centerPos, Shapes.empty(), signalStrength, maxRange);
+    }
 
     public GPSBroadcast(Level level, Vec3 virtualPos, Vec3 centerPos, VoxelShape antennaShape, float signalStrength, int maxRange) {
         this.level = level;

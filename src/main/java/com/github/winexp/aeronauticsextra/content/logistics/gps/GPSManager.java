@@ -84,11 +84,23 @@ public class GPSManager {
                 if (boundingBox.contains(receiverPos) && !oldBoundingBox.contains(receiverPos)) {
                     Vec3 broadcastPos = broadcast.getCenterPos();
                     double distance = broadcastPos.distanceTo(receiverPos);
-                    Vec3 broadcastActualPos = broadcast.getAntennaShape().move(broadcastPos.x, broadcastPos.y, broadcastPos.z).closestPointTo(receiverPos).get();
-                    float signalStrength = getSignalStrength(level, broadcastActualPos, receiverPos, broadcast.getSignalStrength(), broadcast.getMaxRange());
+                    Vec3 broadcastActualPos;
+                    if (broadcast.getAntennaShape().isEmpty()) {
+                        broadcastActualPos = broadcastPos;
+                    } else {
+                        broadcastActualPos = broadcast.getAntennaShape().move(broadcastPos.x, broadcastPos.y, broadcastPos.z).closestPointTo(receiverPos).get();
+                    }
+                    Vec3 receiverActualPos;
+                    if (receiver.getAntennaShape().isEmpty()) {
+                        receiverActualPos = receiverPos;
+                    } else {
+                        receiverActualPos = receiver.getAntennaShape().move(receiverPos.x, receiverPos.y, receiverPos.z).closestPointTo(broadcastPos).get();
+                    }
+                    float signalStrength = getSignalStrength(level, broadcastActualPos, receiverActualPos, broadcast.getSignalStrength(), broadcast.getMaxRange());
                     if (signalStrength < 0.01f) continue;
                     float maxError = baseError / signalStrength;
-                    distance += level.random.nextFloat() * maxError;
+                    int sign = level.random.nextBoolean() ? 1 : -1;
+                    distance += sign * level.random.nextFloat() * maxError;
                     receiveCallback.onReceive(new GPSSampleData(broadcast.getVirtualPos(), distance, signalStrength));
                 }
             }
