@@ -1,32 +1,35 @@
-package com.github.winexp.aeronauticsextra.neoforge;
+package com.github.winexp.aeronauticsextra.events;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.github.winexp.aeronauticsextra.client.renderer.GPSSatelliteRenderer;
-import com.github.winexp.aeronauticsextra.client.gui.GPSSatelliteConfigScreen;
+import com.github.winexp.aeronauticsextra.content.commands.GPSCommand;
+import com.github.winexp.aeronauticsextra.content.commands.RaycastCommand;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.networking.ServerBoundConfigRequest;
 import com.github.winexp.aeronauticsextra.data.AeroExtraBlockStateProvider;
 import com.github.winexp.aeronauticsextra.data.AeroExtraBlockTagsProvider;
 import com.github.winexp.aeronauticsextra.data.AeroExtraItemModelProvider;
 import com.github.winexp.aeronauticsextra.data.AeroExtraItemTagsProvider;
-import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
-import com.github.winexp.aeronauticsextra.registry.AeroExtraMenuTypes;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = AeronauticsExtra.MOD_ID)
-public class AeroExtraModBusEventHandler {
+public class CommonEvents {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
@@ -48,13 +51,33 @@ public class AeroExtraModBusEventHandler {
         registrar.playToServer(ServerBoundConfigRequest.TYPE, ServerBoundConfigRequest.STREAM_CODEC, new ServerBoundConfigRequest.RequestHandler());
     }
 
+
+
     @SubscribeEvent
-    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(AeroExtraBlockEntityTypes.GPS_SATELLITE.get(), GPSSatelliteRenderer::new);
+    public static void onPostTick(LevelTickEvent.Post event) {
+        Level level = event.getLevel();
+        if (!level.isClientSide && level.tickRateManager().runsNormally()) {
+            GPSManager.levelTick(level);
+            if (level.dimension().equals(Level.OVERWORLD)) {
+                GPSManager.tick();
+            }
+        }
     }
 
     @SubscribeEvent
-    public static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(AeroExtraMenuTypes.GPS_SATELLITE_CONFIG.get(), GPSSatelliteConfigScreen::new);
+    public static void onCommandRegister(RegisterCommandsEvent event) {
+        var dispatcher = event.getDispatcher();
+        var gpsNode = Commands.literal("gps").requires(source -> source.hasPermission(2));
+        gpsNode.then(Commands.literal("get_locate_info")
+                .then(Commands.argument("sampling_time", IntegerArgumentType.integer(1, 40))
+                        .executes(GPSCommand::getSatelliteInfo)));
+        gpsNode.then(Commands.literal("locate")
+                .then(Commands.argument("sampling_time", IntegerArgumentType.integer(1, 40))
+                        .executes(GPSCommand::locate)));
+        dispatcher.register(gpsNode);
+        dispatcher.register(Commands.literal("raycast").requires(source -> source.hasPermission(2))
+                .then(Commands.argument("start_pos", Vec3Argument.vec3())
+                        .then(Commands.argument("end_pos", Vec3Argument.vec3())
+                                .executes(RaycastCommand::raycast))));
     }
 }

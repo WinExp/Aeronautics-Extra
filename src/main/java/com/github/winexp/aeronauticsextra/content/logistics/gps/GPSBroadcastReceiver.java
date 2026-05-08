@@ -52,7 +52,7 @@ public class GPSBroadcastReceiver {
     }
 
     public interface ReceiveCallback {
-        void onReceive(SampleData sampleData);
+        void onReceive(GPSSampleData sampleData);
     }
 
     public interface SamplingDoneCallback {

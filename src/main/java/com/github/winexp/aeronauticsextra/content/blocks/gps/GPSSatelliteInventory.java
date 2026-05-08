@@ -5,8 +5,7 @@ import com.simibubi.create.foundation.item.SmartInventory;
 
 public class GPSSatelliteInventory extends SmartInventory {
     public GPSSatelliteInventory(GPSSatelliteBlockEntity be) {
-        super(1, be, (slot, stack) -> stack.is(AeroExtraItemTags.GPS_CORE));
-        this.withMaxStackSize(1);
+        super(1, be, 1, false, (slot, stack) -> stack.is(AeroExtraItemTags.ANTENNA));
         this.whenContentsChanged(slot -> be.updateLazyTickRate());
     }
 }

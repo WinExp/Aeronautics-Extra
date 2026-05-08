@@ -13,10 +13,10 @@ public class GPSCommand {
         CommandSourceStack source = context.getSource();
         int samplingTime = context.getArgument("sampling_time", Integer.class);
         source.sendSuccess(() -> Component.literal("Requesting GPS information..."), false);
-        ArrayList<SampleData> sampleDataList = new ArrayList<>();
+        ArrayList<GPSSampleData> sampleDataList = new ArrayList<>();
         GPSBroadcastReceiver receiver = new GPSBroadcastReceiver(source.getLevel(), source.getPosition(), 0.1f, sampleDataList::add, () -> {
             StringBuilder builder = new StringBuilder("GPS locate responses:\n");
-            for (SampleData sampleData : sampleDataList) {
+            for (GPSSampleData sampleData : sampleDataList) {
                 Vec3 pos = sampleData.satellitePosition();
                 builder.append("    Satellite position: (%.2f, %.2f, %.2f)".formatted(pos.x, pos.y, pos.z));
                 builder.append("\n    Distance: %.2f".formatted(sampleData.distance()));
@@ -34,7 +34,7 @@ public class GPSCommand {
         CommandSourceStack source = context.getSource();
         int samplingTime = context.getArgument("sampling_time", Integer.class);
         source.sendSuccess(() -> Component.literal("Locating..."), false);
-        ArrayList<SampleData> sampleDataList = new ArrayList<>();
+        ArrayList<GPSSampleData> sampleDataList = new ArrayList<>();
         GPSBroadcastReceiver receiver = new GPSBroadcastReceiver(source.getLevel(), source.getPosition(), 0.1f, sampleDataList::add, () -> {
             TrilaterationResolver.LocateResult result = TrilaterationResolver.locate(sampleDataList);
             if (!result.isEmpty()) {

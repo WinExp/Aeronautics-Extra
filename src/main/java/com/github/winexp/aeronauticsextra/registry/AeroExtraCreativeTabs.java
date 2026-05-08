@@ -10,7 +10,7 @@ public class AeroExtraCreativeTabs {
 
     public static void register() {
         addItemsToSection(GEOMATICS, AeroExtraItems.GPS_SATELLITE, AeroExtraItems.GPS_RECEIVER);
-        addItemsToSection(GEOMATICS, AeroExtraItems.ANDESITE_GPS_CORE, AeroExtraItems.BRASS_GPS_CORE);
+        addItemsToSection(GEOMATICS, AeroExtraItems.ANDESITE_ANTENNA, AeroExtraItems.BRASS_ANTENNA);
     }
 
     private static void addItemsToSection(ResourceLocation section, DeferredItem<?>... items) {

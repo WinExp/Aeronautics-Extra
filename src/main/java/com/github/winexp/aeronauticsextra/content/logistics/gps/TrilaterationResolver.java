@@ -7,19 +7,19 @@ import org.joml.Vector3d;
 import java.util.List;
 
 public class TrilaterationResolver {
-    public static LocateResult locate(List<SampleData> sampleDataList) {
+    public static LocateResult locate(List<GPSSampleData> sampleDataList) {
         if (sampleDataList.size() == 4) {
             Vec3 pos = trilateration4Points(
-                    sampleDataList.stream().map(SampleData::satellitePosition).toList(),
-                    sampleDataList.stream().map(SampleData::distance).toList()
+                    sampleDataList.stream().map(GPSSampleData::satellitePosition).toList(),
+                    sampleDataList.stream().map(GPSSampleData::distance).toList()
             );
             if (pos == null) return LocateResult.of(LocateResult.FailureReason.SINGULAR, null);
             return LocateResult.ofSuccess(pos);
         } else if (sampleDataList.size() > 4) {
             Vec3 pos = simpleLeastSquares(
-                    sampleDataList.stream().map(SampleData::satellitePosition).toList(),
-                    sampleDataList.stream().map(SampleData::distance).toList(),
-                    sampleDataList.stream().map(SampleData::signalStrength).toList()
+                    sampleDataList.stream().map(GPSSampleData::satellitePosition).toList(),
+                    sampleDataList.stream().map(GPSSampleData::distance).toList(),
+                    sampleDataList.stream().map(GPSSampleData::signalStrength).toList()
             );
             if (pos == null) return LocateResult.of(LocateResult.FailureReason.SINGULAR, null);
             return LocateResult.ofSuccess(pos);

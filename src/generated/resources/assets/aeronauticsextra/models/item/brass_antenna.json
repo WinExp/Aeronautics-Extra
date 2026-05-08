@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "aeronauticsextra:item/andesite_gps_core"
+    "layer0": "aeronauticsextra:item/brass_antenna"
   }
 }

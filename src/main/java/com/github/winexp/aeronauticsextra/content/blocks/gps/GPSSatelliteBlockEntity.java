@@ -2,9 +2,10 @@ package com.github.winexp.aeronauticsextra.content.blocks.gps;
 
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSBroadcast;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigMenu;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraDataComponents;
-import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigMenu;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraItemTags;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
@@ -21,11 +22,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
 
 public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuProvider, Clearable {
-    public final GPSSatelliteInventory inventory = new GPSSatelliteInventory(this);
+    private final GPSSatelliteInventory inventory = new GPSSatelliteInventory(this);
     private Vec3 virtualPos = Vec3.ZERO;
 
     private float coreScale = 0;
@@ -41,7 +43,7 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     public void tick() {
         super.tick();
         if (this.level.isClientSide) {
-            if (!this.getCore().isEmpty()) {
+            if (!this.getAntenna().isEmpty()) {
                 this.coreScale = Math.min(1, this.coreScale + .15f);
             } else {
                 this.coreScale = Math.max(0, this.coreScale - .15f);
@@ -55,16 +57,23 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     }
 
     public void updateLazyTickRate() {
-        Integer broadcastInterval = this.getCore().get(AeroExtraDataComponents.GPS_BROADCAST_INTERVAL);
+        Integer broadcastInterval = this.getAntenna().get(AeroExtraDataComponents.GPS_BROADCAST_INTERVAL);
         this.setLazyTickRate(broadcastInterval == null ? 0 : broadcastInterval - 1);
     }
 
     @Override
     public void lazyTick() {
         super.lazyTick();
-        Float signalStrength = this.getCore().get(AeroExtraDataComponents.GPS_BROADCAST_STRENGTH);
-        if (signalStrength == null) signalStrength = 1.0f;
-        GPSManager.broadcast(new GPSBroadcast(this.level, this.virtualPos, Sable.HELPER.projectOutOfSubLevel(this.level, this.getBlockPos().getCenter()), signalStrength, 256));
+        if (!this.level.isClientSide) {
+            if (this.getAntenna().isEmpty()) return;
+            Float signalStrength = this.getAntenna().get(AeroExtraDataComponents.GPS_BROADCAST_STRENGTH);
+            if (signalStrength == null) signalStrength = 1.0f;
+            BlockPos blockPos = this.getBlockPos();
+            BlockState state = this.level.getBlockState(blockPos);
+            Vec3 pos = Sable.HELPER.projectOutOfSubLevel(this.level, blockPos.getCenter());
+            VoxelShape antennaShape = GPSSatelliteBlock.getAntennaShape(state);
+            GPSManager.broadcast(new GPSBroadcast(this.level, this.virtualPos, pos, antennaShape, signalStrength, 256));
+        }
     }
 
     @Override
@@ -86,15 +95,22 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
         this.notifyUpdate();
     }
 
-    public ItemStack getCore() {
+    public ItemStack getAntenna() {
         return this.inventory.getItem(0);
+    }
+
+    public void setAntenna(ItemStack stack) {
+        if (stack.isEmpty() || (stack.is(AeroExtraItemTags.ANTENNA) && this.inventory.getSlotLimit(0) >= stack.getCount())) {
+            this.inventory.setItem(0, stack);
+            this.notifyUpdate();
+        }
     }
 
     @Override
     protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(tag, registries, clientPacket);
         this.virtualPos = new Vec3(tag.getDouble("position_x"), tag.getDouble("position_y"), tag.getDouble("position_z"));
-        this.inventory.setItem(0, ItemStack.parseOptional(registries, tag.getCompound("core")));
+        this.inventory.setItem(0, ItemStack.parseOptional(registries, tag.getCompound("antenna")));
     }
 
     @Override
@@ -103,7 +119,7 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
         tag.putDouble("position_x", this.virtualPos.x);
         tag.putDouble("position_y", this.virtualPos.y);
         tag.putDouble("position_z", this.virtualPos.z);
-        tag.put("core", this.getCore().saveOptional(registries));
+        tag.put("antenna", this.getAntenna().saveOptional(registries));
     }
 
     @Override

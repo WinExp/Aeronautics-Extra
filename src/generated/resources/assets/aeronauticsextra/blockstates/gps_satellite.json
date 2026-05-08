@@ -1,7 +1,18 @@
 {
   "variants": {
-    "": {
-      "model": "aeronauticsextra:block/gps_satellite"
+    "antenna=false,facing=down": {
+      "model": "aeronauticsextra:block/gps_satellite/block",
+      "x": 180
+    },
+    "antenna=false,facing=up": {
+      "model": "aeronauticsextra:block/gps_satellite/block"
+    },
+    "antenna=true,facing=down": {
+      "model": "aeronauticsextra:block/gps_satellite/block",
+      "x": 180
+    },
+    "antenna=true,facing=up": {
+      "model": "aeronauticsextra:block/gps_satellite/block"
     }
   }
 }

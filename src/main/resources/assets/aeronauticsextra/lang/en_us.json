@@ -3,8 +3,8 @@
   "block.aeronauticsextra.gps_satellite": "GPS Satellite",
   "block.aeronauticsextra.gps_receiver": "GPS Receiver",
   "container.aeronauticsextra.gps_satellite":  "GPS Satellite",
-  "item.aeronauticsextra.andesite_gps_core": "Andesite GPS Core",
-  "item.aeronauticsextra.brass_gps_core": "Brass GPS Core",
+  "item.aeronauticsextra.andesite_antenna": "Andesite Antenna",
+  "item.aeronauticsextra.brass_antenna": "Brass GPS Antenna",
   "itemGroup.aeronauticsextra": "Aeronautics Extra",
   "aeronauticsextra.simulated_section.geomatics": "Geomatics"
 }

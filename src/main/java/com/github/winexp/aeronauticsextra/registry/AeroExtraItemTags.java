@@ -7,7 +7,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
 public class AeroExtraItemTags {
-    public static final TagKey<Item> GPS_CORE = create("gps_core");
+    public static final TagKey<Item> ANTENNA = create("antenna");
 
     private static TagKey<Item> create(String path) {
         return create(AeronauticsExtra.MOD_ID, path);

@@ -19,7 +19,7 @@ public class AeroExtraItemTagsProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(GPS_CORE).add(AeroExtraItems.ANDESITE_GPS_CORE.get());
-        this.tag(GPS_CORE).add(AeroExtraItems.BRASS_GPS_CORE.get());
+        this.tag(ANTENNA).add(AeroExtraItems.ANDESITE_ANTENNA.get());
+        this.tag(ANTENNA).add(AeroExtraItems.BRASS_ANTENNA.get());
     }
 }

@@ -1,9 +1,12 @@
 package com.github.winexp.aeronauticsextra.utility;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import dev.ryanhcode.sable.Sable;
 import dev.ryanhcode.sable.companion.math.BoundingBox3d;
 import dev.ryanhcode.sable.mixinterface.clip_overwrite.LevelPoseProviderExtension;
 import dev.ryanhcode.sable.sublevel.SubLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
@@ -15,14 +18,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.apache.commons.lang3.mutable.MutableBoolean;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class RaycastUtil {
-    public static Map<Block, Double> blockRaycast(Level level, Vec3 start, Vec3 end) {
-        HashMap<Block, Double> blockMap = new HashMap<>();
+    public static Multimap<Block, Section> blockRaycast(Level level, Vec3 start, Vec3 end) {
+        ArrayListMultimap<Block, Section> blockMap = ArrayListMultimap.create();
         var subLevels = Sable.HELPER.getAllIntersecting(level, new BoundingBox3d((Position) start, end));
         for (SubLevel sublevel : subLevels) {
             Vec3 startIn, endIn;
@@ -33,27 +34,22 @@ public class RaycastUtil {
                 startIn = sublevel.logicalPose().transformPositionInverse(start);
                 endIn = sublevel.logicalPose().transformPositionInverse(end);
             }
-            Map<Block, Double> sublevelRaycastResult = blockRaycastNoSublevel(level, startIn, endIn);
-            for (Map.Entry<Block, Double> entry : sublevelRaycastResult.entrySet()) {
-                blockMap.merge(entry.getKey(), entry.getValue(), Double::sum);
+            Multimap<Block, Section> sublevelRaycastResult = blockRaycastNoSublevel(level, startIn, endIn);
+            for (Map.Entry<Block, Section> entry : sublevelRaycastResult.entries()) {
+                blockMap.put(entry.getKey(), entry.getValue());
             }
         }
-        Map<Block, Double> raycastResult = blockRaycastNoSublevel(level, start, end);
-        for (Map.Entry<Block, Double> entry : raycastResult.entrySet()) {
-            blockMap.merge(entry.getKey(), entry.getValue(), Double::sum);
+        Multimap<Block, Section> raycastResult = blockRaycastNoSublevel(level, start, end);
+        for (Map.Entry<Block, Section> entry : raycastResult.entries()) {
+            blockMap.put(entry.getKey(), entry.getValue());
         }
         return blockMap;
     }
 
-    private static Map<Block, Double> blockRaycastNoSublevel(Level level, Vec3 start, Vec3 end) {
+    private static Multimap<Block, Section> blockRaycastNoSublevel(Level level, Vec3 start, Vec3 end) {
         ClipContext context = new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, CollisionContext.empty());
-        HashMap<Block, Double> blockMap = new HashMap<>();
-        MutableBoolean isFirst = new MutableBoolean(true);
+        ArrayListMultimap<Block, Section> blockMap = ArrayListMultimap.create();
         BlockGetter.traverseBlocks(start, end, context, (ctx, blockPos) -> {
-            if (isFirst.booleanValue()) {
-                isFirst.setFalse();
-                return null;
-            }
             Vec3 from = ctx.getFrom(), to = ctx.getTo();
             BlockState state = level.getBlockState(blockPos);
             Block block = state.getBlock();
@@ -66,9 +62,9 @@ public class RaycastUtil {
                 insideLength += getLengthInAABB(aabb.move(blockPos), from, to);
             }
             if (insideLength < 1e-7) insideLength = 0;
-            else blockMap.merge(block, insideLength, Double::sum);
+            else blockMap.put(block, new Section(state, blockPos, insideLength));
             double airLength = totalLength - insideLength;
-            if (airLength >= 1e-7) blockMap.merge(Blocks.AIR, airLength, Double::sum);
+            if (airLength >= 1e-7) blockMap.put(Blocks.AIR, new Section(state, blockPos, airLength));
 
             return null;
         }, ctx -> null);
@@ -116,8 +112,10 @@ public class RaycastUtil {
         }
         tNear = Math.max(0, tNear);
         tFar = Math.min(1, tFar);
-        if (tNear > tFar) return 0;
+        if (tNear >= tFar) return 0;
 
         return distance * (tFar - tNear);
     }
+
+    public record Section(BlockState state, BlockPos pos, double length) {}
 }
