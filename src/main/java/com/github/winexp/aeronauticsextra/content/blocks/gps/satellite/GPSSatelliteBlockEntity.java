@@ -26,8 +26,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
+import java.util.UUID;
 
 public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuProvider, Clearable {
+    private final UUID uuid = UUID.randomUUID();
     private final GPSSatelliteInventory inventory = new GPSSatelliteInventory(this);
     private Vec3 virtualPos = Vec3.ZERO;
 
@@ -73,7 +75,7 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
             BlockState state = this.level.getBlockState(blockPos);
             Vec3 pos = Sable.HELPER.projectOutOfSubLevel(this.level, blockPos.getCenter());
             VoxelShape antennaShape = ShapeUtil.setOriginAsCenter(GPSSatelliteBlock.getAntennaShape(state));
-            GPSManager.broadcast(new GPSBroadcast(this.level, this.virtualPos, pos, antennaShape, signalStrength, 256));
+            GPSManager.broadcast(new GPSBroadcast(this.uuid, this.level, this.virtualPos, pos, antennaShape, signalStrength, 384));
         }
     }
 
@@ -93,7 +95,7 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
 
     public void setVirtualPos(Vec3 virtualPos) {
         this.virtualPos = virtualPos;
-        this.notifyUpdate();
+        this.setChanged();
     }
 
     public ItemStack getAntenna() {
@@ -103,7 +105,7 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     public void setAntenna(ItemStack stack) {
         if (stack.isEmpty() || (stack.is(AeroExtraItemTags.ANTENNA) && this.inventory.getSlotLimit(0) >= stack.getCount())) {
             this.inventory.setItem(0, stack);
-            this.notifyUpdate();
+            this.setChanged();
         }
     }
 

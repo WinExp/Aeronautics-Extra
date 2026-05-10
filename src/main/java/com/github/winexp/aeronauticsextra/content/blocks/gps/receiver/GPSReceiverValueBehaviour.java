@@ -22,6 +22,21 @@ public class GPSReceiverValueBehaviour extends ScrollValueBehaviour {
         this.value = 5;
     }
 
+    private void updateBlockEntity() {
+        this.blockEntity.setLazyTickRate(this.value - 1);
+    }
+
+    @Override
+    public void initialize() {
+        this.updateBlockEntity();
+    }
+
+    @Override
+    public void setValue(int value) {
+        super.setValue(value);
+        this.updateBlockEntity();
+    }
+
     @Override
     public ValueSettingsBoard createBoard(Player player, BlockHitResult hitResult) {
         return new ValueSettingsBoard(this.label, this.max, 10, List.of(TITLE), new ValueSettingsFormatter(this::format));

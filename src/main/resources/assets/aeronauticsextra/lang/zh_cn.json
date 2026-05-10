@@ -12,5 +12,8 @@
   "aeronauticsextra.display_source.gps_receiver.data": "GPS 接收机数据",
   "aeronauticsextra.display_source.gps_receiver.pos_x": "X 坐标",
   "aeronauticsextra.display_source.gps_receiver.pos_y": "Y 坐标",
-  "aeronauticsextra.display_source.gps_receiver.pos_z": "Z 坐标"
+  "aeronauticsextra.display_source.gps_receiver.pos_z": "Z 坐标",
+  "aeronauticsextra.gui.gps_receiver.info_header": "接收机信息：",
+  "aeronauticsextra.gui.gps_receiver.satellite_count": "卫星数量：",
+  "aeronauticsextra.gui.gps_receiver.sample_count": "采样数："
 }

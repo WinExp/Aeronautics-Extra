@@ -12,5 +12,8 @@
   "aeronauticsextra.display_source.gps_receiver.data": "GPS Receiver Data",
   "aeronauticsextra.display_source.gps_receiver.pos_x": "X Position",
   "aeronauticsextra.display_source.gps_receiver.pos_y": "Y Position",
-  "aeronauticsextra.display_source.gps_receiver.pos_z": "Z Position"
+  "aeronauticsextra.display_source.gps_receiver.pos_z": "Z Position",
+  "aeronauticsextra.gui.gps_receiver.info_header": "Receiver Info:",
+  "aeronauticsextra.gui.gps_receiver.satellite_count": "Satellite count: ",
+  "aeronauticsextra.gui.gps_receiver.sample_count": "Sample count: "
 }

@@ -2,6 +2,7 @@ package com.github.winexp.aeronauticsextra.content.logistics.gps;
 
 import com.github.winexp.aeronauticsextra.utility.RaycastUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,6 +18,11 @@ public class GPSManager {
     private static final LinkedList<GPSBroadcast> broadcasts = new LinkedList<>();
     private static final LinkedList<GPSBroadcastReceiver> receivers = new LinkedList<>();
 
+    public static void init() {
+        broadcasts.clear();
+        receivers.clear();
+    }
+
     public static void broadcast(GPSBroadcast broadcast) {
         if (broadcast.isAlive() && !broadcast.getLevel().isClientSide) {
             broadcasts.add(broadcast);
@@ -29,7 +35,13 @@ public class GPSManager {
         }
     }
 
-    public static void tick() {
+    public static void tick(MinecraftServer server) {
+        if (!server.tickRateManager().runsNormally()) return;
+
+        for (Level level : server.getAllLevels()) {
+            levelTick(level);
+        }
+
         var broadcastIterator = broadcasts.iterator();
         while (broadcastIterator.hasNext()) {
             GPSBroadcast broadcast = broadcastIterator.next();
@@ -60,14 +72,14 @@ public class GPSManager {
             BlockState state = block.defaultBlockState();
             double length = entry.getValue().length();
             double opacity = state.getLightBlock(level, BlockPos.ZERO) / 15.0;
-            if (block.defaultBlockState().isAir()) opacity = 0.01;
-            else if (opacity <= 0) opacity = 0.02;
+            if (block.defaultBlockState().isAir()) opacity = 0.0075;
+            else if (opacity <= 0) opacity = 0.012;
             weightedFactor += opacity * length;
         }
         return (float) (baseStrength / weightedFactor);
     }
 
-    public static void levelTick(Level level) {
+    private static void levelTick(Level level) {
         var iterator = broadcasts.iterator();
         while (iterator.hasNext()) {
             GPSBroadcast broadcast = iterator.next();
@@ -101,7 +113,7 @@ public class GPSManager {
                     float maxError = baseError / signalStrength;
                     int sign = level.random.nextBoolean() ? 1 : -1;
                     distance += sign * level.random.nextFloat() * maxError;
-                    receiveCallback.onReceive(new GPSSampleData(broadcast.getVirtualPos(), distance, signalStrength));
+                    receiveCallback.onReceive(new GPSSampleData(broadcast.getUUID(), broadcast.getVirtualPos(), distance, signalStrength));
                 }
             }
 

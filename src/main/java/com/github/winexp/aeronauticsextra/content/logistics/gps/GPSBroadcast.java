@@ -6,9 +6,12 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class GPSBroadcast {
-    public static final int BROADCAST_MAX_RANGE = 256;
+import java.util.UUID;
 
+public class GPSBroadcast {
+    public static final int BROADCAST_MAX_RANGE = 384;
+
+    private final UUID uuid;
     private final Level level;
     private final Vec3 virtualPos;
     private final Vec3 centerPos;
@@ -18,11 +21,12 @@ public class GPSBroadcast {
     private int aliveTime = 200;
     private AABB boundingBox;
 
-    public GPSBroadcast(Level level, Vec3 virtualPos, Vec3 centerPos, float signalStrength, int maxRange) {
-        this(level, virtualPos, centerPos, Shapes.empty(), signalStrength, maxRange);
+    public GPSBroadcast(UUID uuid, Level level, Vec3 virtualPos, Vec3 centerPos, float signalStrength, int maxRange) {
+        this(uuid, level, virtualPos, centerPos, Shapes.empty(), signalStrength, maxRange);
     }
 
-    public GPSBroadcast(Level level, Vec3 virtualPos, Vec3 centerPos, VoxelShape antennaShape, float signalStrength, int maxRange) {
+    public GPSBroadcast(UUID uuid, Level level, Vec3 virtualPos, Vec3 centerPos, VoxelShape antennaShape, float signalStrength, int maxRange) {
+        this.uuid = uuid;
         this.level = level;
         this.virtualPos = virtualPos;
         this.centerPos = centerPos;
@@ -30,6 +34,10 @@ public class GPSBroadcast {
         this.maxRange = Math.min(BROADCAST_MAX_RANGE, maxRange);
         this.signalStrength = signalStrength;
         this.boundingBox = AABB.ofSize(centerPos, 0, 0, 0);
+    }
+
+    public UUID getUUID() {
+        return this.uuid;
     }
 
     public Level getLevel() {

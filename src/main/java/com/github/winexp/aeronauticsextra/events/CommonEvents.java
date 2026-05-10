@@ -15,14 +15,15 @@ import net.minecraft.commands.arguments.coordinates.Vec3Argument;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
@@ -54,14 +55,14 @@ public class CommonEvents {
 
 
     @SubscribeEvent
-    public static void onPostTick(LevelTickEvent.Post event) {
-        Level level = event.getLevel();
-        if (!level.isClientSide && level.tickRateManager().runsNormally()) {
-            GPSManager.levelTick(level);
-            if (level.dimension().equals(Level.OVERWORLD)) {
-                GPSManager.tick();
-            }
-        }
+    public static void onServerStarted(ServerStartedEvent event) {
+        GPSManager.init();
+    }
+
+    @SubscribeEvent
+    public static void onPostTick(ServerTickEvent.Post event) {
+        MinecraftServer server = event.getServer();
+        GPSManager.tick(server);
     }
 
     @SubscribeEvent

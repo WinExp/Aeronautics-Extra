@@ -7,12 +7,14 @@ import com.github.winexp.aeronauticsextra.content.logistics.gps.TrilaterationRes
 import com.github.winexp.aeronauticsextra.data.AeroExtraLang;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
 import com.github.winexp.aeronauticsextra.utility.ShapeUtil;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import dev.ryanhcode.sable.Sable;
 import net.createmod.catnip.math.VecHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -23,12 +25,16 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
-public class GPSReceiverBlockEntity extends SmartBlockEntity {
+public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
     private static final Component SCROLL_OPTION_TITLE = AeroExtraLang.translate("scroll_option.sampling_time").component();
     private static final String VALUE_FORMAT = "%s t";
 
+    private int satelliteCount = 0;
+    private int sampleCount = 0;
     @Nullable
     private Vec3 currentPos;
     private final ArrayList<GPSSampleData> sampleDataList =  new ArrayList<>();
@@ -46,13 +52,7 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity {
 
     private void setCurrentPos(Vec3 currentPos) {
         this.currentPos = currentPos;
-        this.notifyUpdate();
-    }
-
-    @Override
-    public void setChanged() {
         super.setChanged();
-        this.setLazyTickRate(this.samplingTimeBehaviour.value - 1);
     }
 
     @Override
@@ -73,6 +73,10 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity {
             double z = currentPosTag.getDouble("z");
             this.currentPos = new Vec3(x, y, z);
         }
+        if (clientPacket) {
+            this.satelliteCount = tag.getInt("satellite_count");
+            this.sampleCount = tag.getInt("sample_count");
+        }
     }
 
     @Override
@@ -85,11 +89,10 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity {
             currentPosTag.putDouble("z", this.currentPos.z);
             tag.put("current_pos", currentPosTag);
         }
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
+        if (clientPacket) {
+            tag.putInt("satellite_count", this.satelliteCount);
+            tag.putInt("sample_count", this.sampleCount);
+        }
     }
 
     @Override
@@ -112,7 +115,15 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity {
         if (!result.isEmpty()) {
             this.setCurrentPos(result.position());
         }
+        HashSet<UUID> uuids = new HashSet<>();
+        for (GPSSampleData data : this.sampleDataList) {
+            uuids.add(data.satelliteUUID());
+        }
+        this.satelliteCount = uuids.size();
+        this.sampleCount = this.sampleDataList.size();
         this.sampleDataList.clear();
+        super.setChanged();
+        this.sendData();
     }
 
     private static class GPSReceiverValueBoxTransform extends ValueBoxTransform.Sided {
@@ -120,5 +131,26 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity {
         protected Vec3 getSouthLocation() {
             return VecHelper.voxelSpace(8, 8, 16);
         }
+    }
+
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        AeroExtraLang.translate("gui.gps_receiver.info_header").forGoggles(tooltip);
+        ChatFormatting satelliteCountColor;
+        if (this.satelliteCount < 4) satelliteCountColor = ChatFormatting.RED;
+        else if (this.satelliteCount < 8) satelliteCountColor = ChatFormatting.YELLOW;
+        else satelliteCountColor = ChatFormatting.GREEN;
+
+        ChatFormatting sampleCountColor;
+        if (this.sampleCount < 4) sampleCountColor = ChatFormatting.RED;
+        else if (this.sampleCount < 12) sampleCountColor = ChatFormatting.YELLOW;
+        else sampleCountColor = ChatFormatting.GREEN;
+        AeroExtraLang.translate("gui.gps_receiver.satellite_count")
+                .style(ChatFormatting.GRAY)
+                .add(AeroExtraLang.number(this.satelliteCount).style(satelliteCountColor)).forGoggles(tooltip);
+        AeroExtraLang.translate("gui.gps_receiver.sample_count")
+                .style(ChatFormatting.GRAY)
+                .add(AeroExtraLang.number(this.sampleCount).style(sampleCountColor)).forGoggles(tooltip);
+        return true;
     }
 }
