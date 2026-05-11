@@ -2,9 +2,12 @@ package com.github.winexp.aeronauticsextra.client.events;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.github.winexp.aeronauticsextra.client.gui.GPSSatelliteConfigScreen;
-import com.github.winexp.aeronauticsextra.client.renderer.BlockOutlineRenderer;
-import com.github.winexp.aeronauticsextra.client.renderer.GPSSatelliteRenderer;
+import com.github.winexp.aeronauticsextra.client.model.SmallBalloonEntityModel;
+import com.github.winexp.aeronauticsextra.client.renderer.block.BlockOutlineRenderer;
+import com.github.winexp.aeronauticsextra.client.renderer.block.GPSSatelliteRenderer;
+import com.github.winexp.aeronauticsextra.client.renderer.entity.SmallBalloonEntityRenderer;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraEntityTypes;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraMenuTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -23,6 +26,16 @@ import net.neoforged.neoforge.client.event.RenderHighlightEvent;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = AeronauticsExtra.MOD_ID)
 public class ClientEvents {
+    @SubscribeEvent
+    public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(SmallBalloonEntityModel.LAYER_LOCATION, SmallBalloonEntityModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
+    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(AeroExtraEntityTypes.SMALL_BALLOON.get(), SmallBalloonEntityRenderer::new);
+    }
+
     @SubscribeEvent
     public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(AeroExtraBlockEntityTypes.GPS_SATELLITE.get(), GPSSatelliteRenderer::new);

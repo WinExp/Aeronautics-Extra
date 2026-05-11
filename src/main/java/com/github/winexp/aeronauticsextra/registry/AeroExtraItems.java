@@ -1,11 +1,14 @@
 package com.github.winexp.aeronauticsextra.registry;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
+import com.github.winexp.aeronauticsextra.content.item.SmallBalloonItem;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import net.createmod.catnip.lang.FontHelper;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -29,6 +32,10 @@ public class AeroExtraItems {
             new Item(new Item.Properties()
                     .component(AeroExtraDataComponents.GPS_BROADCAST_STRENGTH, 1.6f)
                     .component(AeroExtraDataComponents.GPS_BROADCAST_INTERVAL, 3)));
+
+    public static final DeferredItem<SmallBalloonItem> SMALL_BALLOON = register("small_balloon", () ->
+            new SmallBalloonItem(new Item.Properties()
+                    .component(DataComponents.BASE_COLOR, DyeColor.WHITE)));
 
     private static <T extends Item> DeferredItem<T> register(String id, Supplier<T> supplier) {
         Supplier<T> supplier1 = () -> {

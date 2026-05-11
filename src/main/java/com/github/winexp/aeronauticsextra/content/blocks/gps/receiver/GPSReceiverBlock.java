@@ -1,15 +1,15 @@
 package com.github.winexp.aeronauticsextra.content.blocks.gps.receiver;
 
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
-import com.github.winexp.aeronauticsextra.registry.AeroExtraBlocks;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.block.IBE;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.Vec3;
 
 public class GPSReceiverBlock extends BaseEntityBlock implements IBE<GPSReceiverBlockEntity> {
     public static final MapCodec<GPSReceiverBlock> CODEC = simpleCodec(GPSReceiverBlock::new);
@@ -18,9 +18,8 @@ public class GPSReceiverBlock extends BaseEntityBlock implements IBE<GPSReceiver
         super(properties);
     }
 
-    public static VoxelShape getAntennaShape(BlockState state) {
-        if (!state.is(AeroExtraBlocks.GPS_RECEIVER.get())) return Shapes.empty();
-        return Shapes.block();
+    public static Vec3 getAntennaTopPos(Level level, BlockState blockState, BlockPos blockPos) {
+        return blockPos.getCenter().add(0, 0.5, 0);
     }
 
     @Override

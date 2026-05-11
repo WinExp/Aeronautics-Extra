@@ -6,7 +6,6 @@ import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSSampleData;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.TrilaterationResolver;
 import com.github.winexp.aeronauticsextra.data.AeroExtraLang;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
-import com.github.winexp.aeronauticsextra.utility.ShapeUtil;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -21,7 +20,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -99,9 +97,11 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGog
     public void lazyTick() {
         super.lazyTick();
         if (!this.level.isClientSide) {
-            Vec3 pos = Sable.HELPER.projectOutOfSubLevel(level, this.getBlockPos().getCenter());
-            VoxelShape antennaShape = ShapeUtil.setOriginAsCenter(GPSReceiverBlock.getAntennaShape(this.getBlockState()));
-            GPSBroadcastReceiver receiver = new GPSBroadcastReceiver(this.level, pos, antennaShape, 0.07f, this::receiveBroadcast, this::onSamplingComplete, this.samplingTimeBehaviour.value);
+            BlockPos blockPos = this.getBlockPos();
+            BlockState blockState = this.level.getBlockState(blockPos);
+            Vec3 pos = Sable.HELPER.projectOutOfSubLevel(this.level, blockPos.getCenter());
+            Vec3 antennaPos = Sable.HELPER.projectOutOfSubLevel(this.level, GPSReceiverBlock.getAntennaTopPos(this.level, blockState, blockPos));
+            GPSBroadcastReceiver receiver = new GPSBroadcastReceiver(this.level, pos, antennaPos, 0.07f, this::receiveBroadcast, this::onSamplingComplete, this.samplingTimeBehaviour.value);
             GPSManager.registerReceiver(receiver);
         }
     }

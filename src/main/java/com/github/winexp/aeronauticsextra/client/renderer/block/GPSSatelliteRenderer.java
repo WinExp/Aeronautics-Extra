@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.client.renderer;
+package com.github.winexp.aeronauticsextra.client.renderer.block;
 
 import com.github.winexp.aeronauticsextra.client.AeroExtraPartialModels;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.satellite.GPSSatelliteBlockEntity;

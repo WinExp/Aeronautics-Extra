@@ -27,8 +27,4 @@ public class ShapeUtil {
         }
         return false;
     }
-
-    public static VoxelShape setOriginAsCenter(VoxelShape shape) {
-        return shape.move(-0.5, -0.5, -0.5);
-    }
 }

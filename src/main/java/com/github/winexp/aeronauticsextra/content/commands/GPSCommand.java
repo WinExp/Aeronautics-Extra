@@ -17,11 +17,12 @@ public class GPSCommand {
         int samplingTime = context.getArgument("sampling_time", Integer.class);
         source.sendSuccess(() -> Component.literal("Requesting GPS information..."), false);
         ArrayList<GPSSampleData> sampleDataList = new ArrayList<>();
-        GPSBroadcastReceiver receiver = new GPSBroadcastReceiver(source.getLevel(), source.getPosition(), 0.1f, sampleDataList::add, () -> {
+        Vec3 pos = source.getPosition();
+        GPSBroadcastReceiver receiver = new GPSBroadcastReceiver(source.getLevel(), pos, pos, 0.1f, sampleDataList::add, () -> {
             StringBuilder builder = new StringBuilder("GPS locate responses:\n");
             for (GPSSampleData sampleData : sampleDataList) {
-                Vec3 pos = sampleData.satellitePosition();
-                builder.append("    Satellite position: (%.2f, %.2f, %.2f)".formatted(pos.x, pos.y, pos.z));
+                Vec3 gpsPos = sampleData.satellitePosition();
+                builder.append("    Satellite position: (%.2f, %.2f, %.2f)".formatted(gpsPos.x, gpsPos.y, gpsPos.z));
                 builder.append("\n    Distance: %.2f".formatted(sampleData.distance()));
                 builder.append("\n    Signal strength: %.2f".formatted(sampleData.signalStrength()));
                 builder.append("\n\n");
@@ -38,11 +39,12 @@ public class GPSCommand {
         int samplingTime = context.getArgument("sampling_time", Integer.class);
         source.sendSuccess(() -> Component.literal("Locating..."), false);
         ArrayList<GPSSampleData> sampleDataList = new ArrayList<>();
-        GPSBroadcastReceiver receiver = new GPSBroadcastReceiver(source.getLevel(), source.getPosition(), 0.1f, sampleDataList::add, () -> {
+        Vec3 pos = source.getPosition();
+        GPSBroadcastReceiver receiver = new GPSBroadcastReceiver(source.getLevel(), pos, pos, 0.1f, sampleDataList::add, () -> {
             TrilaterationResolver.LocateResult result = TrilaterationResolver.locate(sampleDataList);
             if (!result.isEmpty()) {
-                Vec3 pos = result.position();
-                source.sendSuccess(() -> Component.literal("X: %.2f, Y: %.2f, Z: %.2f".formatted(pos.x, pos.y, pos.z)), false);
+                Vec3 gpsPos = result.position();
+                source.sendSuccess(() -> Component.literal("X: %.2f, Y: %.2f, Z: %.2f".formatted(gpsPos.x, gpsPos.y, gpsPos.z)), false);
             } else {
                 source.sendFailure(Component.literal("GPS locate failed"));
             }

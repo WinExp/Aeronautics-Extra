@@ -1,5 +1,6 @@
 package com.github.winexp.aeronauticsextra.utility;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import dev.ryanhcode.sable.Sable;
@@ -20,12 +21,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class RaycastUtil {
     public static Multimap<Block, Section> blockRaycast(Level level, Vec3 start, Vec3 end) {
         ArrayListMultimap<Block, Section> blockMap = ArrayListMultimap.create();
-        var subLevels = Sable.HELPER.getAllIntersecting(level, new BoundingBox3d((Position) start, end));
-        for (SubLevel sublevel : subLevels) {
+        var sublevels = Sable.HELPER.getAllIntersecting(level, new BoundingBox3d((Position) start, end));
+        for (SubLevel sublevel : sublevels) {
             Vec3 startIn, endIn;
             if (level instanceof LevelPoseProviderExtension extension) {
                 startIn = extension.sable$getPose(sublevel).transformPositionInverse(start);
@@ -34,24 +36,25 @@ public class RaycastUtil {
                 startIn = sublevel.logicalPose().transformPositionInverse(start);
                 endIn = sublevel.logicalPose().transformPositionInverse(end);
             }
-            Multimap<Block, Section> sublevelRaycastResult = blockRaycastNoSublevel(level, startIn, endIn);
+            Multimap<Block, Section> sublevelRaycastResult = blockRaycastInternal(level, startIn, endIn, state -> !state.isAir());
             for (Map.Entry<Block, Section> entry : sublevelRaycastResult.entries()) {
                 blockMap.put(entry.getKey(), entry.getValue());
             }
         }
-        Multimap<Block, Section> raycastResult = blockRaycastNoSublevel(level, start, end);
+        Multimap<Block, Section> raycastResult = blockRaycastInternal(level, start, end, Predicates.alwaysTrue());
         for (Map.Entry<Block, Section> entry : raycastResult.entries()) {
             blockMap.put(entry.getKey(), entry.getValue());
         }
         return blockMap;
     }
 
-    private static Multimap<Block, Section> blockRaycastNoSublevel(Level level, Vec3 start, Vec3 end) {
+    private static Multimap<Block, Section> blockRaycastInternal(Level level, Vec3 start, Vec3 end, Predicate<BlockState> filter) {
         ClipContext context = new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, CollisionContext.empty());
         ArrayListMultimap<Block, Section> blockMap = ArrayListMultimap.create();
         BlockGetter.traverseBlocks(start, end, context, (ctx, blockPos) -> {
             Vec3 from = ctx.getFrom(), to = ctx.getTo();
             BlockState state = level.getBlockState(blockPos);
+            if (!filter.test(state)) return null;
             Block block = state.getBlock();
             AABB fullAABB = new AABB(blockPos);
             double totalLength = getLengthInAABB(fullAABB, from, to);

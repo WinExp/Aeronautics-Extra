@@ -13,6 +13,7 @@ public class AeroExtraItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        this.basicItem(AeroExtraItems.SMALL_BALLOON.get());
         this.basicItem(AeroExtraItems.ANDESITE_ANTENNA.get());
         this.basicItem(AeroExtraItems.BRASS_ANTENNA.get());
     }

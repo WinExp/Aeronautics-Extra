@@ -1,6 +1,6 @@
 package com.github.winexp.aeronauticsextra.content.blocks.gps.satellite;
 
-import com.github.winexp.aeronauticsextra.client.renderer.BlockOutlineRenderer;
+import com.github.winexp.aeronauticsextra.client.renderer.block.BlockOutlineRenderer;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlocks;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraItemTags;
@@ -63,13 +63,13 @@ public class GPSSatelliteBlock extends BaseEntityBlock implements IBE<GPSSatelli
     }
 
     @Override
-    public boolean renderHighlight(PoseStack poseStack, VertexConsumer consumer, Camera camera, Level level, BlockState blockState, BlockPos blockPos, Vec3 hitPos) {
+    public boolean renderHighlight(PoseStack poseStack, VertexConsumer vertexConsumer, Camera camera, Level level, BlockState blockState, BlockPos blockPos, Vec3 hitPos) {
         if (camera.getEntity() instanceof Player player && player.getMainHandItem().is(Tags.Items.TOOLS_WRENCH)) {
             Vec3 pos = BlockOutlineRenderer.getRenderPos(blockPos, camera.getPosition());
             if (!isOnAntenna(hitPos, blockPos, blockState)) {
-                LevelRenderer.renderShape(poseStack, consumer, getBaseShape(blockState), pos.x, pos.y, pos.z, 0, 0, 0, 0.4f);
+                LevelRenderer.renderShape(poseStack, vertexConsumer, getBaseShape(blockState), pos.x, pos.y, pos.z, 0, 0, 0, 0.4f);
             } else {
-                LevelRenderer.renderShape(poseStack, consumer, getAntennaShape(blockState), pos.x, pos.y, pos.z, 0, 0, 0, 0.4f);
+                LevelRenderer.renderShape(poseStack, vertexConsumer, getAntennaShape(blockState), pos.x, pos.y, pos.z, 0, 0, 0, 0.4f);
             }
             return true;
         }
@@ -94,6 +94,18 @@ public class GPSSatelliteBlock extends BaseEntityBlock implements IBE<GPSSatelli
         return ANTENNA_SHAPES.get(state.getValue(FACING));
     }
 
+    public static Vec3 getAntennaTopPos(Level level, BlockState state, BlockPos blockPos) {
+        if (!state.is(AeroExtraBlocks.GPS_SATELLITE)) return null;
+        Direction direction = state.getValue(FACING);
+        double y;
+        if (direction == Direction.UP) {
+            y = state.getShape(level, blockPos).move(blockPos.getX(), blockPos.getY(), blockPos.getZ()).max(Direction.Axis.Y);
+        } else {
+            y = state.getShape(level, blockPos).move(blockPos.getX(), blockPos.getY(), blockPos.getZ()).min(Direction.Axis.Y);
+        }
+        return blockPos.getCenter().with(Direction.Axis.Y, y);
+    }
+
     @Override
     public BlockState getRotatedBlockState(BlockState originalState, Direction targetedFace) {
         if (targetedFace.getAxis() == Direction.Axis.Y) return originalState;
@@ -113,7 +125,7 @@ public class GPSSatelliteBlock extends BaseEntityBlock implements IBE<GPSSatelli
                         if (!player.isCreative()) {
                             player.getInventory().placeItemBackInInventory(be.getAntenna().copyWithCount(1));
                         }
-                        be.getAntenna().shrink(1);
+                        be.getAntenna().consume(1, player);
                     }
                 });
                 level.setBlock(blockPos, state.setValue(ANTENNA, false), Block.UPDATE_ALL);
@@ -135,7 +147,7 @@ public class GPSSatelliteBlock extends BaseEntityBlock implements IBE<GPSSatelli
         level.setBlock(pos, state.setValue(ANTENNA, true), Block.UPDATE_ALL);
         this.withBlockEntityDo(level, pos, be -> be.setAntenna(stack.copyWithCount(1)));
         if (!player.isCreative()) {
-            stack.shrink(1);
+            stack.consume(1, player);
         }
         level.playSound(null, pos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
         return ItemInteractionResult.SUCCESS;

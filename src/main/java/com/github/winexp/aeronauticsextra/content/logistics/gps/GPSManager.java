@@ -70,10 +70,11 @@ public class GPSManager {
         for (Map.Entry<Block, RaycastUtil.Section> entry : blockMap.entries()) {
             Block block = entry.getKey();
             BlockState state = block.defaultBlockState();
-            double length = entry.getValue().length();
+            RaycastUtil.Section section = entry.getValue();
+            double length = section.length();
             double opacity = state.getLightBlock(level, BlockPos.ZERO) / 15.0;
-            if (block.defaultBlockState().isAir()) opacity = 0.0075;
-            else if (opacity <= 0) opacity = 0.012;
+            if (block.defaultBlockState().isAir()) opacity = 0.003;
+            else if (opacity <= 0) opacity = 0.009;
             weightedFactor += opacity * length;
         }
         return (float) (baseStrength / weightedFactor);
@@ -96,19 +97,7 @@ public class GPSManager {
                 if (boundingBox.contains(receiverPos) && !oldBoundingBox.contains(receiverPos)) {
                     Vec3 broadcastPos = broadcast.getCenterPos();
                     double distance = broadcastPos.distanceTo(receiverPos);
-                    Vec3 broadcastActualPos;
-                    if (broadcast.getAntennaShape().isEmpty()) {
-                        broadcastActualPos = broadcastPos;
-                    } else {
-                        broadcastActualPos = broadcast.getAntennaShape().move(broadcastPos.x, broadcastPos.y, broadcastPos.z).closestPointTo(receiverPos).get();
-                    }
-                    Vec3 receiverActualPos;
-                    if (receiver.getAntennaShape().isEmpty()) {
-                        receiverActualPos = receiverPos;
-                    } else {
-                        receiverActualPos = receiver.getAntennaShape().move(receiverPos.x, receiverPos.y, receiverPos.z).closestPointTo(broadcastPos).get();
-                    }
-                    float signalStrength = getSignalStrength(level, broadcastActualPos, receiverActualPos, broadcast.getSignalStrength(), broadcast.getMaxRange());
+                    float signalStrength = getSignalStrength(level, broadcast.getAntennaPos(), receiver.getAntennaPos(), broadcast.getSignalStrength(), broadcast.getMaxRange());
                     if (signalStrength < 0.01f) continue;
                     float maxError = baseError / signalStrength;
                     int sign = level.random.nextBoolean() ? 1 : -1;

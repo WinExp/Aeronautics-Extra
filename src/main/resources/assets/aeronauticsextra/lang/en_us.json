@@ -5,6 +5,8 @@
   "container.aeronauticsextra.gps_satellite":  "GPS Satellite",
   "item.aeronauticsextra.andesite_antenna": "Andesite Antenna",
   "item.aeronauticsextra.brass_antenna": "Brass GPS Antenna",
+  "item.aeronauticsextra.small_balloon": "Small Balloon",
+  "entity.aeronauticsextra.small_balloon": "Small Balloon",
   "aeronauticsextra.generic.duration": "Duration",
   "aeronauticsextra.scroll_option.sampling_time": "Sampling Time",
   "aeronauticsextra.simulated_section.geomatics": "Geomatics",

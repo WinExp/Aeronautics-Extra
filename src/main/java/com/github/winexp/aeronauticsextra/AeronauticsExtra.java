@@ -19,6 +19,7 @@ public class AeronauticsExtra {
         AeroExtraBlockEntityTypes.register(modEventBus);
         AeroExtraItems.register(modEventBus);
         AeroExtraCreativeTabs.register();
+        AeroExtraEntityTypes.register(modEventBus);
         AeroExtraMenuTypes.register(modEventBus);
 
         AeroExtraDisplaySources.register(modEventBus);

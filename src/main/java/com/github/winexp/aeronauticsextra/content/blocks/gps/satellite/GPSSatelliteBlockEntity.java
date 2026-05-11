@@ -6,7 +6,6 @@ import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigMenu;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraDataComponents;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraItemTags;
-import com.github.winexp.aeronauticsextra.utility.ShapeUtil;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
@@ -23,7 +22,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
 import java.util.UUID;
@@ -74,8 +72,8 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
             BlockPos blockPos = this.getBlockPos();
             BlockState state = this.level.getBlockState(blockPos);
             Vec3 pos = Sable.HELPER.projectOutOfSubLevel(this.level, blockPos.getCenter());
-            VoxelShape antennaShape = ShapeUtil.setOriginAsCenter(GPSSatelliteBlock.getAntennaShape(state));
-            GPSManager.broadcast(new GPSBroadcast(this.uuid, this.level, this.virtualPos, pos, antennaShape, signalStrength, 384));
+            Vec3 antennaPos = Sable.HELPER.projectOutOfSubLevel(this.level, GPSSatelliteBlock.getAntennaTopPos(this.level, state, blockPos));
+            GPSManager.broadcast(new GPSBroadcast(this.uuid, this.level, this.virtualPos, pos, antennaPos, signalStrength, 384));
         }
     }
 
