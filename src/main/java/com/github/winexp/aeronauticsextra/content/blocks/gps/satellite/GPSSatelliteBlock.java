@@ -125,7 +125,7 @@ public class GPSSatelliteBlock extends BaseEntityBlock implements IBE<GPSSatelli
                         if (!player.isCreative()) {
                             player.getInventory().placeItemBackInInventory(be.getAntenna().copyWithCount(1));
                         }
-                        be.getAntenna().consume(1, player);
+                        be.getAntenna().shrink(1);
                     }
                 });
                 level.setBlock(blockPos, state.setValue(ANTENNA, false), Block.UPDATE_ALL);

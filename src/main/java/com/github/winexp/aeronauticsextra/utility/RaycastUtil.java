@@ -53,6 +53,7 @@ public class RaycastUtil {
         ArrayListMultimap<Block, Section> blockMap = ArrayListMultimap.create();
         BlockGetter.traverseBlocks(start, end, context, (ctx, blockPos) -> {
             Vec3 from = ctx.getFrom(), to = ctx.getTo();
+            if (!level.isLoaded(blockPos)) return blockPos;
             BlockState state = level.getBlockState(blockPos);
             if (!filter.test(state)) return null;
             Block block = state.getBlock();
