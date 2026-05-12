@@ -19,8 +19,7 @@ public class AeroExtraEntityTypes {
             () -> EntityType.Builder.of(SmallBalloonEntity::new, MobCategory.MISC)
                     .sized(0.7f, 0.7f)
                     .canSpawnFarFromPlayer()
-                    .clientTrackingRange(8)
-                    .updateInterval(3));
+                    .clientTrackingRange(8));
 
     private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String key, Supplier<EntityType.Builder<T>> supplier) {
         Supplier<EntityType<T>> supplier1 = () -> supplier.get().build(key);

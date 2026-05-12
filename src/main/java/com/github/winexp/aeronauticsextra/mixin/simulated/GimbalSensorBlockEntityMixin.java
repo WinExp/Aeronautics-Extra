@@ -7,6 +7,7 @@ import dev.ryanhcode.sable.sublevel.SubLevel;
 import dev.simulated_team.simulated.content.blocks.gimbal_sensor.GimbalSensorBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import org.joml.Quaterniond;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -28,7 +29,7 @@ public class GimbalSensorBlockEntityMixin implements GimbalSensorBlockEntityExte
 
         double siny_cosp = 2.0 * (q.w() * q.y() + q.z() * q.x());
         double cosy_cosp = 1.0 - 2.0 * (q.y() * q.y() + q.x() * q.x());
-        this.aero_extra$YAngle = -Math.atan2(siny_cosp, cosy_cosp);
+        this.aero_extra$YAngle = -Mth.atan2(siny_cosp, cosy_cosp);
     }
 
     @Inject(method = "addToGoggleTooltip", at = @At(value = "INVOKE", target = "Ldev/simulated_team/simulated/data/SimLang;translate(Ljava/lang/String;[Ljava/lang/Object;)Lnet/createmod/catnip/lang/LangBuilder;", ordinal = 1))

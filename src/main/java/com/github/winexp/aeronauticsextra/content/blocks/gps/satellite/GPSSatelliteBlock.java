@@ -146,9 +146,7 @@ public class GPSSatelliteBlock extends BaseEntityBlock implements IBE<GPSSatelli
         if (level.isClientSide) return ItemInteractionResult.SUCCESS;
         level.setBlock(pos, state.setValue(ANTENNA, true), Block.UPDATE_ALL);
         this.withBlockEntityDo(level, pos, be -> be.setAntenna(stack.copyWithCount(1)));
-        if (!player.isCreative()) {
-            stack.consume(1, player);
-        }
+        stack.consume(1, player);
         level.playSound(null, pos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
         return ItemInteractionResult.SUCCESS;
     }

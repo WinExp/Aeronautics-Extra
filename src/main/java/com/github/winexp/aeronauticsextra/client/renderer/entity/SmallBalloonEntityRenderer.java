@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
-import net.minecraft.util.Mth;
 
 public class SmallBalloonEntityRenderer extends EntityRenderer<SmallBalloonEntity> {
     private static final ResourceLocation DEFAULT_SKIN_LOCATION = AeronauticsExtra.asResource("textures/entity/small_balloon/balloon.png");
@@ -29,10 +28,12 @@ public class SmallBalloonEntityRenderer extends EntityRenderer<SmallBalloonEntit
         super.render(entity, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
         poseStack.pushPose();
         poseStack.scale(-1, -1, -1);
+        float xRot = entity.getViewXRot(partialTicks);
         float yRot = entity.getViewYRot(partialTicks);
-        float zRot = entity.getViewXRot(partialTicks) - 90;
-        poseStack.mulPose(Axis.XP.rotationDegrees(zRot * Mth.cos(yRot * Mth.PI / 180f)));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(zRot * Mth.cos((yRot - 90) * Mth.PI / 180f)));
+        float zRot = entity.getViewZRot(partialTicks);
+        poseStack.mulPose(Axis.XN.rotationDegrees(xRot));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(zRot));
+        poseStack.mulPose(Axis.YN.rotationDegrees(yRot));
         this.balloonModel.setupAnim(entity, partialTicks, 0, 0, 0, 0);
         VertexConsumer buffer = bufferSource.getBuffer(this.balloonModel.renderType(this.getTextureLocation(entity)));
         this.balloonModel.renderToBuffer(poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY, CommonColors.WHITE);
