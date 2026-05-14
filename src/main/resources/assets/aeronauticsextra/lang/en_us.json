@@ -2,6 +2,7 @@
   "aeronauticsextra.gimbal_sensor.y_angle": "Y Angle: %s",
   "block.aeronauticsextra.gps_satellite": "GPS Satellite",
   "block.aeronauticsextra.gps_receiver": "GPS Receiver",
+  "block.aeronauticsextra.cvt_gearshift": "CVT Gearshift",
   "container.aeronauticsextra.gps_satellite":  "GPS Satellite",
   "item.aeronauticsextra.andesite_antenna": "Andesite Antenna",
   "item.aeronauticsextra.brass_antenna": "Brass GPS Antenna",

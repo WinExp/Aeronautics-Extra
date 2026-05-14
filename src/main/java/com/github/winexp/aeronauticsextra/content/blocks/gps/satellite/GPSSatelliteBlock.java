@@ -3,7 +3,7 @@ package com.github.winexp.aeronauticsextra.content.blocks.gps.satellite;
 import com.github.winexp.aeronauticsextra.client.renderer.block.BlockOutlineRenderer;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlocks;
-import com.github.winexp.aeronauticsextra.registry.AeroExtraItemTags;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraTags;
 import com.github.winexp.aeronauticsextra.utility.ShapeUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -138,7 +138,7 @@ public class GPSSatelliteBlock extends BaseEntityBlock implements IBE<GPSSatelli
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (player.isShiftKeyDown() || !player.mayBuild() || !stack.is(AeroExtraItemTags.ANTENNA)) {
+        if (player.isShiftKeyDown() || !player.mayBuild() || !stack.is(AeroExtraTags.ItemTags.ANTENNAS.tag)) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         if (state.getValue(ANTENNA)) return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;

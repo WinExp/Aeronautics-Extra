@@ -2,10 +2,9 @@ package com.github.winexp.aeronauticsextra.content.blocks.gps.satellite;
 
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSBroadcast;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;
-import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigMenu;
-import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.GPSSatelliteConfigMenu;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraDataComponents;
-import com.github.winexp.aeronauticsextra.registry.AeroExtraItemTags;
+import com.github.winexp.aeronauticsextra.registry.AeroExtraTags;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
@@ -20,6 +19,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -36,8 +36,8 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     private float coreAngle = 0;
     public final LerpedFloat coreRotation = LerpedFloat.angular();
 
-    public GPSSatelliteBlockEntity(BlockPos pos, BlockState blockState) {
-        super(AeroExtraBlockEntityTypes.GPS_SATELLITE.get(), pos, blockState);
+    public GPSSatelliteBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
+        super(type, pos, blockState);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     }
 
     public void setAntenna(ItemStack stack) {
-        if (stack.isEmpty() || (stack.is(AeroExtraItemTags.ANTENNA) && this.inventory.getSlotLimit(0) >= stack.getCount())) {
+        if (stack.isEmpty() || (stack.is(AeroExtraTags.ItemTags.ANTENNAS.tag) && this.inventory.getSlotLimit(0) >= stack.getCount())) {
             this.inventory.setItem(0, stack);
             this.setChanged();
         }
@@ -134,8 +134,8 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     }
 
     @Override
-    public ConfigMenu createMenu(int containerId, Inventory inventory, Player player) {
-        return new ConfigMenu(containerId, inventory, this);
+    public GPSSatelliteConfigMenu createMenu(int containerId, Inventory inventory, Player player) {
+        return GPSSatelliteConfigMenu.create(containerId, inventory, this);
     }
 
     @Override

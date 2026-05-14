@@ -19,7 +19,7 @@ public class GPSReceiverValueBehaviour extends ScrollValueBehaviour {
     public GPSReceiverValueBehaviour(Component label, SmartBlockEntity be, ValueBoxTransform slot) {
         super(label, be, slot);
         this.between(1, 200);
-        this.value = 5;
+        this.value = 7;
     }
 
     private void updateBlockEntity() {

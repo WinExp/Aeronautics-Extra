@@ -1,6 +1,6 @@
 package com.github.winexp.aeronauticsextra.client.gui;
 
-import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigMenu;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.GPSSatelliteConfigMenu;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.networking.ServerBoundConfigRequest;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import net.createmod.catnip.platform.CatnipServices;
@@ -10,13 +10,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.phys.Vec3;
 
-public class GPSSatelliteConfigScreen extends AbstractSimiContainerScreen<ConfigMenu> {
-    private final ConfigMenu menu;
+public class GPSSatelliteConfigScreen extends AbstractSimiContainerScreen<GPSSatelliteConfigMenu> {
+    private final GPSSatelliteConfigMenu menu;
     private PositionEditBox xEditBox;
     private PositionEditBox yEditBox;
     private PositionEditBox zEditBox;
 
-    public GPSSatelliteConfigScreen(ConfigMenu menu, Inventory inventory, Component title) {
+    public GPSSatelliteConfigScreen(GPSSatelliteConfigMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         this.menu = menu;
     }
@@ -72,7 +72,7 @@ public class GPSSatelliteConfigScreen extends AbstractSimiContainerScreen<Config
     }
 
     @Override
-    public ConfigMenu getMenu() {
+    public GPSSatelliteConfigMenu getMenu() {
         return this.menu;
     }
 }

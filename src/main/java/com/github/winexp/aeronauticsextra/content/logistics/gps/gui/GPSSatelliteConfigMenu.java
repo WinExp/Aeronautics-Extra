@@ -8,15 +8,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 
-public class ConfigMenu extends MenuBase<GPSSatelliteBlockEntity> {
-    public ConfigMenu(int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
-        super(AeroExtraMenuTypes.GPS_SATELLITE_CONFIG.get(), id, inv, extraData);
+public class GPSSatelliteConfigMenu extends MenuBase<GPSSatelliteBlockEntity> {
+    public GPSSatelliteConfigMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
+        super(type, id, inv, extraData);
     }
 
-    public ConfigMenu(int id, Inventory inv, GPSSatelliteBlockEntity contentHolder) {
-        super(AeroExtraMenuTypes.GPS_SATELLITE_CONFIG.get(), id, inv, contentHolder);
+    private GPSSatelliteConfigMenu(MenuType<?> type, int id, Inventory inv, GPSSatelliteBlockEntity contentHolder) {
+        super(type, id, inv, contentHolder);
+    }
+
+    public static GPSSatelliteConfigMenu create(int id, Inventory inv, GPSSatelliteBlockEntity be) {
+        return new GPSSatelliteConfigMenu(AeroExtraMenuTypes.GPS_SATELLITE_CONFIG.get(), id, inv, be);
     }
 
     @Override

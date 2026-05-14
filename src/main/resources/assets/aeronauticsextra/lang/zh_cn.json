@@ -2,6 +2,7 @@
   "aeronauticsextra.gimbal_sensor.y_angle": "偏航角：%s",
   "block.aeronauticsextra.gps_satellite": "GPS 卫星",
   "block.aeronauticsextra.gps_receiver": "GPS 接收机",
+  "block.aeronauticsextra.cvt_gearshift": "无级调速齿轮箱",
   "container.aeronauticsextra.gps_satellite":  "GPS 卫星",
   "item.aeronauticsextra.andesite_antenna": "安山天线",
   "item.aeronauticsextra.brass_antenna": "黄铜天线",

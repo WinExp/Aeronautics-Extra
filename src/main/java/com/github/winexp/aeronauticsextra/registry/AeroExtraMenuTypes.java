@@ -1,21 +1,17 @@
 package com.github.winexp.aeronauticsextra.registry;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.ConfigMenu;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.inventory.MenuType;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import com.github.winexp.aeronauticsextra.client.gui.GPSSatelliteConfigScreen;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.GPSSatelliteConfigMenu;
+import com.tterrag.registrate.util.entry.MenuEntry;
+import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
 
 public class AeroExtraMenuTypes {
-    private static final DeferredRegister<MenuType<?>> REGISTER = DeferredRegister.create(BuiltInRegistries.MENU, AeronauticsExtra.MOD_ID);
+    private static final SimulatedRegistrate REGISTRATE = AeronauticsExtra.getRegistrate();
 
-    public static final DeferredHolder<MenuType<?>, MenuType<ConfigMenu>> GPS_SATELLITE_CONFIG = REGISTER
-            .register("gps_satellite", () -> IMenuTypeExtension.create(ConfigMenu::new));
+    public static final MenuEntry<GPSSatelliteConfigMenu> GPS_SATELLITE_CONFIG = REGISTRATE
+            .menu("gps_satellite_config", GPSSatelliteConfigMenu::new, () -> GPSSatelliteConfigScreen::new)
+            .register();
 
-    public static void register(IEventBus bus) {
-        REGISTER.register(bus);
-    }
+    public static void register() {}
 }

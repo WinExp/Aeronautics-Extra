@@ -5,7 +5,6 @@ import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSSampleData;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.TrilaterationResolver;
 import com.github.winexp.aeronauticsextra.data.AeroExtraLang;
-import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -18,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -39,8 +39,8 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGog
 
     private ScrollValueBehaviour samplingTimeBehaviour;
 
-    public GPSReceiverBlockEntity(BlockPos pos, BlockState state) {
-        super(AeroExtraBlockEntityTypes.GPS_RECEIVER.get(), pos, state);
+    public GPSReceiverBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     @Nullable
@@ -143,7 +143,6 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGog
 
         ChatFormatting sampleCountColor;
         if (this.sampleCount < 4) sampleCountColor = ChatFormatting.RED;
-        else if (this.sampleCount < 12) sampleCountColor = ChatFormatting.YELLOW;
         else sampleCountColor = ChatFormatting.GREEN;
         AeroExtraLang.translate("gui.gps_receiver.satellite_count")
                 .style(ChatFormatting.GRAY)

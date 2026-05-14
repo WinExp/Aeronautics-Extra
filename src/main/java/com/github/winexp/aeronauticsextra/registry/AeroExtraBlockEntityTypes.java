@@ -1,27 +1,31 @@
 package com.github.winexp.aeronauticsextra.registry;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
+import com.github.winexp.aeronauticsextra.client.renderer.block.GPSSatelliteRenderer;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.receiver.GPSReceiverBlockEntity;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.satellite.GPSSatelliteBlockEntity;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import com.github.winexp.aeronauticsextra.content.blocks.kinetics.CVTGearshiftBlockEntity;
+import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
 
 public class AeroExtraBlockEntityTypes {
-    private static final DeferredRegister<BlockEntityType<?>> REGISTER = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, AeronauticsExtra.MOD_ID);
+    private static final SimulatedRegistrate REGISTRATE = AeronauticsExtra.getRegistrate();
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GPSSatelliteBlockEntity>> GPS_SATELLITE = REGISTER
-            .register("gps_satellite", () -> BlockEntityType.Builder
-                    .of(GPSSatelliteBlockEntity::new, AeroExtraBlocks.GPS_SATELLITE.get())
-                    .build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GPSReceiverBlockEntity>> GPS_RECEIVER = REGISTER
-            .register("gps_receiver", () -> BlockEntityType.Builder
-                    .of(GPSReceiverBlockEntity::new, AeroExtraBlocks.GPS_RECEIVER.get())
-                    .build(null));
+    public static final BlockEntityEntry<GPSSatelliteBlockEntity> GPS_SATELLITE = REGISTRATE
+            .blockEntity("gps_satellite", GPSSatelliteBlockEntity::new)
+            .validBlocks(AeroExtraBlocks.GPS_SATELLITE)
+            .renderer(() -> GPSSatelliteRenderer::new)
+            .register();
+    public static final BlockEntityEntry<GPSReceiverBlockEntity> GPS_RECEIVER = REGISTRATE
+            .blockEntity("gps_receiver", GPSReceiverBlockEntity::new)
+            .displaySource(AeroExtraDisplaySources.GPS_RECEIVER)
+            .validBlocks(AeroExtraBlocks.GPS_RECEIVER)
+            .register();
 
-    public static void register(IEventBus bus) {
-        REGISTER.register(bus);
-    }
+    public static final BlockEntityEntry<CVTGearshiftBlockEntity> CVT_GEARSHIFT = REGISTRATE
+            .blockEntity("cvt_gearshift", CVTGearshiftBlockEntity::new)
+            .validBlocks(AeroExtraBlocks.CVT_GEARSHIFT)
+            .register();
+
+    public static void register() {}
 }
