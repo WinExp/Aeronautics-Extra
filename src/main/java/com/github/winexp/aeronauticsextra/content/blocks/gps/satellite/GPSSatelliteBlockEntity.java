@@ -2,7 +2,7 @@ package com.github.winexp.aeronauticsextra.content.blocks.gps.satellite;
 
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSBroadcast;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;
-import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.GPSSatelliteConfigMenu;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.SatelliteConfigMenu;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraDataComponents;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraTags;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
@@ -134,8 +134,8 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     }
 
     @Override
-    public GPSSatelliteConfigMenu createMenu(int containerId, Inventory inventory, Player player) {
-        return GPSSatelliteConfigMenu.create(containerId, inventory, this);
+    public SatelliteConfigMenu createMenu(int containerId, Inventory inventory, Player player) {
+        return SatelliteConfigMenu.create(containerId, inventory, this);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.client.model;
+package com.github.winexp.aeronauticsextra.client.entity.model;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.github.winexp.aeronauticsextra.content.entity.SmallBalloonEntity;

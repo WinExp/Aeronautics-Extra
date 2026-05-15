@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.client.renderer.block;
+package com.github.winexp.aeronauticsextra.client.block.renderer;
 
 import com.github.winexp.aeronauticsextra.client.AeroExtraPartialModels;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.satellite.GPSSatelliteBlockEntity;
@@ -46,7 +46,7 @@ public class GPSSatelliteRenderer extends SmartBlockEntityRenderer<GPSSatelliteB
         if (scale > 0) {
             float coreScale = 0.6f;
             float translate = (1 - (scale * coreScale)) / 2;
-            SuperByteBuffer core = CachedBuffers.partial(AeroExtraPartialModels.BRASS_GPS_CORE, blockState);
+            SuperByteBuffer core = CachedBuffers.partial(AeroExtraPartialModels.GPS_CORE, blockState);
             core.translate(translate, translate, translate)
                     .color(255, 255, 255, (int) (transparency * 255))
                     .scale(scale * coreScale)

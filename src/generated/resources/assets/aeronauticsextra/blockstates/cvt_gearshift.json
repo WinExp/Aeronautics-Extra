@@ -1,7 +1,30 @@
 {
   "variants": {
-    "": {
-      "model": "aeronauticsextra:block/cvt_gearshift"
+    "axis=x,powered=false": {
+      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,powered=true": {
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,powered=false": {
+      "model": "aeronauticsextra:block/cvt_gearshift/block"
+    },
+    "axis=y,powered=true": {
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on"
+    },
+    "axis=z,powered=false": {
+      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "x": 90,
+      "y": 180
+    },
+    "axis=z,powered=true": {
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
+      "x": 90,
+      "y": 180
     }
   }
 }

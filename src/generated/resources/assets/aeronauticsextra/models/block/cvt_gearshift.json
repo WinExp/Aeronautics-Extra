@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "aeronauticsextra:block/cvt_gearshift"
-  }
-}

@@ -1,7 +1,7 @@
 package com.github.winexp.aeronauticsextra.registry;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.github.winexp.aeronauticsextra.client.renderer.entity.SmallBalloonEntityRenderer;
+import com.github.winexp.aeronauticsextra.client.entity.renderer.SmallBalloonEntityRenderer;
 import com.github.winexp.aeronauticsextra.content.entity.SmallBalloonEntity;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.builders.EntityBuilder;

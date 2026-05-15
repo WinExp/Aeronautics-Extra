@@ -1,7 +1,7 @@
-package com.github.winexp.aeronauticsextra.client.renderer.entity;
+package com.github.winexp.aeronauticsextra.client.entity.renderer;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.github.winexp.aeronauticsextra.client.model.SmallBalloonEntityModel;
+import com.github.winexp.aeronauticsextra.client.entity.model.SmallBalloonEntityModel;
 import com.github.winexp.aeronauticsextra.content.entity.SmallBalloonEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

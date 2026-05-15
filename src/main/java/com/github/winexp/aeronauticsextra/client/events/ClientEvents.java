@@ -1,8 +1,8 @@
 package com.github.winexp.aeronauticsextra.client.events;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.github.winexp.aeronauticsextra.client.model.SmallBalloonEntityModel;
-import com.github.winexp.aeronauticsextra.client.renderer.block.BlockOutlineRenderer;
+import com.github.winexp.aeronauticsextra.client.entity.model.SmallBalloonEntityModel;
+import com.github.winexp.aeronauticsextra.client.block.renderer.BlockOutlineRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.RenderType;

@@ -6,17 +6,17 @@ import dev.simulated_team.simulated.compat.computercraft.peripherals.SimPeripher
 import dev.simulated_team.simulated.content.blocks.analog_transmission.AnalogTransmissionBlockEntity;
 
 public class AnalogTransmissionPeripheral extends SimPeripheral<AnalogTransmissionBlockEntity> {
-    public AnalogTransmissionPeripheral(final AnalogTransmissionBlockEntity blockEntity) {
+    public AnalogTransmissionPeripheral(AnalogTransmissionBlockEntity blockEntity) {
         super(blockEntity);
     }
 
     @LuaFunction
-    public final float getOverrideGearRatio() {
+    public float getOverrideGearRatio() {
         return ((AnalogTransmissionBlockEntityExtension) this.blockEntity).aero_extra$getOverrideGearRatio();
     }
 
     @LuaFunction
-    public final void setOverrideGearRatio(final double ratio) {
+    public void setOverrideGearRatio(double ratio) {
         ((AnalogTransmissionBlockEntityExtension) this.blockEntity).aero_extra$setOverrideGearRatio((float) ratio);
     }
 

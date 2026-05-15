@@ -13,10 +13,15 @@ public class GPSReceiverPeripheral extends SimPeripheral<GPSReceiverBlockEntity>
     }
 
     @LuaFunction
-    public final List<Double> getPosition() {
+    public List<Double> getPosition() {
         Vec3 position = this.blockEntity.getCurrentPos();
         if (position == null) return null;
         else return List.of(position.x, position.y, position.z);
+    }
+
+    @LuaFunction
+    public boolean isUpdated() {
+        return this.blockEntity.isUpdated();
     }
 
     @Override

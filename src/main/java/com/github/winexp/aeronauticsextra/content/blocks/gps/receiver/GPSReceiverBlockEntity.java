@@ -33,9 +33,11 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGog
 
     private int satelliteCount = 0;
     private int sampleCount = 0;
+    private boolean updated = false;
     @Nullable
     private Vec3 currentPos;
     private final ArrayList<GPSSampleData> sampleDataList =  new ArrayList<>();
+    private int sendDataCounter;
 
     private ScrollValueBehaviour samplingTimeBehaviour;
 
@@ -50,7 +52,13 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGog
 
     private void setCurrentPos(Vec3 currentPos) {
         this.currentPos = currentPos;
-        super.setChanged();
+        this.setChanged();
+    }
+
+    public boolean isUpdated() {
+        boolean result = this.updated;
+        this.updated = false;
+        return result;
     }
 
     @Override
@@ -94,6 +102,15 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGog
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if (--this.sendDataCounter <= 0) {
+            this.sendData();
+            this.sendDataCounter = 20;
+        }
+    }
+
+    @Override
     public void lazyTick() {
         super.lazyTick();
         if (!this.level.isClientSide) {
@@ -114,6 +131,7 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGog
         TrilaterationResolver.LocateResult result = TrilaterationResolver.locate(this.sampleDataList);
         if (!result.isEmpty()) {
             this.setCurrentPos(result.position());
+            this.updated = true;
         }
         HashSet<UUID> uuids = new HashSet<>();
         for (GPSSampleData data : this.sampleDataList) {
@@ -122,8 +140,6 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGog
         this.satelliteCount = uuids.size();
         this.sampleCount = this.sampleDataList.size();
         this.sampleDataList.clear();
-        super.setChanged();
-        this.sendData();
     }
 
     private static class GPSReceiverValueBoxTransform extends ValueBoxTransform.Sided {

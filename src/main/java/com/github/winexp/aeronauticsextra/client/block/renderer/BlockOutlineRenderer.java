@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.client.renderer.block;
+package com.github.winexp.aeronauticsextra.client.block.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

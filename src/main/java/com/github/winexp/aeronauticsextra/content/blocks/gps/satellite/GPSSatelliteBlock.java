@@ -1,6 +1,6 @@
 package com.github.winexp.aeronauticsextra.content.blocks.gps.satellite;
 
-import com.github.winexp.aeronauticsextra.client.renderer.block.BlockOutlineRenderer;
+import com.github.winexp.aeronauticsextra.client.block.renderer.BlockOutlineRenderer;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlocks;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraTags;
