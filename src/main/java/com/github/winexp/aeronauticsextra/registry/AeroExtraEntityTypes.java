@@ -9,7 +9,9 @@ import com.tterrag.registrate.providers.ProviderType;
 import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class AeroExtraEntityTypes {
@@ -19,7 +21,12 @@ public class AeroExtraEntityTypes {
             .properties(builder -> builder
                     .sized(0.7f, 0.7f)
                     .canSpawnFarFromPlayer()
-                    .clientTrackingRange(8))
+                    .clientTrackingRange(8)
+                    .updateInterval(1))
+            .attributes(() -> LivingEntity.createLivingAttributes()
+                    .add(Attributes.MAX_HEALTH, 5)
+                    .add(Attributes.MOVEMENT_SPEED, 1)
+                    .add(Attributes.GRAVITY, -0.072))
             .renderer(() -> SmallBalloonEntityRenderer::new)
             .register();
 

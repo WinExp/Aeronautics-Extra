@@ -4,12 +4,14 @@ import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.receiver.GPSReceiverBlock;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.satellite.GPSSatelliteBlock;
 import com.github.winexp.aeronauticsextra.content.blocks.kinetics.CVTGearshiftBlock;
-import com.simibubi.create.foundation.data.*;
+import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.data.ModelGen;
+import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
-import dev.simulated_team.simulated.content.blocks.analog_transmission.AnalogTransmissionBlock;
 import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,11 +47,34 @@ public class AeroExtraBlocks {
                     .noOcclusion()
                     .isRedstoneConductor(AeroExtraBlocks::never))
             .transform(TagGen.axeOrPickaxe())
-            .blockstate((ctx, prov) -> BlockStateGen.axisBlock(ctx, prov, state -> {
-                String suffix = state.getValue(AnalogTransmissionBlock.POWERED) ? "_on" : "";
-                ResourceLocation path = AeronauticsExtra.asResource("block/" + ctx.getName() + "/block" + suffix);
-                return prov.models().getExistingFile(path);
-            }))
+            .blockstate((ctx, prov) ->
+                    prov.getVariantBuilder(ctx.getEntry()).forAllStates((state) -> {
+                        Direction dir = state.getValue(CVTGearshiftBlock.FACING);
+                        Direction.Axis axis = dir.getAxis();
+                        boolean axisAlongFirst = state.getValue(CVTGearshiftBlock.AXIS_ALONG_FIRST_COORDINATE);
+                        int rotX, rotY;
+                        if (axisAlongFirst) {
+                            if (axis == Direction.Axis.X) {
+                                rotX = 0;
+                                rotY = (int) (dir.toYRot() + 90) % 360;
+                            } else {
+                                rotX = 90;
+                                rotY = 90;
+                            }
+                        } else {
+                            if (axis == Direction.Axis.Z) {
+                                rotX = 0;
+                                rotY = (int) (dir.toYRot() + 90) % 360;
+                            } else {
+                                rotX = 90;
+                                rotY = 0;
+                            }
+                        }
+                        return ConfiguredModel.builder().modelFile(prov.models().getExistingFile(prov.modLoc("block/cvt_gearshift/block")))
+                                .rotationX(rotX)
+                                .rotationY(rotY)
+                                .build();
+                    }))
             .item().transform(ModelGen.customItemModel())
             .register();
 

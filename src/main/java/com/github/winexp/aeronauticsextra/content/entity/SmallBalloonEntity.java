@@ -10,8 +10,8 @@ import dev.ryanhcode.sable.companion.math.JOMLConversion;
 import dev.ryanhcode.sable.mixinterface.entity.entity_sublevel_collision.EntityMovementExtension;
 import dev.ryanhcode.sable.physics.config.dimension_physics.DimensionPhysicsData;
 import dev.ryanhcode.sable.sublevel.ServerSubLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -22,26 +22,32 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.entity.EntityTypeTest;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.joml.AxisAngle4f;
+import org.joml.Quaternionf;
 import org.joml.Vector3d;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
-public class SmallBalloonEntity extends Entity implements Leashable, EntitySubLevelActor {
+public class SmallBalloonEntity extends LivingEntity implements Leashable, EntitySubLevelActor {
     public static final double ENTITY_MAX_LIFT = 0.3;
     public static final double LEASH_LENGTH = 4;
+    public static final float MAX_ANGLE = 45;
 
     private static final EntityDataAccessor<Byte> COLOR = SynchedEntityData.defineId(SmallBalloonEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Float> LIFT = SynchedEntityData.defineId(SmallBalloonEntity.class, EntityDataSerializers.FLOAT);
     private LeashData leashData;
-    public float zRot;
-    public float zRotO;
     private float prevMotionYaw;
+    private final AxisAngle4f rotation = new AxisAngle4f();
+    private final AxisAngle4f prevRotation = new AxisAngle4f();
 
-    public SmallBalloonEntity(EntityType<?> entityType, Level level) {
+    public SmallBalloonEntity(EntityType<SmallBalloonEntity> entityType, Level level) {
         super(entityType, level);
+        this.setDiscardFriction(true);
     }
 
     public static SmallBalloonEntity create(Level level, double x, double y, double z, DyeColor color) {
@@ -54,32 +60,25 @@ public class SmallBalloonEntity extends Entity implements Leashable, EntitySubLe
         return entity;
     }
 
-    @Override
-    public void recreateFromPacket(ClientboundAddEntityPacket packet) {
-        super.recreateFromPacket(packet);
-        this.yRotO = packet.getYRot();
-    }
-
     public DyeColor getColor() {
-        return DyeColor.byId(this.getEntityData().get(COLOR));
+        return DyeColor.byId(this.entityData.get(COLOR));
     }
 
     public void setColor(DyeColor color) {
-        this.getEntityData().set(COLOR, (byte) color.getId());
+        this.entityData.set(COLOR, (byte) color.getId());
+    }
+
+    public float getLift() {
+        return this.entityData.get(LIFT);
+    }
+
+    public void setLift(float lift) {
+        this.entityData.set(LIFT, lift);
     }
 
     @Override
-    public boolean isPickable() {
-        return !this.isRemoved();
-    }
-
-    @Override
-    public boolean isPushable() {
-        return true;
-    }
-
-    public boolean isVerticalCollided() {
-        return this.verticalCollision || !this.level().noCollision(this.getBoundingBox().expandTowards(0, 1e-5, 0));
+    public HumanoidArm getMainArm() {
+        return HumanoidArm.RIGHT;
     }
 
     @Override
@@ -90,16 +89,22 @@ public class SmallBalloonEntity extends Entity implements Leashable, EntitySubLe
         super.remove(reason);
     }
 
+    @Override
+    public float getViewYRot(float partialTicks)  {
+        return Mth.rotLerp(partialTicks, this.yRotO, this.getYRot());
+    }
+
     protected void tickLeashMovement(Entity leashHolder, float distance) {
         if (distance > LEASH_LENGTH) {
             Vec3 holderPos = Sable.HELPER.projectOutOfSubLevel(leashHolder.level(), leashHolder.position());
             Vec3 direction = holderPos.subtract(this.position()).normalize().scale(distance - LEASH_LENGTH);
             Vec3 motion = this.getDeltaMovement();
             if (motion.dot(direction) > 0) {
-                this.setDeltaMovement(motion.add(direction.scale(0.15)));
+                motion = motion.add(direction.scale(0.15));
             } else {
-                this.setDeltaMovement(motion.add(direction.scale(0.2)));
+                motion = motion.add(direction.scale(0.20));
             }
+            this.setDeltaMovement(motion);
         }
     }
 
@@ -118,40 +123,10 @@ public class SmallBalloonEntity extends Entity implements Leashable, EntitySubLe
         return Vec3.ZERO;
     }
 
-    protected void tickLeashOnClient() {
-        Entity leashHolder = this.getLeashHolder();
-        if (leashHolder != null && leashHolder.level() == this.level()) {
-            float distance = this.distanceTo(leashHolder);
-            if (distance <= 10) {
-                this.tickLeashMovement(leashHolder, distance);
-            }
-        }
-    }
-
-    @Override
-    public float getViewXRot(float partialTick) {
-        if (partialTick == 1) return this.getXRot();
-        float delta = Mth.wrapDegrees(this.getXRot() - this.xRotO);
-        return Mth.wrapDegrees(this.xRotO + delta * partialTick);
-    }
-
-    @Override
-    public float getViewYRot(float partialTick) {
-        if (partialTick == 1) return this.getYRot();
-        float delta = Mth.wrapDegrees(this.getYRot() - this.yRotO);
-        return Mth.wrapDegrees(this.yRotO + delta * partialTick);
-    }
-
-    public float getViewZRot(float partialTick) {
-        if (partialTick == 1) return this.zRot;
-        float delta = Mth.wrapDegrees(this.zRot - this.zRotO);
-        return Mth.wrapDegrees(this.zRotO + delta * partialTick);
-    }
-
     protected void liftEntity(Entity entity) {
-        if (!(entity instanceof Player player) || !player.getAbilities().flying) {
+        if (!this.level().isClientSide) {
             float distance = this.distanceTo(entity);
-            if (distance > LEASH_LENGTH && this.getY() > entity.getY()) {
+            if (distance > LEASH_LENGTH && this.getY() > entity.getY() && (!(entity instanceof Player player) || !player.getAbilities().flying)) {
                 Vec3 direction = this.position().subtract(entity.position()).normalize();
                 double lift = direction.y;
                 double entityYVel = entity.getDeltaMovement().y;
@@ -162,27 +137,11 @@ public class SmallBalloonEntity extends Entity implements Leashable, EntitySubLe
                 }
                 if (entityYVel >= ENTITY_MAX_LIFT) lift = 0;
                 else if (entityYVel + lift >= ENTITY_MAX_LIFT) lift = entityYVel + lift - ENTITY_MAX_LIFT;
-                entity.addDeltaMovement(new Vec3(0, lift, 0));
+                this.setLift((float) lift);
                 entity.checkSlowFallDistance();
-            }
+            } else this.setLift(0);
         }
-    }
-
-    protected void pushEntities() {
-        if (this.level().isClientSide) {
-            this.level().getEntities(EntityTypeTest.forClass(Player.class), this.getBoundingBox(), EntitySelector.pushableBy(this))
-                    .forEach(this::push);
-        } else {
-            List<Entity> entities = this.level().getEntities(this, this.getBoundingBox(), EntitySelector.pushableBy(this));
-            for (Entity entity : entities) {
-                this.push(entity);
-            }
-        }
-    }
-
-    @Override
-    public void push(double x, double y, double z) {
-        super.push(x * 0.2, y * 0.2, z * 0.2);
+        entity.addDeltaMovement(new Vec3(0, this.getLift(), 0));
     }
 
     @Override
@@ -203,48 +162,64 @@ public class SmallBalloonEntity extends Entity implements Leashable, EntitySubLe
     }
 
     @Override
-    public void tick() {
-        this.addDeltaMovement(new Vec3(0, 0.072, 0));
-        this.setDeltaMovement(this.getDeltaMovement().multiply(0.9, 0.9, 0.9));
-        if (this.isVerticalCollided()) this.setDeltaMovement(this.getDeltaMovement().multiply(1, 0, 1));
+    public void travel(Vec3 travelVector) {
+        this.setDeltaMovement(this.getDeltaMovement().multiply(0.87, 0.9, 0.87));
+        super.travel(travelVector);
+    }
+
+    protected void tickRotation(Vec3 horizontal) {
+        float horizontalSpeed = (float) Mth.clamp(horizontal.length() - 0.075, 0, 0.20) / 0.20f;
+        float motionYaw = (float) Mth.atan2(horizontal.z, horizontal.x) * Mth.RAD_TO_DEG - 90f;
+        float deltaRotY = Mth.wrapDegrees((motionYaw - this.prevMotionYaw) * 5);
+        this.setYRot(Mth.wrapDegrees(this.getYRot() + deltaRotY * horizontalSpeed * 0.15f));
+        this.prevMotionYaw = motionYaw;
+
         if (this.level().isClientSide) {
-            this.tickLeashOnClient();
+            this.prevRotation.set(this.rotation);
+            Vec3 axis = horizontal.cross(new Vec3(0, 1, 0)).normalize();
+
+            if (axis != Vec3.ZERO) {
+                this.rotation.x = (float) axis.x;
+                this.rotation.y = (float) axis.y;
+                this.rotation.z = (float) axis.z;
+                this.rotation.angle = (float) Math.min(horizontal.length(), 0.40) / 0.40f * MAX_ANGLE * Mth.DEG_TO_RAD;
+            }
+
+            Quaternionf result = new Quaternionf();
+            Quaternionf prevRotQ = this.prevRotation.get(new Quaternionf());
+            Quaternionf rotQ = this.rotation.get(new Quaternionf());
+            prevRotQ.slerp(rotQ, 0.2f, result);
+            result.w = Math.clamp(result.w, -1, 1); // w may exceed [-1, 1] after slerp, clamp it
+            this.rotation.set(result);
         }
+    }
+
+    public Quaternionf getRotation(float partialTicks) {
+        Quaternionf rotation = new Quaternionf();
+        this.prevRotation.get(new Quaternionf()).slerp(this.rotation.get(new Quaternionf()), partialTicks, rotation);
+        rotation.w = Math.clamp(rotation.w, -1, 1); // w may exceed [-1, 1] after slerp, clamp it
+        return rotation;
+    }
+
+    @Override
+    public void tick() {
+        Vec3 prevPos = this.position();
         super.tick();
-        this.move(MoverType.SELF, this.getDeltaMovement());
-        this.pushEntities();
+        this.tickRotation(this.position().subtract(prevPos).multiply(1, 0, 1));
         if (this.getLeashHolder() != null)  {
             this.liftEntity(this.getLeashHolder());
         }
-        if (!this.level().isClientSide) {
-            if (this.isInWall() || this.position().y > this.level().getMaxBuildHeight() + 64) {
-                this.kill();
+        if (this.isAlive() && !this.level().isClientSide) {
+            if (this.position().y > this.level().getMaxBuildHeight() + 64) {
+                this.hurt(this.damageSources().outOfBorder(), 1);
             }
-        }
-        if (this.level().isClientSide) {
-            this.tickRotation();
         }
         EntityMovementExtension extension = (EntityMovementExtension) this;
         extension.sable$setTrackingSubLevel(null);
     }
 
-    protected void tickRotation() {
-        this.xRotO = this.getXRot();
-        this.yRotO = this.getYRot();
-        this.zRotO = this.zRot;
-        Vec3 motion = this.getDeltaMovement();
-        float zSpeed = (float) Mth.clamp(motion.z, -0.25, 0.25) / 0.25f;
-        this.setXRot(this.getXRot() + zSpeed * 30);
-        float horizontalSpeed = (float) Mth.clamp(motion.horizontalDistance() - 0.075, 0, 0.15) / 0.15f;
-        float motionYaw = (float) Math.toDegrees(Mth.atan2(motion.z, motion.x)) - 90f;
-        float deltaRotY = Mth.wrapDegrees((motionYaw - this.prevMotionYaw) * 5);
-        this.setYRot(this.getYRot() + deltaRotY * horizontalSpeed * 0.15f);
-        float xSpeed = (float) Mth.clamp(motion.x, -0.25, 0.25) / 0.25f;
-        this.zRot = this.zRot + xSpeed * 30;
-        this.setXRot(this.getXRot() * 0.5f);
-        this.setYRot(Mth.wrapDegrees(this.getYRot()));
-        this.zRot = this.zRot * 0.5f;
-        this.prevMotionYaw = motionYaw;
+    @Override
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
     }
 
     @Override
@@ -258,26 +233,42 @@ public class SmallBalloonEntity extends Entity implements Leashable, EntitySubLe
             if (this.isInvulnerableTo(source)) {
                 return false;
             } else {
-                this.kill();
-                return true;
+                this.remove(RemovalReason.KILLED);
+                return false;
             }
         }
-        return true;
+        return false;
+    }
+
+    @Override
+    public Iterable<ItemStack> getArmorSlots() {
+        return List.of();
+    }
+
+    @Override
+    public ItemStack getItemBySlot(EquipmentSlot equipmentSlot) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public void setItemSlot(EquipmentSlot equipmentSlot, ItemStack itemStack) {
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(COLOR, (byte) DyeColor.WHITE.getId());
+        builder.define(LIFT, 0f);
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
         this.leashData = this.readLeashData(tag);
         this.getEntityData().set(COLOR, tag.getByte("Color"));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(CompoundTag tag) {
         this.writeLeashData(tag, this.leashData);
         tag.putByte("Color", this.getEntityData().get(COLOR));
     }

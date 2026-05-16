@@ -1,7 +1,6 @@
 package com.github.winexp.aeronauticsextra.registry;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.github.winexp.aeronauticsextra.client.block.renderer.CVTGearshiftRenderer;
 import com.github.winexp.aeronauticsextra.client.block.renderer.GPSSatelliteRenderer;
 import com.github.winexp.aeronauticsextra.client.block.visual.CVTGearshiftVisual;
 import com.github.winexp.aeronauticsextra.content.blocks.gps.receiver.GPSReceiverBlockEntity;
@@ -27,7 +26,6 @@ public class AeroExtraBlockEntityTypes {
     public static final BlockEntityEntry<CVTGearshiftBlockEntity> CVT_GEARSHIFT = REGISTRATE
             .blockEntity("cvt_gearshift", CVTGearshiftBlockEntity::new)
             .visual(() -> CVTGearshiftVisual::new)
-            .renderer(() -> CVTGearshiftRenderer::new)
             .validBlocks(AeroExtraBlocks.CVT_GEARSHIFT)
             .register();
 

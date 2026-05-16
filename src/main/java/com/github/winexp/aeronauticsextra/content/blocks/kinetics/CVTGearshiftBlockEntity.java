@@ -101,7 +101,7 @@ public class CVTGearshiftBlockEntity extends KineticBlockEntity implements Extra
 
             @Override
             public Direction.Axis getRotationAxis(BlockState state) {
-                return state.getValue(CVTGearshiftBlock.AXIS);
+                return ((IRotate) state.getBlock()).getRotationAxis(state);
             }
         };
 

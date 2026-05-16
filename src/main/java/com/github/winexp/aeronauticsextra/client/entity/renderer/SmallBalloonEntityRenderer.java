@@ -28,12 +28,8 @@ public class SmallBalloonEntityRenderer extends EntityRenderer<SmallBalloonEntit
         super.render(entity, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
         poseStack.pushPose();
         poseStack.scale(-1, -1, -1);
-        float xRot = entity.getViewXRot(partialTicks);
-        float yRot = entity.getViewYRot(partialTicks);
-        float zRot = entity.getViewZRot(partialTicks);
-        poseStack.mulPose(Axis.XN.rotationDegrees(xRot));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(zRot));
-        poseStack.mulPose(Axis.YN.rotationDegrees(yRot));
+        poseStack.mulPose(entity.getRotation(partialTicks));
+        poseStack.mulPose(Axis.YN.rotationDegrees(entity.getViewYRot(partialTicks)));
         this.balloonModel.setupAnim(entity, partialTicks, 0, 0, 0, 0);
         VertexConsumer buffer = bufferSource.getBuffer(this.balloonModel.renderType(this.getTextureLocation(entity)));
         this.balloonModel.renderToBuffer(poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY, CommonColors.WHITE);
