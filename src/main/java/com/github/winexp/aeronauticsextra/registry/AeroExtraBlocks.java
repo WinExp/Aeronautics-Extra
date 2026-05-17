@@ -42,7 +42,7 @@ public class AeroExtraBlocks {
             .transform(ModelTransform.defaultBlockModel())
             .register();
 
-    public static final BlockEntry<CVTGearshiftBlock> CVT_GEARSHIFT = builder(AeroExtraCreativeTabs.SIMULATED, "cvt_gearshift", CVTGearshiftBlock::new)
+    public static final BlockEntry<CVTGearshiftBlock> CVT_GEARSHIFT = builder(AeroExtraCreativeTabs.SIMULATED_EXTRA, "cvt_gearshift", CVTGearshiftBlock::new)
             .initialProperties(SharedProperties::stone)
             .properties(p -> p
                     .noOcclusion()

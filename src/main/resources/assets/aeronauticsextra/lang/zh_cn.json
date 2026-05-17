@@ -10,7 +10,6 @@
   "entity.aeronauticsextra.small_balloon": "气球",
   "aeronauticsextra.generic.duration": "时长",
   "aeronauticsextra.scroll_option.sampling_time": "采样时间",
-  "aeronauticsextra.simulated_section.geomatics": "测绘学",
   "aeronauticsextra.display_source.gimbal_sensor.y_angle": "偏航角",
   "aeronauticsextra.display_source.gps_receiver.data": "GPS 接收机数据",
   "aeronauticsextra.display_source.gps_receiver.pos_x": "X 坐标",
@@ -18,5 +17,8 @@
   "aeronauticsextra.display_source.gps_receiver.pos_z": "Z 坐标",
   "aeronauticsextra.gui.gps_receiver.info_header": "接收机信息：",
   "aeronauticsextra.gui.gps_receiver.satellite_count": "卫星数量：",
-  "aeronauticsextra.gui.gps_receiver.sample_count": "采样数："
+  "aeronauticsextra.gui.gps_receiver.sample_count": "采样数：",
+  "aeronauticsextra.simulated_section.simulated": "物理模拟：附加",
+  "aeronauticsextra.simulated_section.aeronautics": "航空学：附加",
+  "aeronauticsextra.simulated_section.geomatics": "测绘学"
 }

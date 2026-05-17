@@ -10,7 +10,6 @@
   "entity.aeronauticsextra.small_balloon": "Small Balloon",
   "aeronauticsextra.generic.duration": "Duration",
   "aeronauticsextra.scroll_option.sampling_time": "Sampling Time",
-  "aeronauticsextra.simulated_section.geomatics": "Geomatics",
   "aeronauticsextra.display_source.gimbal_sensor.y_angle": "Y Angle",
   "aeronauticsextra.display_source.gps_receiver.data": "GPS Receiver Data",
   "aeronauticsextra.display_source.gps_receiver.pos_x": "X Position",
@@ -18,5 +17,8 @@
   "aeronauticsextra.display_source.gps_receiver.pos_z": "Z Position",
   "aeronauticsextra.gui.gps_receiver.info_header": "Receiver Info:",
   "aeronauticsextra.gui.gps_receiver.satellite_count": "Satellite count: ",
-  "aeronauticsextra.gui.gps_receiver.sample_count": "Sample count: "
+  "aeronauticsextra.gui.gps_receiver.sample_count": "Sample count: ",
+  "aeronauticsextra.simulated_section.simulated": "Simulated Extra",
+  "aeronauticsextra.simulated_section.aeronautics": "Aeronautics Extra",
+  "aeronauticsextra.simulated_section.geomatics": "Geomatics"
 }

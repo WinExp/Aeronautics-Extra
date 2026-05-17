@@ -1,7 +1,7 @@
 {
-  "priority": 5000,
+  "priority": 3000,
   "title": {
-    "text": { "translate": "aeronauticsextra.simulated_section.geomatics" },
+    "text": { "translate": "aeronauticsextra.simulated_section.simulated" },
     "background": "#aa39231c",
     "color": "#ffffeb8c",
     "secondary_color": "#ffcea05a"

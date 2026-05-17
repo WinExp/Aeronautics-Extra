@@ -29,7 +29,7 @@ public class AeroExtraItems {
             .tag(AeroExtraTags.ItemTags.ANTENNAS.tag)
             .register();
 
-    public static final ItemEntry<SmallBalloonItem> SMALL_BALLOON = builder(AeroExtraCreativeTabs.AERONAUTICS, "small_balloon", SmallBalloonItem::new)
+    public static final ItemEntry<SmallBalloonItem> SMALL_BALLOON = builder(AeroExtraCreativeTabs.AERONAUTICS_EXTRA, "small_balloon", SmallBalloonItem::new)
             .properties(p -> p
                     .component(DataComponents.BASE_COLOR, DyeColor.WHITE))
             .register();
