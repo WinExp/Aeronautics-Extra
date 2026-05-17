@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.content.blocks.gps.receiver;
+package com.github.winexp.aeronauticsextra.content.blocks.geomatics.gps.receiver;
 
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSBroadcastReceiver;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;

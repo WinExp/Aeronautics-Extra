@@ -1,21 +1,21 @@
 {
 	"format_version": "1.21.6",
 	"credit": "Made with Blockbench",
+	"render_type": "minecraft:cutout_mipped",
 	"textures": {
-		"0": "simulated:block/analog_transmission/block_inside_off",
-		"1": "simulated:block/analog_transmission/block_off",
+		"0": "aeronauticsextra:block/cvt_gearshift/block_inside_off",
+		"1": "aeronauticsextra:block/cvt_gearshift/block_off",
 		"2": "create:block/brass_gearbox",
 		"particle": "create:block/brass_casing"
 	},
-	"render_type": "minecraft:cutout_mipped",
 	"elements": [
 		{
 			"from": [0, 1, 0],
 			"to": [16, 6, 16],
 			"faces": {
-				"north": {"uv": [0, 10, 16, 15], "texture": "#1", "cullface": "north"},
+				"north": {"uv": [0, 10, 16, 15], "texture": "#particle", "cullface": "north"},
 				"east": {"uv": [0, 10, 16, 15], "texture": "#1", "cullface": "east"},
-				"south": {"uv": [0, 10, 16, 15], "texture": "#1", "cullface": "south"},
+				"south": {"uv": [0, 10, 16, 15], "texture": "#particle", "cullface": "south"},
 				"west": {"uv": [0, 10, 16, 15], "texture": "#1", "cullface": "west"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
 				"down": {"uv": [0, 0, 16, 16], "texture": "#2", "cullface": "down"}
@@ -25,9 +25,9 @@
 			"from": [0, 10, 0],
 			"to": [16, 15, 16],
 			"faces": {
-				"north": {"uv": [0, 1, 16, 6], "texture": "#1", "cullface": "north"},
+				"north": {"uv": [0, 1, 16, 6], "texture": "#particle", "cullface": "north"},
 				"east": {"uv": [0, 1, 16, 6], "texture": "#1", "cullface": "east"},
-				"south": {"uv": [0, 1, 16, 6], "texture": "#1", "cullface": "south"},
+				"south": {"uv": [0, 1, 16, 6], "texture": "#particle", "cullface": "south"},
 				"west": {"uv": [0, 1, 16, 6], "texture": "#1", "cullface": "west"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#2", "cullface": "up"},
 				"down": {"uv": [0, 0, 16, 16], "texture": "#0"}
@@ -46,7 +46,7 @@
 			"from": [0, 15, 0],
 			"to": [16, 16, 2],
 			"faces": {
-				"north": {"uv": [0, 0, 16, 1], "texture": "#1", "cullface": "north"},
+				"north": {"uv": [0, 0, 16, 1], "texture": "#particle", "cullface": "north"},
 				"east": {"uv": [14, 0, 16, 1], "texture": "#1", "cullface": "east"},
 				"south": {"uv": [0, 0, 16, 1], "texture": "#2", "cullface": "up"},
 				"west": {"uv": [0, 0, 2, 1], "texture": "#1", "cullface": "west"},
@@ -68,7 +68,7 @@
 			"faces": {
 				"north": {"uv": [0, 0, 16, 1], "texture": "#2", "cullface": "up"},
 				"east": {"uv": [0, 0, 2, 1], "texture": "#1", "cullface": "east"},
-				"south": {"uv": [0, 0, 16, 1], "texture": "#1", "cullface": "south"},
+				"south": {"uv": [0, 0, 16, 1], "texture": "#particle", "cullface": "south"},
 				"west": {"uv": [14, 0, 16, 1], "texture": "#1", "cullface": "west"},
 				"up": {"uv": [0, 14, 16, 16], "texture": "#2", "cullface": "up"}
 			}
@@ -77,7 +77,7 @@
 			"from": [0, 0, 0],
 			"to": [16, 1, 2],
 			"faces": {
-				"north": {"uv": [0, 15, 16, 16], "texture": "#1", "cullface": "north"},
+				"north": {"uv": [0, 15, 16, 16], "texture": "#particle", "cullface": "north"},
 				"east": {"uv": [14, 15, 16, 16], "texture": "#1", "cullface": "east"},
 				"south": {"uv": [0, 0, 16, 1], "texture": "#2", "cullface": "down"},
 				"west": {"uv": [0, 15, 2, 16], "texture": "#1", "cullface": "west"},
@@ -108,7 +108,7 @@
 			"faces": {
 				"north": {"uv": [0, 0, 16, 1], "texture": "#2", "cullface": "down"},
 				"east": {"uv": [0, 15, 2, 16], "texture": "#1", "cullface": "east"},
-				"south": {"uv": [0, 15, 16, 16], "texture": "#1", "cullface": "south"},
+				"south": {"uv": [0, 15, 16, 16], "texture": "#particle", "cullface": "south"},
 				"west": {"uv": [14, 15, 16, 16], "texture": "#1", "cullface": "west"},
 				"down": {"uv": [0, 0, 16, 2], "texture": "#2", "cullface": "down"}
 			}

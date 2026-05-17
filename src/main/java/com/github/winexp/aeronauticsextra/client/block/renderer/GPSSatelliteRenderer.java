@@ -1,7 +1,7 @@
 package com.github.winexp.aeronauticsextra.client.block.renderer;
 
 import com.github.winexp.aeronauticsextra.client.AeroExtraPartialModels;
-import com.github.winexp.aeronauticsextra.content.blocks.gps.satellite.GPSSatelliteBlockEntity;
+import com.github.winexp.aeronauticsextra.content.blocks.geomatics.gps.satellite.GPSSatelliteBlockEntity;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

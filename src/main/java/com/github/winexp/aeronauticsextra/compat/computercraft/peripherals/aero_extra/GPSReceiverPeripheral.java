@@ -1,6 +1,6 @@
 package com.github.winexp.aeronauticsextra.compat.computercraft.peripherals.aero_extra;
 
-import com.github.winexp.aeronauticsextra.content.blocks.gps.receiver.GPSReceiverBlockEntity;
+import com.github.winexp.aeronauticsextra.content.blocks.geomatics.gps.receiver.GPSReceiverBlockEntity;
 import dan200.computercraft.api.lua.LuaFunction;
 import dev.simulated_team.simulated.compat.computercraft.peripherals.SimPeripheral;
 import net.minecraft.world.phys.Vec3;

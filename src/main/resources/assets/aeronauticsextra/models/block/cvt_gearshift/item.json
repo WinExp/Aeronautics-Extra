@@ -1,12 +1,14 @@
 {
+	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"parent": "create:block/brass_encased_cogwheel_top_bottom",
 	"textures": {
-		"2": "simulated:block/analog_transmission/gear",
-		"3": "simulated:block/analog_transmission/block_off",
+		"2": "aeronauticsextra:block/cvt_gearshift/gear",
+		"3": "aeronauticsextra:block/cvt_gearshift/block_off",
 		"4": "create:block/brass_gearbox",
-		"5": "simulated:block/analog_transmission/block_inside_off",
-		"particle": "simulated:block/analog_transmission/gear"
+		"5": "aeronauticsextra:block/cvt_gearshift/block_inside_off",
+		"6": "create:block/brass_casing",
+		"particle": "aeronauticsextra:block/cvt_gearshift/gear"
 	},
 	"elements": [
 		{
@@ -79,9 +81,9 @@
 			"from": [0, 1, 0],
 			"to": [16, 6, 16],
 			"faces": {
-				"north": {"uv": [0, 10, 16, 15], "texture": "#3"},
+				"north": {"uv": [0, 10, 16, 15], "texture": "#6"},
 				"east": {"uv": [0, 10, 16, 15], "texture": "#3"},
-				"south": {"uv": [0, 10, 16, 15], "texture": "#3"},
+				"south": {"uv": [0, 10, 16, 15], "texture": "#6"},
 				"west": {"uv": [0, 10, 16, 15], "texture": "#3"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#5"},
 				"down": {"uv": [0, 0, 16, 16], "texture": "#4"}
@@ -101,9 +103,9 @@
 			"from": [0, 10, 0],
 			"to": [16, 15, 16],
 			"faces": {
-				"north": {"uv": [0, 1, 16, 6], "texture": "#3"},
+				"north": {"uv": [0, 1, 16, 6], "texture": "#6"},
 				"east": {"uv": [0, 1, 16, 6], "texture": "#3"},
-				"south": {"uv": [0, 1, 16, 6], "texture": "#3"},
+				"south": {"uv": [0, 1, 16, 6], "texture": "#6"},
 				"west": {"uv": [0, 1, 16, 6], "texture": "#3"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#4"},
 				"down": {"uv": [0, 0, 16, 16], "texture": "#5"}
@@ -113,10 +115,10 @@
 			"from": [0, 15, 0],
 			"to": [16, 16, 2],
 			"faces": {
-				"north": {"uv": [0, 0, 16, 1], "texture": "#4"},
-				"east": {"uv": [14, 0, 16, 1], "texture": "#4"},
+				"north": {"uv": [0, 0, 16, 1], "texture": "#6"},
+				"east": {"uv": [14, 0, 16, 1], "texture": "#3"},
 				"south": {"uv": [0, 0, 16, 1], "texture": "#4"},
-				"west": {"uv": [0, 0, 2, 1], "texture": "#4"},
+				"west": {"uv": [0, 0, 2, 1], "texture": "#3"},
 				"up": {"uv": [0, 0, 16, 2], "texture": "#4"}
 			}
 		},
@@ -125,9 +127,9 @@
 			"to": [16, 16, 16],
 			"faces": {
 				"north": {"uv": [0, 0, 16, 1], "texture": "#4"},
-				"east": {"uv": [0, 0, 2, 1], "texture": "#4"},
-				"south": {"uv": [0, 0, 16, 1], "texture": "#4"},
-				"west": {"uv": [14, 0, 16, 1], "texture": "#4"},
+				"east": {"uv": [0, 0, 2, 1], "texture": "#3"},
+				"south": {"uv": [0, 0, 16, 1], "texture": "#6"},
+				"west": {"uv": [14, 0, 16, 1], "texture": "#3"},
 				"up": {"uv": [0, 14, 16, 16], "texture": "#4"}
 			}
 		},
@@ -136,7 +138,7 @@
 			"to": [2, 16, 14],
 			"faces": {
 				"east": {"uv": [2, 0, 14, 1], "texture": "#4"},
-				"west": {"uv": [2, 0, 14, 1], "texture": "#4"},
+				"west": {"uv": [2, 0, 14, 1], "texture": "#3"},
 				"up": {"uv": [0, 2, 2, 14], "texture": "#4"}
 			}
 		},
@@ -144,7 +146,7 @@
 			"from": [14, 15, 2],
 			"to": [16, 16, 14],
 			"faces": {
-				"east": {"uv": [2, 0, 14, 1], "texture": "#4"},
+				"east": {"uv": [2, 0, 14, 1], "texture": "#3"},
 				"west": {"uv": [2, 0, 14, 1], "texture": "#4"},
 				"up": {"uv": [14, 2, 16, 14], "texture": "#4"}
 			}
@@ -153,10 +155,10 @@
 			"from": [0, 0, 0],
 			"to": [16, 1, 2],
 			"faces": {
-				"north": {"uv": [0, 15, 16, 16], "texture": "#4"},
-				"east": {"uv": [14, 15, 16, 16], "texture": "#4"},
+				"north": {"uv": [0, 15, 16, 16], "texture": "#6"},
+				"east": {"uv": [14, 15, 16, 16], "texture": "#3"},
 				"south": {"uv": [0, 0, 16, 1], "texture": "#4"},
-				"west": {"uv": [0, 15, 2, 16], "texture": "#4"},
+				"west": {"uv": [0, 15, 2, 16], "texture": "#3"},
 				"down": {"uv": [0, 14, 16, 16], "texture": "#4"}
 			}
 		},
@@ -164,7 +166,7 @@
 			"from": [14, 0, 2],
 			"to": [16, 1, 14],
 			"faces": {
-				"east": {"uv": [2, 15, 14, 16], "texture": "#4"},
+				"east": {"uv": [2, 15, 14, 16], "texture": "#3"},
 				"west": {"uv": [2, 0, 14, 1], "texture": "#4"},
 				"down": {"uv": [14, 2, 16, 14], "texture": "#4"}
 			}
@@ -174,9 +176,9 @@
 			"to": [16, 1, 16],
 			"faces": {
 				"north": {"uv": [0, 0, 16, 1], "texture": "#4"},
-				"east": {"uv": [0, 15, 2, 16], "texture": "#4"},
-				"south": {"uv": [0, 15, 16, 16], "texture": "#4"},
-				"west": {"uv": [14, 15, 16, 16], "texture": "#4"},
+				"east": {"uv": [0, 15, 2, 16], "texture": "#3"},
+				"south": {"uv": [0, 15, 16, 16], "texture": "#6"},
+				"west": {"uv": [14, 15, 16, 16], "texture": "#3"},
 				"down": {"uv": [0, 0, 16, 2], "texture": "#4"}
 			}
 		},
@@ -185,7 +187,7 @@
 			"to": [2, 1, 14],
 			"faces": {
 				"east": {"uv": [2, 0, 14, 1], "texture": "#4"},
-				"west": {"uv": [2, 15, 14, 16], "texture": "#4"},
+				"west": {"uv": [2, 15, 14, 16], "texture": "#3"},
 				"down": {"uv": [0, 2, 2, 14], "texture": "#4"}
 			}
 		},
@@ -216,7 +218,7 @@
 	],
 	"display": {
 		"thirdperson_righthand": {
-			"rotation": [75, 45, 0],
+			"rotation": [75, 135, 0],
 			"translation": [0, 2.5, 0],
 			"scale": [0.375, 0.375, 0.375]
 		},
@@ -226,11 +228,11 @@
 			"scale": [0.375, 0.375, 0.375]
 		},
 		"firstperson_righthand": {
-			"rotation": [0, 45, 0],
+			"rotation": [0, 135, 0],
 			"scale": [0.4, 0.4, 0.4]
 		},
 		"firstperson_lefthand": {
-			"rotation": [0, 225, 0],
+			"rotation": [0, -135, 0],
 			"scale": [0.4, 0.4, 0.4]
 		},
 		"ground": {
@@ -249,6 +251,7 @@
 		{
 			"name": "gear",
 			"origin": [8, 8, 8],
+			"scope": 0,
 			"color": 0,
 			"children": [0, 1, 2, 3, 4]
 		},

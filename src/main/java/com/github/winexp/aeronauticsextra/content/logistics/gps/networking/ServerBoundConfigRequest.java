@@ -1,7 +1,7 @@
 package com.github.winexp.aeronauticsextra.content.logistics.gps.networking;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.github.winexp.aeronauticsextra.content.blocks.gps.satellite.GPSSatelliteBlockEntity;
+import com.github.winexp.aeronauticsextra.content.blocks.geomatics.gps.satellite.GPSSatelliteBlockEntity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.ByteBufCodecs;

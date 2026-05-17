@@ -1,9 +1,10 @@
 {
+	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"parent": "create:block/brass_encased_cogwheel_top_bottom",
 	"texture_size": [32, 32],
 	"textures": {
-		"3": "simulated:block/analog_transmission/gear"
+		"3": "aeronauticsextra:block/cvt_gearshift/gear"
 	},
 	"elements": [
 		{
@@ -81,6 +82,7 @@
 		{
 			"name": "gear",
 			"origin": [8, 8, 8],
+			"scope": 0,
 			"color": 0,
 			"children": [0, 1, 2, 3, 4]
 		}

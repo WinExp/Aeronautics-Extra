@@ -7,7 +7,6 @@
     "aeronautics.HotAirBurnerBlockEntityMixin",
     "aeronautics.SteamVentBlockEntityMixin",
     "sable.ServerSubLevelMixin",
-    "simulated.AnalogTransmissionBlockEntityMixin",
     "simulated.GimbalSensorBlockEntityMixin",
     "simulated.GimbalSensorDisplaySourceMixin",
     "simulated.GimbalSensorPeripheralMixin"

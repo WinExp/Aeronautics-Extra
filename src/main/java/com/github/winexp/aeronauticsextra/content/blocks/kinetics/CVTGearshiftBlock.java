@@ -3,10 +3,8 @@ package com.github.winexp.aeronauticsextra.content.blocks.kinetics;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlocks;
 import com.mojang.serialization.MapCodec;
-import com.simibubi.create.content.kinetics.RotationPropagator;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.base.IRotate;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.foundation.block.IBE;
@@ -16,10 +14,7 @@ import net.createmod.catnip.placement.IPlacementHelper;
 import net.createmod.catnip.placement.PlacementHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -28,13 +23,11 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.ticks.TickPriority;
 
 public class CVTGearshiftBlock extends DirectionalAxisKineticBlock implements IBE<CVTGearshiftBlockEntity>, ExtraKinetics.ExtraKineticsBlock {
     public static final int placementHelperId = PlacementHelpers.register(new CogwheelPlacementExtension(stack -> stack.getItem() instanceof CogwheelBlockItem, AeroExtraBlocks.CVT_GEARSHIFT::has));
@@ -122,27 +115,19 @@ public class CVTGearshiftBlock extends DirectionalAxisKineticBlock implements IB
     }
 
     public BlockState getPoweredState(Level level, BlockState state, BlockPos pos) {
-        Direction left = this.getLeftDirection(state);
-        Direction right = this.getRightDirection(state);
+        Direction left = getLeftDirection(state);
+        Direction right = getRightDirection(state);
 
         return state.setValue(LEFT_POWERED, level.hasSignal(pos.relative(left), left))
                 .setValue(RIGHT_POWERED, level.hasSignal(pos.relative(right), right));
     }
 
-    public Direction getLeftDirection(BlockState state) {
+    public static Direction getLeftDirection(BlockState state) {
         return state.getValue(FACING);
     }
 
-    public Direction getRightDirection(BlockState state) {
-        return this.getLeftDirection(state).getOpposite();
-    }
-
-    @Override
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        final BlockEntity be = level.getBlockEntity(pos);
-        if (!(be instanceof final KineticBlockEntity kinetic))
-            return;
-        RotationPropagator.handleAdded(level, pos, kinetic);
+    public static Direction getRightDirection(BlockState state) {
+        return getLeftDirection(state).getOpposite();
     }
 
     @Override
@@ -156,30 +141,8 @@ public class CVTGearshiftBlock extends DirectionalAxisKineticBlock implements IB
         BlockState newState = this.getPoweredState(level, state, pos);
 
         if (previouslyLeftPowered != newState.getValue(LEFT_POWERED) || previouslyRightPowered != newState.getValue(RIGHT_POWERED)) {
-            this.detachKinetics(level, pos, true);
-            level.setBlock(pos, newState, 2);
+            level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
         }
-    }
-
-    public void detachKinetics(Level level, BlockPos pos, boolean reAttachNextTick) {
-        BlockEntity be = level.getBlockEntity(pos);
-        if (!(be instanceof KineticBlockEntity kinetic))
-            return;
-
-        RotationPropagator.handleRemoved(level, pos, kinetic);
-        if (reAttachNextTick) {
-            level.scheduleTick(pos, this, 1, TickPriority.EXTREMELY_HIGH);
-        }
-    }
-
-    @Override
-    public InteractionResult onWrenched(BlockState state, UseOnContext context) {
-        InteractionResult interactionResult = super.onWrenched(state, context);
-        if (interactionResult.consumesAction() && !context.getLevel().isClientSide) {
-            this.detachKinetics(context.getLevel(), context.getClickedPos(), true);
-        }
-
-        return interactionResult;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.github.winexp.aeronauticsextra.content.display_source;
 
-import com.github.winexp.aeronauticsextra.content.blocks.gps.receiver.GPSReceiverBlockEntity;
+import com.github.winexp.aeronauticsextra.content.blocks.geomatics.gps.receiver.GPSReceiverBlockEntity;
 import com.github.winexp.aeronauticsextra.data.AeroExtraLang;
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
 import com.simibubi.create.content.redstone.displayLink.source.NumericSingleLineDisplaySource;

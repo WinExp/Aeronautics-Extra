@@ -1,19 +1,19 @@
 {
   "variants": {
     "axis_along_first=false,facing=down,left_powered=false,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_vertical",
       "x": 90
     },
     "axis_along_first=false,facing=down,left_powered=false,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on_vertical",
       "x": 90
     },
     "axis_along_first=false,facing=down,left_powered=true,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on_vertical",
       "x": 90
     },
     "axis_along_first=false,facing=down,left_powered=true,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on_vertical",
       "x": 90
     },
     "axis_along_first=false,facing=east,left_powered=false,right_powered=false": {
@@ -21,15 +21,15 @@
       "x": 90
     },
     "axis_along_first=false,facing=east,left_powered=false,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "x": 90
     },
     "axis_along_first=false,facing=east,left_powered=true,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "x": 90
     },
     "axis_along_first=false,facing=east,left_powered=true,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "x": 90
     },
     "axis_along_first=false,facing=north,left_powered=false,right_powered=false": {
@@ -37,15 +37,15 @@
       "y": 270
     },
     "axis_along_first=false,facing=north,left_powered=false,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "y": 270
     },
     "axis_along_first=false,facing=north,left_powered=true,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "y": 270
     },
     "axis_along_first=false,facing=north,left_powered=true,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "y": 270
     },
     "axis_along_first=false,facing=south,left_powered=false,right_powered=false": {
@@ -53,66 +53,74 @@
       "y": 90
     },
     "axis_along_first=false,facing=south,left_powered=false,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "y": 90
     },
     "axis_along_first=false,facing=south,left_powered=true,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "y": 90
     },
     "axis_along_first=false,facing=south,left_powered=true,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "y": 90
     },
     "axis_along_first=false,facing=up,left_powered=false,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
-      "x": 90
+      "model": "aeronauticsextra:block/cvt_gearshift/block_vertical",
+      "x": 90,
+      "y": 180
     },
     "axis_along_first=false,facing=up,left_powered=false,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
-      "x": 90
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on_vertical",
+      "x": 90,
+      "y": 180
     },
     "axis_along_first=false,facing=up,left_powered=true,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
-      "x": 90
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on_vertical",
+      "x": 90,
+      "y": 180
     },
     "axis_along_first=false,facing=up,left_powered=true,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
-      "x": 90
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on_vertical",
+      "x": 90,
+      "y": 180
     },
     "axis_along_first=false,facing=west,left_powered=false,right_powered=false": {
       "model": "aeronauticsextra:block/cvt_gearshift/block",
-      "x": 90
+      "x": 90,
+      "y": 180
     },
     "axis_along_first=false,facing=west,left_powered=false,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
-      "x": 90
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
+      "x": 90,
+      "y": 180
     },
     "axis_along_first=false,facing=west,left_powered=true,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
-      "x": 90
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
+      "x": 90,
+      "y": 180
     },
     "axis_along_first=false,facing=west,left_powered=true,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
-      "x": 90
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
+      "x": 90,
+      "y": 180
     },
     "axis_along_first=true,facing=down,left_powered=false,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_vertical",
       "x": 90,
       "y": 90
     },
     "axis_along_first=true,facing=down,left_powered=false,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on_vertical",
       "x": 90,
       "y": 90
     },
     "axis_along_first=true,facing=down,left_powered=true,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on_vertical",
       "x": 90,
       "y": 90
     },
     "axis_along_first=true,facing=down,left_powered=true,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on_vertical",
       "x": 90,
       "y": 90
     },
@@ -120,33 +128,33 @@
       "model": "aeronauticsextra:block/cvt_gearshift/block"
     },
     "axis_along_first=true,facing=east,left_powered=false,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block"
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on"
     },
     "axis_along_first=true,facing=east,left_powered=true,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block"
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on"
     },
     "axis_along_first=true,facing=east,left_powered=true,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block"
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on"
     },
     "axis_along_first=true,facing=north,left_powered=false,right_powered=false": {
       "model": "aeronauticsextra:block/cvt_gearshift/block",
       "x": 90,
-      "y": 90
+      "y": -90
     },
     "axis_along_first=true,facing=north,left_powered=false,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "x": 90,
-      "y": 90
+      "y": -90
     },
     "axis_along_first=true,facing=north,left_powered=true,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "x": 90,
-      "y": 90
+      "y": -90
     },
     "axis_along_first=true,facing=north,left_powered=true,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "x": 90,
-      "y": 90
+      "y": -90
     },
     "axis_along_first=true,facing=south,left_powered=false,right_powered=false": {
       "model": "aeronauticsextra:block/cvt_gearshift/block",
@@ -154,54 +162,54 @@
       "y": 90
     },
     "axis_along_first=true,facing=south,left_powered=false,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "x": 90,
       "y": 90
     },
     "axis_along_first=true,facing=south,left_powered=true,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "x": 90,
       "y": 90
     },
     "axis_along_first=true,facing=south,left_powered=true,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "x": 90,
       "y": 90
     },
     "axis_along_first=true,facing=up,left_powered=false,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_vertical",
       "x": 90,
-      "y": 90
+      "y": -90
     },
     "axis_along_first=true,facing=up,left_powered=false,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on_vertical",
       "x": 90,
-      "y": 90
+      "y": -90
     },
     "axis_along_first=true,facing=up,left_powered=true,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on_vertical",
       "x": 90,
-      "y": 90
+      "y": -90
     },
     "axis_along_first=true,facing=up,left_powered=true,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on_vertical",
       "x": 90,
-      "y": 90
+      "y": -90
     },
     "axis_along_first=true,facing=west,left_powered=false,right_powered=false": {
       "model": "aeronauticsextra:block/cvt_gearshift/block",
       "y": 180
     },
     "axis_along_first=true,facing=west,left_powered=false,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "y": 180
     },
     "axis_along_first=true,facing=west,left_powered=true,right_powered=false": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "y": 180
     },
     "axis_along_first=true,facing=west,left_powered=true,right_powered=true": {
-      "model": "aeronauticsextra:block/cvt_gearshift/block",
+      "model": "aeronauticsextra:block/cvt_gearshift/block_on",
       "y": 180
     }
   }

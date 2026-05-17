@@ -182,8 +182,8 @@ public class SmallBalloonEntity extends LivingEntity implements Leashable, Entit
                 this.rotation.x = (float) axis.x;
                 this.rotation.y = (float) axis.y;
                 this.rotation.z = (float) axis.z;
-                this.rotation.angle = (float) Math.min(horizontal.length(), 0.40) / 0.40f * MAX_ANGLE * Mth.DEG_TO_RAD;
             }
+            this.rotation.angle = (float) Math.min(horizontal.length(), 0.40) / 0.40f * MAX_ANGLE * Mth.DEG_TO_RAD;
 
             Quaternionf result = new Quaternionf();
             Quaternionf prevRotQ = this.prevRotation.get(new Quaternionf());

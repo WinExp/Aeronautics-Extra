@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.content.blocks.gps.satellite;
+package com.github.winexp.aeronauticsextra.content.blocks.geomatics.gps.satellite;
 
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSBroadcast;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;

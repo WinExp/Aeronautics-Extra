@@ -3,6 +3,8 @@ package com.github.winexp.aeronauticsextra.content.blocks.kinetics;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
+import com.simibubi.create.infrastructure.config.AllConfigs;
+import dev.simulated_team.simulated.mixin_interface.extra_kinetics.KineticBlockEntityExtension;
 import dev.simulated_team.simulated.util.extra_kinetics.ExtraBlockPos;
 import dev.simulated_team.simulated.util.extra_kinetics.ExtraKinetics;
 import net.minecraft.core.BlockPos;
@@ -16,8 +18,10 @@ import net.minecraft.world.level.block.state.BlockState;
 public class CVTGearshiftBlockEntity extends KineticBlockEntity implements ExtraKinetics {
     private final CVTGearshiftCogwheel extraWheel;
 
-    private boolean oversaturated = false;
-    boolean alreadySentEffects = false;
+    private float ratio = 1;
+    private boolean oversaturated;
+    private boolean alreadySentEffects;
+    private boolean needsUpdate;
 
     public CVTGearshiftBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -27,10 +31,38 @@ public class CVTGearshiftBlockEntity extends KineticBlockEntity implements Extra
     @Override
     public void tick() {
         if (!this.level.isClientSide) {
+            BlockPos pos = this.getBlockPos();
+            BlockState state = this.getBlockState();
+            Direction left = CVTGearshiftBlock.getLeftDirection(state);
+            Direction right = CVTGearshiftBlock.getRightDirection(state);
+            int leftSignal = this.level.getSignal(pos.relative(left), left);
+            int rightSignal = this.level.getSignal(pos.relative(right), right);
+
+            int signalDiff = leftSignal - rightSignal;
+            if (signalDiff != 0) {
+                this.setRatio(this.getRatio() + (signalDiff / 15f * 0.2f));
+            }
+
+            if (this.needsUpdate) {
+                this.detachKinetics();
+                this.extraWheel.detachKinetics();
+                this.removeSource();
+                this.extraWheel.removeSource();
+
+                if (((KineticBlockEntityExtension) this).simulated$getConnectedToExtraKinetics()) {
+                    this.attachKinetics();
+                    this.extraWheel.attachKinetics();
+                } else {
+                    this.extraWheel.attachKinetics();
+                    this.attachKinetics();
+                }
+                this.needsUpdate = false;
+            }
+
         } else if (this.oversaturated) {
             if (!this.alreadySentEffects) {
-                this.effects.triggerOverStressedEffect();
                 this.alreadySentEffects = true;
+                this.effects.triggerOverStressedEffect();
             }
         } else {
             this.alreadySentEffects = false;
@@ -40,18 +72,47 @@ public class CVTGearshiftBlockEntity extends KineticBlockEntity implements Extra
         super.tick();
     }
 
+    public float getRatio() {
+        return this.ratio;
+    }
+
+    public void setRatio(float ratio) {
+        if (this.ratio == ratio) return;
+        ratio = Math.clamp(ratio, 0.1f, 10);
+        this.ratio = ratio;
+        this.needsUpdate = true;
+    }
+
     @Override
     public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff,
                                      boolean connectedViaAxes, boolean connectedViaCogs) {
-        float factor = 0;
+        float modifier = 0;
 
         if (target == this.extraWheel) {
-            factor = 1;
+            modifier = this.ratio;
+            if (this.oversaturated) {
+                return 0;
+            } else if (Math.abs(this.getTheoreticalSpeed() * modifier) > AllConfigs.server().kinetics.maxRotationSpeed.get()) {
+                this.oversaturated = true;
+                return 0;
+            } else {
+                this.oversaturated = false;
+            }
         } else if (target == this) {
-            factor = 1;
+            modifier = 1 / this.ratio;
+            if (this.oversaturated) {
+                return 0;
+            } else if (Math.abs(this.extraWheel.getTheoreticalSpeed() * modifier) > AllConfigs.server().kinetics.maxRotationSpeed.get()) {
+                this.oversaturated = true;
+                return 0;
+            } else {
+                this.oversaturated = false;
+            }
+        } else {
+            this.oversaturated = false;
         }
 
-        return factor;
+        return modifier;
     }
 
     @Override
@@ -64,17 +125,21 @@ public class CVTGearshiftBlockEntity extends KineticBlockEntity implements Extra
     }
 
     @Override
-    protected void write(final CompoundTag compound, final HolderLookup.Provider registries, final boolean clientPacket) {
-        super.write(compound, registries, clientPacket);
-
-        compound.putBoolean("oversaturated", this.oversaturated);
-    }
-
-    @Override
     protected void read(final CompoundTag compound, final HolderLookup.Provider registries, final boolean clientPacket) {
         super.read(compound, registries, clientPacket);
 
         this.oversaturated = compound.getBoolean("oversaturated");
+        if (compound.contains("ratio")) {
+            this.ratio = compound.getFloat("ratio");
+        }
+    }
+
+    @Override
+    protected void write(final CompoundTag compound, final HolderLookup.Provider registries, final boolean clientPacket) {
+        super.write(compound, registries, clientPacket);
+
+        compound.putBoolean("oversaturated", this.oversaturated);
+        compound.putFloat("ratio", this.ratio);
     }
 
     @Override

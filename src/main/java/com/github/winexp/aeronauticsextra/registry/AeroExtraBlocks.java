@@ -1,9 +1,10 @@
 package com.github.winexp.aeronauticsextra.registry;
 
 import com.github.winexp.aeronauticsextra.AeronauticsExtra;
-import com.github.winexp.aeronauticsextra.content.blocks.gps.receiver.GPSReceiverBlock;
-import com.github.winexp.aeronauticsextra.content.blocks.gps.satellite.GPSSatelliteBlock;
+import com.github.winexp.aeronauticsextra.content.blocks.geomatics.gps.receiver.GPSReceiverBlock;
+import com.github.winexp.aeronauticsextra.content.blocks.geomatics.gps.satellite.GPSSatelliteBlock;
 import com.github.winexp.aeronauticsextra.content.blocks.kinetics.CVTGearshiftBlock;
+import com.github.winexp.aeronauticsextra.content.blocks.kinetics.CVTGearshiftGenerator;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.ModelGen;
 import com.simibubi.create.foundation.data.SharedProperties;
@@ -47,34 +48,7 @@ public class AeroExtraBlocks {
                     .noOcclusion()
                     .isRedstoneConductor(AeroExtraBlocks::never))
             .transform(TagGen.axeOrPickaxe())
-            .blockstate((ctx, prov) ->
-                    prov.getVariantBuilder(ctx.getEntry()).forAllStates((state) -> {
-                        Direction dir = state.getValue(CVTGearshiftBlock.FACING);
-                        Direction.Axis axis = dir.getAxis();
-                        boolean axisAlongFirst = state.getValue(CVTGearshiftBlock.AXIS_ALONG_FIRST_COORDINATE);
-                        int rotX, rotY;
-                        if (axisAlongFirst) {
-                            if (axis == Direction.Axis.X) {
-                                rotX = 0;
-                                rotY = (int) (dir.toYRot() + 90) % 360;
-                            } else {
-                                rotX = 90;
-                                rotY = 90;
-                            }
-                        } else {
-                            if (axis == Direction.Axis.Z) {
-                                rotX = 0;
-                                rotY = (int) (dir.toYRot() + 90) % 360;
-                            } else {
-                                rotX = 90;
-                                rotY = 0;
-                            }
-                        }
-                        return ConfiguredModel.builder().modelFile(prov.models().getExistingFile(prov.modLoc("block/cvt_gearshift/block")))
-                                .rotationX(rotX)
-                                .rotationY(rotY)
-                                .build();
-                    }))
+            .blockstate(CVTGearshiftGenerator::generate)
             .item().transform(ModelGen.customItemModel())
             .register();
 
