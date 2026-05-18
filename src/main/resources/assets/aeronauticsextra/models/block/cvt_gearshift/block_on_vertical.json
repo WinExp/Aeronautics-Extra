@@ -4,8 +4,9 @@
 	"render_type": "minecraft:cutout_mipped",
 	"textures": {
 		"0": "aeronauticsextra:block/cvt_gearshift/block_inside_off",
-		"1": "aeronauticsextra:block/cvt_gearshift/block_off",
+		"1": "aeronauticsextra:block/cvt_gearshift/block_back_on",
 		"2": "create:block/brass_gearbox",
+		"4": "aeronauticsextra:block/cvt_gearshift/block_front_on",
 		"particle": "create:block/brass_casing"
 	},
 	"elements": [
@@ -13,7 +14,7 @@
 			"from": [0, 1, 0],
 			"to": [16, 6, 16],
 			"faces": {
-				"north": {"uv": [0, 10, 16, 15], "texture": "#1", "cullface": "north"},
+				"north": {"uv": [0, 10, 16, 15], "texture": "#4", "cullface": "north"},
 				"east": {"uv": [0, 10, 16, 15], "texture": "#particle", "cullface": "east"},
 				"south": {"uv": [0, 10, 16, 15], "texture": "#1", "cullface": "south"},
 				"west": {"uv": [0, 10, 16, 15], "texture": "#particle", "cullface": "west"},
@@ -25,7 +26,7 @@
 			"from": [0, 10, 0],
 			"to": [16, 15, 16],
 			"faces": {
-				"north": {"uv": [0, 1, 16, 6], "texture": "#1", "cullface": "north"},
+				"north": {"uv": [0, 1, 16, 6], "texture": "#4", "cullface": "north"},
 				"east": {"uv": [0, 1, 16, 6], "texture": "#particle", "cullface": "east"},
 				"south": {"uv": [0, 1, 16, 6], "texture": "#1", "cullface": "south"},
 				"west": {"uv": [0, 1, 16, 6], "texture": "#particle", "cullface": "west"},

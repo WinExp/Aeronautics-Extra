@@ -49,8 +49,7 @@ public class AeroExtraTags {
     }
 
     public enum BlockTags {
-        SABLE_HEAVY(Namespace.SABLE, "heavy"),
-        SABLE_SUPER_HEAVY(Namespace.SABLE, "super_heavy"),;
+        SABLE_HEAVY(Namespace.SABLE, "heavy");
 
         public final TagKey<Block> tag;
 

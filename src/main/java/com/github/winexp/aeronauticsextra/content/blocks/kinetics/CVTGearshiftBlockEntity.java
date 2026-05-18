@@ -1,31 +1,51 @@
 package com.github.winexp.aeronauticsextra.content.blocks.kinetics;
 
+import com.github.winexp.aeronauticsextra.data.AeroExtraLang;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
+import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import dev.simulated_team.simulated.mixin_interface.extra_kinetics.KineticBlockEntityExtension;
 import dev.simulated_team.simulated.util.extra_kinetics.ExtraBlockPos;
 import dev.simulated_team.simulated.util.extra_kinetics.ExtraKinetics;
+import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 public class CVTGearshiftBlockEntity extends KineticBlockEntity implements ExtraKinetics {
+    private static final Component SCROLL_OPTION_TITLE = AeroExtraLang.translate("scroll_option.shift_speed").component();
+
     private final CVTGearshiftCogwheel extraWheel;
 
     private float ratio = 1;
     private boolean oversaturated;
+
     private boolean alreadySentEffects;
     private boolean needsUpdate;
+    private ScrollValueBehaviour scrollValueBehaviour;
 
     public CVTGearshiftBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         this.extraWheel = new CVTGearshiftCogwheel(type, new ExtraBlockPos(pos), state, this);
+    }
+
+    @Override
+    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+        this.scrollValueBehaviour = new CVTGearshiftValueBehaviour(SCROLL_OPTION_TITLE, this, new CVTGearshiftValueBoxTransform());
+        behaviours.add(this.scrollValueBehaviour);
     }
 
     @Override
@@ -40,7 +60,7 @@ public class CVTGearshiftBlockEntity extends KineticBlockEntity implements Extra
 
             int signalDiff = leftSignal - rightSignal;
             if (signalDiff != 0) {
-                this.setRatio(this.getRatio() + (signalDiff / 15f * 0.2f));
+                this.setRatio(this.getRatio() + (signalDiff / 15f * 0.33f * this.scrollValueBehaviour.getValue() / 100));
             }
 
             if (this.needsUpdate) {
@@ -155,6 +175,38 @@ public class CVTGearshiftBlockEntity extends KineticBlockEntity implements Extra
     @Override
     public String getExtraKineticsSaveName() {
         return "ExtraCogwheel";
+    }
+
+    private static class CVTGearshiftValueBoxTransform extends ValueBoxTransform.Sided {
+        @Override
+        protected Vec3 getSouthLocation() {
+            return VecHelper.voxelSpace(12, 8, 16);
+        }
+
+        @Override
+        public Vec3 getLocalOffset(LevelAccessor level, BlockPos pos, BlockState state) {
+            Vec3 result = super.getLocalOffset(level, pos, state);
+            if (((CVTGearshiftBlock) state.getBlock()).getRotationAxis(state) == Direction.Axis.Y) {
+                Direction.Axis axis = CVTGearshiftBlock.getLeftDirection(state).getAxis();
+                Vec3 offset = VecHelper.voxelSpace(
+                        axis == Direction.Axis.Z ? -4 * this.getSide().getAxisDirection().getStep() : 0,
+                        -4,
+                        axis == Direction.Axis.X ? 4 * this.getSide().getAxisDirection().getStep() : 0
+                );
+                return result.add(offset);
+            }
+            return result;
+        }
+
+        @Override
+        protected boolean isSideActive(BlockState state, Direction direction) {
+            return direction == CVTGearshiftBlock.getLeftDirection(state) || direction == CVTGearshiftBlock.getRightDirection(state);
+        }
+
+        @Override
+        public float getScale() {
+            return 0.33f;
+        }
     }
 
     public static class CVTGearshiftCogwheel extends KineticBlockEntity implements ExtraKineticsBlockEntity {

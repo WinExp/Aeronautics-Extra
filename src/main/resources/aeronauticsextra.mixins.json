@@ -6,6 +6,7 @@
     "ComputerCraftPeripheralsMixin",
     "aeronautics.HotAirBurnerBlockEntityMixin",
     "aeronautics.SteamVentBlockEntityMixin",
+    "create.CogwheelPlacementExtensionMixin",
     "sable.ServerSubLevelMixin",
     "simulated.GimbalSensorBlockEntityMixin",
     "simulated.GimbalSensorDisplaySourceMixin",

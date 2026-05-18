@@ -1,4 +1,4 @@
-package com.github.winexp.aeronauticsextra.content.blocks.geomatics.gps.receiver;
+package com.github.winexp.aeronauticsextra.content.blocks.kinetics;
 
 import com.github.winexp.aeronauticsextra.data.AeroExtraLang;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
@@ -13,30 +13,14 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.List;
 
-public class GPSReceiverValueBehaviour extends ScrollValueBehaviour {
-    private static final String VALUE_FORMAT = "%st";
-    private static final Component TITLE = AeroExtraLang.translate("generic.duration").component();
+public class CVTGearshiftValueBehaviour extends ScrollValueBehaviour {
+    private static final String VALUE_FORMAT = "%s%%";
+    private static final Component TITLE = AeroExtraLang.translate("generic.speed").component();
 
-    public GPSReceiverValueBehaviour(Component label, SmartBlockEntity be, ValueBoxTransform slot) {
+    public CVTGearshiftValueBehaviour(Component label, SmartBlockEntity be, ValueBoxTransform slot) {
         super(label, be, slot);
-        this.between(1, 200);
-        this.withFormatter(VALUE_FORMAT::formatted);
-        this.value = 7;
-    }
-
-    private void updateBlockEntity() {
-        this.blockEntity.setLazyTickRate(this.value - 1);
-    }
-
-    @Override
-    public void initialize() {
-        this.updateBlockEntity();
-    }
-
-    @Override
-    public void setValue(int value) {
-        super.setValue(value);
-        this.updateBlockEntity();
+        this.between(1, 100);
+        this.value = 50;
     }
 
     @Override
@@ -51,6 +35,6 @@ public class GPSReceiverValueBehaviour extends ScrollValueBehaviour {
 
     @Override
     public String getClipboardKey() {
-        return "Sampling Time";
+        return "Shift Speed";
     }
 }

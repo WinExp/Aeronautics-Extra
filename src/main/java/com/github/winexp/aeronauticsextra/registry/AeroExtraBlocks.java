@@ -30,7 +30,7 @@ public class AeroExtraBlocks {
     public static final BlockEntry<GPSSatelliteBlock> GPS_SATELLITE = builder(AeroExtraCreativeTabs.GEOMATICS, "gps_satellite", GPSSatelliteBlock::new)
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.isRedstoneConductor(AeroExtraBlocks::never))
-            .tag(AeroExtraTags.BlockTags.SABLE_SUPER_HEAVY.tag)
+            .tag(AeroExtraTags.BlockTags.SABLE_HEAVY.tag)
             .transform(ModelTransform.directionalBlock(GPSSatelliteBlock.FACING, "gps_satellite/block"))
             .item().transform(ModelGen.customItemModel("gps_satellite", "block"))
             .register();
@@ -38,7 +38,6 @@ public class AeroExtraBlocks {
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.isRedstoneConductor(AeroExtraBlocks::never))
             .simpleItem()
-            .tag(AeroExtraTags.BlockTags.SABLE_HEAVY.tag)
             .transform(ModelTransform.defaultBlockModel())
             .register();
 

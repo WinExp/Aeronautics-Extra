@@ -10,17 +10,17 @@ public class CVTGearshiftPeripheral extends SimPeripheral<CVTGearshiftBlockEntit
     }
 
     @LuaFunction
-    public float getRatio() {
+    public final float getRatio() {
         return this.blockEntity.getRatio();
     }
 
     @LuaFunction
-    public void setRatio(double ratio) {
+    public final void setRatio(double ratio) {
         this.blockEntity.setRatio((float) ratio);
     }
 
     @LuaFunction
-    public void offsetRatio(float offset) {
+    public final void offsetRatio(float offset) {
         this.blockEntity.setRatio(this.blockEntity.getRatio() + offset);
     }
 

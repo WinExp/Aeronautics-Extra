@@ -29,7 +29,6 @@ import java.util.UUID;
 
 public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
     private static final Component SCROLL_OPTION_TITLE = AeroExtraLang.translate("scroll_option.sampling_time").component();
-    private static final String VALUE_FORMAT = "%s t";
 
     private int satelliteCount = 0;
     private int sampleCount = 0;
@@ -39,7 +38,7 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGog
     private final ArrayList<GPSSampleData> sampleDataList =  new ArrayList<>();
     private int sendDataCounter;
 
-    private ScrollValueBehaviour samplingTimeBehaviour;
+    private ScrollValueBehaviour scrollValueBehaviour;
 
     public GPSReceiverBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -63,10 +62,8 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGog
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-        this.samplingTimeBehaviour = new GPSReceiverValueBehaviour(SCROLL_OPTION_TITLE, this,
-                new GPSReceiverValueBoxTransform())
-                .withFormatter(VALUE_FORMAT::formatted);
-        behaviours.add(this.samplingTimeBehaviour);
+        this.scrollValueBehaviour = new GPSReceiverValueBehaviour(SCROLL_OPTION_TITLE, this, new GPSReceiverValueBoxTransform());
+        behaviours.add(this.scrollValueBehaviour);
     }
 
     @Override
@@ -118,7 +115,7 @@ public class GPSReceiverBlockEntity extends SmartBlockEntity implements IHaveGog
             BlockState blockState = this.level.getBlockState(blockPos);
             Vec3 pos = Sable.HELPER.projectOutOfSubLevel(this.level, blockPos.getCenter());
             Vec3 antennaPos = Sable.HELPER.projectOutOfSubLevel(this.level, GPSReceiverBlock.getAntennaTopPos(this.level, blockState, blockPos));
-            GPSBroadcastReceiver receiver = new GPSBroadcastReceiver(this.level, pos, antennaPos, 0.07f, this::receiveBroadcast, this::onSamplingComplete, this.samplingTimeBehaviour.value);
+            GPSBroadcastReceiver receiver = new GPSBroadcastReceiver(this.level, pos, antennaPos, 0.07f, this::receiveBroadcast, this::onSamplingComplete, this.scrollValueBehaviour.value);
             GPSManager.registerReceiver(receiver);
         }
     }

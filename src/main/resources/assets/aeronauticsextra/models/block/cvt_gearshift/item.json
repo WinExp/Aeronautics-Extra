@@ -4,10 +4,11 @@
 	"parent": "create:block/brass_encased_cogwheel_top_bottom",
 	"textures": {
 		"2": "aeronauticsextra:block/cvt_gearshift/gear",
-		"3": "aeronauticsextra:block/cvt_gearshift/block_off",
+		"3": "aeronauticsextra:block/cvt_gearshift/block_front_off",
 		"4": "create:block/brass_gearbox",
 		"5": "aeronauticsextra:block/cvt_gearshift/block_inside_off",
 		"6": "create:block/brass_casing",
+		"7": "aeronauticsextra:block/cvt_gearshift/block_back_off",
 		"particle": "aeronauticsextra:block/cvt_gearshift/gear"
 	},
 	"elements": [
@@ -84,7 +85,7 @@
 				"north": {"uv": [0, 10, 16, 15], "texture": "#6"},
 				"east": {"uv": [0, 10, 16, 15], "texture": "#3"},
 				"south": {"uv": [0, 10, 16, 15], "texture": "#6"},
-				"west": {"uv": [0, 10, 16, 15], "texture": "#3"},
+				"west": {"uv": [0, 10, 16, 15], "texture": "#7"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#5"},
 				"down": {"uv": [0, 0, 16, 16], "texture": "#4"}
 			}
@@ -106,7 +107,7 @@
 				"north": {"uv": [0, 1, 16, 6], "texture": "#6"},
 				"east": {"uv": [0, 1, 16, 6], "texture": "#3"},
 				"south": {"uv": [0, 1, 16, 6], "texture": "#6"},
-				"west": {"uv": [0, 1, 16, 6], "texture": "#3"},
+				"west": {"uv": [0, 1, 16, 6], "texture": "#7"},
 				"up": {"uv": [0, 0, 16, 16], "texture": "#4"},
 				"down": {"uv": [0, 0, 16, 16], "texture": "#5"}
 			}

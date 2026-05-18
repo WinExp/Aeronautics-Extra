@@ -1,5 +1,6 @@
 package com.github.winexp.aeronauticsextra.content.blocks.kinetics;
 
+import com.github.winexp.aeronauticsextra.mixin_interface.create.CogwheelPlacementExtensionExt;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlockEntityTypes;
 import com.github.winexp.aeronauticsextra.registry.AeroExtraBlocks;
 import com.mojang.serialization.MapCodec;
@@ -30,7 +31,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class CVTGearshiftBlock extends DirectionalAxisKineticBlock implements IBE<CVTGearshiftBlockEntity>, ExtraKinetics.ExtraKineticsBlock {
-    public static final int placementHelperId = PlacementHelpers.register(new CogwheelPlacementExtension(stack -> stack.getItem() instanceof CogwheelBlockItem, AeroExtraBlocks.CVT_GEARSHIFT::has));
+    public static final int placementHelperId = PlacementHelpers.register(createPlacementHelper());
     public static final MapCodec<CVTGearshiftBlock> CODEC = simpleCodec(CVTGearshiftBlock::new);
     public static final BooleanProperty LEFT_POWERED = BooleanProperty.create("left_powered");
     public static final BooleanProperty RIGHT_POWERED = BooleanProperty.create("right_powered");
@@ -40,6 +41,12 @@ public class CVTGearshiftBlock extends DirectionalAxisKineticBlock implements IB
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(LEFT_POWERED, false)
                 .setValue(RIGHT_POWERED, false));
+    }
+
+    private static IPlacementHelper createPlacementHelper() {
+        CogwheelPlacementExtension helper = new CogwheelPlacementExtension(stack -> stack.getItem() instanceof CogwheelBlockItem, AeroExtraBlocks.CVT_GEARSHIFT::has);
+        ((CogwheelPlacementExtensionExt) helper).aero_extra$setAxisProvider((state) -> AeroExtraBlocks.CVT_GEARSHIFT.get().getRotationAxis(state));
+        return helper;
     }
 
     @Override

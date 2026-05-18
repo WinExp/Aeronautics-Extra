@@ -11,12 +11,12 @@ public class HotAirBurnerPeripheral extends SimPeripheral<HotAirBurnerBlockEntit
     }
 
     @LuaFunction
-    public int getHotAirAmount() {
+    public final int getHotAirAmount() {
         return ((HotAirBurnerBlockEntityExtension) this.blockEntity).aero_extra$getHotAirAmount();
     }
 
     @LuaFunction
-    public void setHotAirAmount(int amount) {
+    public final void setHotAirAmount(int amount) {
         ((HotAirBurnerBlockEntityExtension) this.blockEntity).aero_extra$setHotAirAmount(amount);
     }
 
