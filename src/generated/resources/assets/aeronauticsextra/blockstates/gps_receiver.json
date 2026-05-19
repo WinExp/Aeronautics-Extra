@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "aeronauticsextra:block/gps_receiver",
+      "y": 90
+    },
+    "facing=north": {
       "model": "aeronauticsextra:block/gps_receiver"
+    },
+    "facing=south": {
+      "model": "aeronauticsextra:block/gps_receiver",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "aeronauticsextra:block/gps_receiver",
+      "y": 270
     }
   }
 }

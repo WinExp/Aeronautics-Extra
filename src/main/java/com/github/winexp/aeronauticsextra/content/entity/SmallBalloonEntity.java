@@ -34,14 +34,15 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 
 public class SmallBalloonEntity extends LivingEntity implements Leashable, EntitySubLevelActor {
-    public static final double ENTITY_MAX_LIFT = 0.3;
+    public static final double MAX_ENTITY_LIFT = 0.2;
     public static final double LEASH_LENGTH = 4;
     public static final float MAX_ANGLE = 45;
 
     private static final EntityDataAccessor<Byte> COLOR = SynchedEntityData.defineId(SmallBalloonEntity.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Float> LIFT = SynchedEntityData.defineId(SmallBalloonEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> ENTITY_LIFT = SynchedEntityData.defineId(SmallBalloonEntity.class, EntityDataSerializers.FLOAT);
     private LeashData leashData;
     private float prevMotionYaw;
+    private float yawRate;
     private final AxisAngle4f rotation = new AxisAngle4f();
     private final AxisAngle4f prevRotation = new AxisAngle4f();
 
@@ -68,12 +69,12 @@ public class SmallBalloonEntity extends LivingEntity implements Leashable, Entit
         this.entityData.set(COLOR, (byte) color.getId());
     }
 
-    public float getLift() {
-        return this.entityData.get(LIFT);
+    public float getEntityLift() {
+        return this.entityData.get(ENTITY_LIFT);
     }
 
-    public void setLift(float lift) {
-        this.entityData.set(LIFT, lift);
+    public void setEntityLift(float lift) {
+        this.entityData.set(ENTITY_LIFT, lift);
     }
 
     @Override
@@ -124,24 +125,24 @@ public class SmallBalloonEntity extends LivingEntity implements Leashable, Entit
     }
 
     protected void liftEntity(Entity entity) {
+        double entityYVel = entity.getDeltaMovement().y;
         if (!this.level().isClientSide) {
             float distance = this.distanceTo(entity);
             if (distance > LEASH_LENGTH && this.getY() > entity.getY() && (!(entity instanceof Player player) || !player.getAbilities().flying)) {
                 Vec3 direction = this.position().subtract(entity.position()).normalize();
                 double lift = direction.y;
-                double entityYVel = entity.getDeltaMovement().y;
                 if (entityYVel > 0) {
-                    lift *= 0.023;
+                    lift *= 0.024;
                 } else {
                     lift *= 0.036;
                 }
-                if (entityYVel >= ENTITY_MAX_LIFT) lift = 0;
-                else if (entityYVel + lift >= ENTITY_MAX_LIFT) lift = entityYVel + lift - ENTITY_MAX_LIFT;
-                this.setLift((float) lift);
+                if (entityYVel >= MAX_ENTITY_LIFT) lift = 0;
+                else if (entityYVel + lift >= MAX_ENTITY_LIFT) lift = entityYVel + lift - MAX_ENTITY_LIFT;
+                this.setEntityLift((float) lift);
                 entity.checkSlowFallDistance();
-            } else this.setLift(0);
+            } else this.setEntityLift(0);
         }
-        entity.addDeltaMovement(new Vec3(0, this.getLift(), 0));
+        entity.addDeltaMovement(new Vec3(0, this.getEntityLift(), 0));
     }
 
     @Override
@@ -163,27 +164,29 @@ public class SmallBalloonEntity extends LivingEntity implements Leashable, Entit
 
     @Override
     public void travel(Vec3 travelVector) {
-        this.setDeltaMovement(this.getDeltaMovement().multiply(0.9, 0.9, 0.9));
+        this.setDeltaMovement(this.getDeltaMovement().multiply(0.87, 0.91, 0.87));
         super.travel(travelVector);
     }
 
-    protected void tickRotation(Vec3 horizontal) {
-        float horizontalSpeed = (float) Mth.clamp(horizontal.length() - 0.075, 0, 0.20) / 0.20f;
-        float motionYaw = (float) Mth.atan2(horizontal.z, horizontal.x) * Mth.RAD_TO_DEG - 90f;
+    protected void tickRotation(Vec3 motion) {
+        float horizontalSpeed = (float) Mth.clamp(motion.horizontalDistance() - 0.075, 0, 0.20) / 0.20f;
+        float motionYaw = (float) Mth.atan2(motion.z, motion.x) * Mth.RAD_TO_DEG - 90f;
         float deltaRotY = Mth.wrapDegrees((motionYaw - this.prevMotionYaw) * 5);
-        this.setYRot(Mth.wrapDegrees(this.getYRot() + deltaRotY * horizontalSpeed * 0.15f));
+        this.yawRate *= 0.95f;
+        this.yawRate += (deltaRotY * horizontalSpeed * 0.2f - this.yawRate) * horizontalSpeed * 0.15f;
+        this.setYRot(Mth.wrapDegrees(this.getYRot() + this.yawRate));
         this.prevMotionYaw = motionYaw;
-
-        if (this.level().isClientSide) {
+        if (!this.level().isClientSide) {
+        } else {
             this.prevRotation.set(this.rotation);
-            Vec3 axis = horizontal.cross(new Vec3(0, 1, 0)).normalize();
+            Vec3 axis = motion.multiply(1, 0, 1).cross(new Vec3(0, 1, 0)).normalize();
 
             if (axis != Vec3.ZERO) {
                 this.rotation.x = (float) axis.x;
                 this.rotation.y = (float) axis.y;
                 this.rotation.z = (float) axis.z;
             }
-            this.rotation.angle = (float) Math.min(horizontal.length(), 0.50) / 0.50f * MAX_ANGLE * Mth.DEG_TO_RAD;
+            this.rotation.angle = (float) Math.min(motion.horizontalDistance(), 0.50) / 0.50f * MAX_ANGLE * Mth.DEG_TO_RAD;
 
             Quaternionf result = new Quaternionf();
             Quaternionf prevRotQ = this.prevRotation.get(new Quaternionf());
@@ -205,7 +208,7 @@ public class SmallBalloonEntity extends LivingEntity implements Leashable, Entit
     public void tick() {
         Vec3 prevPos = this.position();
         super.tick();
-        this.tickRotation(this.position().subtract(prevPos).multiply(1, 0, 1));
+        this.tickRotation(this.position().subtract(prevPos));
         if (this.getLeashHolder() != null)  {
             this.liftEntity(this.getLeashHolder());
         }
@@ -258,7 +261,7 @@ public class SmallBalloonEntity extends LivingEntity implements Leashable, Entit
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(COLOR, (byte) DyeColor.WHITE.getId());
-        builder.define(LIFT, 0f);
+        builder.define(ENTITY_LIFT, 0f);
     }
 
     @Override

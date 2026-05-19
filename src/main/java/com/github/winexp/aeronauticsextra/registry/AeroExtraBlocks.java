@@ -37,8 +37,9 @@ public class AeroExtraBlocks {
     public static final BlockEntry<GPSReceiverBlock> GPS_RECEIVER = builder(AeroExtraCreativeTabs.GEOMATICS, "gps_receiver", GPSReceiverBlock::new)
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.isRedstoneConductor(AeroExtraBlocks::never))
+            .blockstate((ctx, prov) ->
+                    prov.horizontalBlock(ctx.getEntry(), prov.models().getExistingFile(prov.modLoc("block/gps_receiver"))))
             .simpleItem()
-            .transform(ModelTransform.defaultBlockModel())
             .register();
 
     public static final BlockEntry<CVTGearshiftBlock> CVT_GEARSHIFT = builder(AeroExtraCreativeTabs.SIMULATED_EXTRA, "cvt_gearshift", CVTGearshiftBlock::new)

@@ -26,7 +26,7 @@ public class AeroExtraEntityTypes {
             .attributes(() -> LivingEntity.createLivingAttributes()
                     .add(Attributes.MAX_HEALTH, 5)
                     .add(Attributes.MOVEMENT_SPEED, 1)
-                    .add(Attributes.GRAVITY, -0.072))
+                    .add(Attributes.GRAVITY, -0.074))
             .renderer(() -> SmallBalloonEntityRenderer::new)
             .register();
 

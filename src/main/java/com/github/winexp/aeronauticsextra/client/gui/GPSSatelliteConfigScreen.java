@@ -1,7 +1,8 @@
 package com.github.winexp.aeronauticsextra.client.gui;
 
+import com.github.winexp.aeronauticsextra.client.gui.widgets.DoubleEditBox;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.gui.SatelliteConfigMenu;
-import com.github.winexp.aeronauticsextra.content.logistics.gps.networking.ServerBoundConfigRequest;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.networking.ServerBoundSatelliteConfigRequest;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,9 +13,9 @@ import net.minecraft.world.phys.Vec3;
 
 public class GPSSatelliteConfigScreen extends AbstractSimiContainerScreen<SatelliteConfigMenu> {
     private final SatelliteConfigMenu menu;
-    private PositionEditBox xEditBox;
-    private PositionEditBox yEditBox;
-    private PositionEditBox zEditBox;
+    private DoubleEditBox xEditBox;
+    private DoubleEditBox yEditBox;
+    private DoubleEditBox zEditBox;
 
     public GPSSatelliteConfigScreen(SatelliteConfigMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
@@ -27,10 +28,12 @@ public class GPSSatelliteConfigScreen extends AbstractSimiContainerScreen<Satell
 
     private void save() {
         if (this.canSave()) {
-            double x = this.xEditBox.getDoubleValue(true);
-            double y = this.yEditBox.getDoubleValue(true);
-            double z = this.zEditBox.getDoubleValue(true);
-            CatnipServices.NETWORK.sendToServer(new ServerBoundConfigRequest(this.menu.contentHolder.getBlockPos(), new Vec3(x, y, z)));
+            Vec3 virtualPos = new Vec3(
+                    this.xEditBox.getBoxValue(),
+                    this.yEditBox.getBoxValue(),
+                    this.zEditBox.getBoxValue()
+            );
+            CatnipServices.NETWORK.sendToServer(new ServerBoundSatelliteConfigRequest(this.menu.contentHolder.getBlockPos(), virtualPos));
         }
     }
 
@@ -40,9 +43,10 @@ public class GPSSatelliteConfigScreen extends AbstractSimiContainerScreen<Satell
         super.onClose();
     }
 
-    private PositionEditBox createPositionEditBox(int x, int y, int width, int height, EditBox parent, double initValue) {
-        PositionEditBox editBox = new PositionEditBox(this.minecraft.font, x, y, width, height, parent, Component.empty());
-        if (editBox.getValue().isEmpty()) editBox.setDoubleValue(initValue);
+    private DoubleEditBox createPositionEditBox(int x, int y, int width, int height, EditBox parent, double initValue) {
+        DoubleEditBox editBox = new DoubleEditBox(x, y, width, height, parent, Component.empty());
+        editBox.positionComplement = true;
+        if (editBox.getValue().isEmpty()) editBox.setBoxValue(initValue);
         return editBox;
     }
 

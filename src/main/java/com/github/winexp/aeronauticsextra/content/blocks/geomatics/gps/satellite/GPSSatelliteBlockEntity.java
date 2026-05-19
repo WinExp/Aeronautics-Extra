@@ -93,7 +93,7 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
 
     public void setVirtualPos(Vec3 virtualPos) {
         this.virtualPos = virtualPos;
-        this.setChanged();
+        this.notifyUpdate();
     }
 
     public ItemStack getAntenna() {
@@ -103,7 +103,7 @@ public class GPSSatelliteBlockEntity extends SmartBlockEntity implements MenuPro
     public void setAntenna(ItemStack stack) {
         if (stack.isEmpty() || (stack.is(AeroExtraTags.ItemTags.ANTENNAS.tag) && this.inventory.getSlotLimit(0) >= stack.getCount())) {
             this.inventory.setItem(0, stack);
-            this.setChanged();
+            this.notifyUpdate();
         }
     }
 

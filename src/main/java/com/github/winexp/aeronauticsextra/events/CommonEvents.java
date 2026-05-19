@@ -4,7 +4,8 @@ import com.github.winexp.aeronauticsextra.AeronauticsExtra;
 import com.github.winexp.aeronauticsextra.content.commands.GPSCommand;
 import com.github.winexp.aeronauticsextra.content.commands.RaycastCommand;
 import com.github.winexp.aeronauticsextra.content.logistics.gps.GPSManager;
-import com.github.winexp.aeronauticsextra.content.logistics.gps.networking.ServerBoundConfigRequest;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.networking.ServerBoundReceiverConfigRequest;
+import com.github.winexp.aeronauticsextra.content.logistics.gps.networking.ServerBoundSatelliteConfigRequest;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.Vec3Argument;
@@ -22,7 +23,8 @@ public class CommonEvents {
     @SubscribeEvent
     public static void onPayloadRegister(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar("1");
-        registrar.playToServer(ServerBoundConfigRequest.TYPE, ServerBoundConfigRequest.STREAM_CODEC, new ServerBoundConfigRequest.RequestHandler());
+        registrar.playToServer(ServerBoundSatelliteConfigRequest.TYPE, ServerBoundSatelliteConfigRequest.STREAM_CODEC, new ServerBoundSatelliteConfigRequest.RequestHandler());
+        registrar.playToServer(ServerBoundReceiverConfigRequest.TYPE, ServerBoundReceiverConfigRequest.STREAM_CODEC, new ServerBoundReceiverConfigRequest.RequestHandler());
     }
 
 

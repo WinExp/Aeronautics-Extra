@@ -11,6 +11,7 @@ import com.simibubi.create.infrastructure.config.AllConfigs;
 import dev.simulated_team.simulated.mixin_interface.extra_kinetics.KineticBlockEntityExtension;
 import dev.simulated_team.simulated.util.extra_kinetics.ExtraBlockPos;
 import dev.simulated_team.simulated.util.extra_kinetics.ExtraKinetics;
+import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -185,17 +186,15 @@ public class CVTGearshiftBlockEntity extends KineticBlockEntity implements Extra
 
         @Override
         public Vec3 getLocalOffset(LevelAccessor level, BlockPos pos, BlockState state) {
-            Vec3 result = super.getLocalOffset(level, pos, state);
-            if (((CVTGearshiftBlock) state.getBlock()).getRotationAxis(state) == Direction.Axis.Y) {
-                Direction.Axis axis = CVTGearshiftBlock.getLeftDirection(state).getAxis();
-                Vec3 offset = VecHelper.voxelSpace(
-                        axis == Direction.Axis.Z ? -4 * this.getSide().getAxisDirection().getStep() : 0,
-                        -4,
-                        axis == Direction.Axis.X ? 4 * this.getSide().getAxisDirection().getStep() : 0
-                );
-                return result.add(offset);
+            Vec3 location = getSouthLocation();
+            if (((IRotate) state.getBlock()).getRotationAxis(state) == Direction.Axis.Y
+            || (CVTGearshiftBlock.getLeftDirection(state).getAxis() == Direction.Axis.Y
+                    && !state.getValue(CVTGearshiftBlock.AXIS_ALONG_FIRST_COORDINATE))) {
+                location = location.add(VecHelper.voxelSpace(-4, -4, 0));
             }
-            return result;
+            location = VecHelper.rotateCentered(location, AngleHelper.horizontalAngle(getSide()), Direction.Axis.Y);
+            location = VecHelper.rotateCentered(location, AngleHelper.verticalAngle(getSide()), Direction.Axis.X);
+            return location;
         }
 
         @Override

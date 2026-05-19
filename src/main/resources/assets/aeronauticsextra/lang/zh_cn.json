@@ -4,6 +4,7 @@
   "block.aeronauticsextra.gps_receiver": "GPS 接收机",
   "block.aeronauticsextra.cvt_gearshift": "无级调速齿轮箱",
   "container.aeronauticsextra.gps_satellite":  "GPS 卫星",
+  "container.aeronauticsextra.gps_receiver": "GPS 接收机",
   "item.aeronauticsextra.andesite_antenna": "安山天线",
   "item.aeronauticsextra.brass_antenna": "黄铜天线",
   "item.aeronauticsextra.small_balloon": "气球",

@@ -14,25 +14,25 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
 
-public record ServerBoundConfigRequest(BlockPos blockPos, Vec3 virtualPos) implements CustomPacketPayload {
-    public static final Type<ServerBoundConfigRequest> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(AeronauticsExtra.MOD_ID, "gps_satellite_config"));
+public record ServerBoundSatelliteConfigRequest(BlockPos blockPos, Vec3 virtualPos) implements CustomPacketPayload {
+    public static final Type<ServerBoundSatelliteConfigRequest> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(AeronauticsExtra.MOD_ID, "gps_satellite_config"));
 
-    public static final StreamCodec<ByteBuf, ServerBoundConfigRequest> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, ServerBoundSatelliteConfigRequest> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC,
-            ServerBoundConfigRequest::blockPos,
+            ServerBoundSatelliteConfigRequest::blockPos,
             ByteBufCodecs.fromCodec(Vec3.CODEC),
-            ServerBoundConfigRequest::virtualPos,
-            ServerBoundConfigRequest::new
+            ServerBoundSatelliteConfigRequest::virtualPos,
+            ServerBoundSatelliteConfigRequest::new
     );
 
     @Override
-    public Type<ServerBoundConfigRequest> type() {
+    public Type<ServerBoundSatelliteConfigRequest> type() {
         return TYPE;
     }
 
-    public static class RequestHandler implements IPayloadHandler<ServerBoundConfigRequest> {
+    public static class RequestHandler implements IPayloadHandler<ServerBoundSatelliteConfigRequest> {
         @Override
-        public void handle(ServerBoundConfigRequest request, IPayloadContext context) {
+        public void handle(ServerBoundSatelliteConfigRequest request, IPayloadContext context) {
             Player player = context.player();
             Level level = player.level();
             BlockPos blockPos = request.blockPos();
